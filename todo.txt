@@ -1,4 +1,7 @@
-ToDo
- 	> use fixed lenght headers
-	> remove self. to to_send_msg
-	> implement a nicer way of handling the flags
+
+================== ToDo ================== 
+	place a "x" inside [] if done
+
+1. [] Use fixed length headers
+2. [] Remove "self." to "to_send_msg" in "sendMsg()"
+3. [] Implement a nicer way of handling the flags 
