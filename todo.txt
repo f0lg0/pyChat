@@ -1,0 +1,4 @@
+ToDo
+ 	> use fixed lenght headers
+	> remove self. to to_send_msg
+	> implement a nicer way of handling the flags
