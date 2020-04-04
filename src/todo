@@ -1,0 +1,10 @@
+======== CHATROOM ========
+    1. [x] Get host IP for server  
+    2. [] Current user prompt
+    3. [x] No duplicate usernames + del users when they disconnect 
+    4. [x] No buffer 
+    5. [x] Save chats to csv & time stamp 
+    6. [x] Export chat
+    7. [x] Special commands
+
+

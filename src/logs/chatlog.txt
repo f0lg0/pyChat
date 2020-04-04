@@ -1,0 +1,289 @@
+CHAT LOG
+
+leonardo> hi hi 2020-02-22 23:25:24.441792
+elliot> hi friend 2020-02-22 23:25:27.625728
+elliot> how are u 2020-02-22 23:25:30.473756
+leonardo> im good thanks 2020-02-22 23:25:34.809775
+elliot> fsociety 2020-02-22 23:25:38.393650
+leonardo> yep 2020-02-22 23:25:42.185670
+leonardo> [export_chat] 2020-02-22 23:25:47.321974
+elliot> hi friend 2020-02-23 09:53:35.567239
+leonardo> [help] 2020-02-23 09:53:40.655269
+leonardo> [help] 2020-02-23 09:55:21.631516
+leonardo> [help] 2020-02-23 09:56:43.415772
+leonardo> hi friend 2020-02-23 09:57:14.063761
+leonardo> [export_chat] 2020-02-23 09:57:20.263916
+leonardo> hi friend 2020-02-23 09:58:39.008137
+leonardo> [help] 2020-02-23 09:58:43.304173
+leonardo> hi 2020-02-23 09:59:03.288179
+leonardo> wat 2020-02-23 09:59:05.904237
+leonardo> [export_chat] 2020-02-23 09:59:10.471895
+leonardo> thanks 2020-02-23 09:59:13.072264
+admin> admin admin 2020-02-23 09:59:58.352384
+admin> yeye 2020-02-23 10:00:00.288399
+admin> [help] 2020-02-23 10:00:03.352345
+admin> yeye 2020-02-23 10:01:00.952500
+admin> [help] 2020-02-23 10:01:04.120607
+admin>   2020-02-23 10:01:08.672598
+admin> help 2020-02-23 10:01:17.704684
+admin> it works! 2020-02-23 10:01:28.472616
+admin> [export_chat] 2020-02-23 10:01:33.360724
+admin> [export_chat] 2020-02-23 10:01:42.848728
+admin> [help] 2020-02-23 10:01:46.376636
+admin> fuck yeah 2020-02-23 10:01:50.520731
+elliot> hi friend 2020-02-23 10:03:26.088995
+elliot> damn 2020-02-23 10:03:48.376997
+elliot> [help] 2020-02-23 10:03:53.536982
+elliot> [export_chat] 2020-02-23 10:04:03.601185
+elliot> hi friend 2020-02-23 10:05:59.649408
+elliot> testing  2020-02-23 10:06:03.201438
+elliot> [help] 2020-02-23 10:06:08.681499
+elliot> [yeah] 2020-02-23 10:06:25.393640
+elliot> [export_chat] 2020-02-23 10:06:49.377683
+aye> hey 2020-02-23 17:20:03.366555
+aye> [help] 2020-02-23 17:20:06.814468
+elliot> hi friend 2020-02-23 17:23:48.312525
+leonardo> ciao 2020-02-23 17:23:52.000543
+afhuwjeaf> jdshfjfhbsf 2020-02-23 17:25:27.601892
+leonardo> viso 2020-02-23 17:25:50.153985
+elliot> hi friend 2020-02-23 17:26:53.074062
+leonarod> ciaox 2020-02-23 17:26:56.154063
+elliot> ciao 2020-02-23 17:36:15.756173
+leonardo> k 2020-02-23 17:36:24.596128
+leonardo> k 2020-02-23 17:36:28.652010
+leonardo> k 2020-02-23 17:36:30.819987
+leonardo> k 2020-02-23 17:36:31.579783
+leonardo> k 2020-02-23 17:36:36.572011
+elliot> hhb 2020-02-23 17:36:38.619921
+elliot> hi friend 2020-02-23 17:38:14.530346
+elliot> ciao 2020-02-23 17:58:06.137813
+leonardo> assf 2020-02-23 17:58:08.545793
+elliot> leonardo 2020-02-23 18:15:40.969427
+leonardo> aye 2020-02-23 18:15:43.505581
+elliot> ciao 2020-02-24 11:23:27.881279
+elliot> [help] 2020-02-24 11:23:31.105343
+elliot> [export_chat] 2020-02-24 11:23:38.745358
+leonardo> cciciaciao 2020-02-24 11:35:57.261819
+elliot> cciciaciaociaoiciaoiciaoi
+ 2020-02-24 11:37:24.022496
+test> c 2020-02-24 11:40:00.767699
+qwerty> a 2020-02-24 11:41:33.552344
+qwerty> aa 2020-02-24 11:41:35.400004
+qwerty> aaa 2020-02-24 11:41:36.800088
+qwerty> aaaa 2020-02-24 11:41:37.768033
+qwerty> aaaaa 2020-02-24 11:41:38.631964
+qwerty> aaaaaa 2020-02-24 11:41:39.568100
+qwerty> aaaaaaa 2020-02-24 11:41:40.288110
+qwerty> aaaaaaaa 2020-02-24 11:41:40.664051
+qwerty> aaaaaaaaa 2020-02-24 11:41:40.896199
+qwerty> aaaaaaaaaa 2020-02-24 11:41:41.088036
+qwerty> aaaaaaaaaaa 2020-02-24 11:41:41.280006
+qwerty> aaaaaaaaaaaa 2020-02-24 11:41:41.464042
+qwerty> aaaaaaaaaaaaa 2020-02-24 11:41:41.648031
+qwerty> aaaaaaaaaaaaaa 2020-02-24 11:41:43.400101
+qwerty> aaaaaaaaaaaaaad 2020-02-24 11:41:43.920026
+qwerty> aaaaaaaaaaaaaada 2020-02-24 11:41:44.040120
+qwerty> aaaaaaaaaaaaaadas 2020-02-24 11:41:44.056096
+qwerty> aaaaaaaaaaaaaadasd 2020-02-24 11:41:44.176023
+qwerty> aaaaaaaaaaaaaadasda 2020-02-24 11:41:44.288130
+qwerty> aaaaaaaaaaaaaadasdas 2020-02-24 11:41:44.360018
+qwerty> aaaaaaaaaaaaaadasdasd 2020-02-24 11:41:44.416139
+qwerty> aaaaaaaaaaaaaadasdasda 2020-02-24 11:41:44.528040
+qwerty> aaaaaaaaaaaaaadasdasdas 2020-02-24 11:41:44.568064
+qwerty> aaaaaaaaaaaaaadasdasdasa 2020-02-24 11:41:52.224252
+qwerty> aaaaaaaaaaaaaadasdasdasaa 2020-02-24 11:41:52.656173
+qwerty> aaaaaaaaaaaaaadasdasdasaaa 2020-02-24 11:41:52.880104
+qwerty> aaaaaaaaaaaaaadasdasdasaaas 2020-02-24 11:41:52.904094
+qwerty> aaaaaaaaaaaaaadasdasdasaaasd 2020-02-24 11:41:53.024019
+qwerty> aaaaaaaaaaaaaadasdasdasaaasda 2020-02-24 11:41:53.152127
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdas 2020-02-24 11:41:53.168104
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasd 2020-02-24 11:41:53.279988
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasda 2020-02-24 11:41:53.344147
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdad 2020-02-24 11:41:53.464070
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdads 2020-02-24 11:41:53.560054
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsa 2020-02-24 11:41:53.576105
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsad 2020-02-24 11:41:53.688099
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsada 2020-02-24 11:41:53.768059
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadas 2020-02-24 11:41:53.784123
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasd 2020-02-24 11:41:53.864098
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasda 2020-02-24 11:41:53.960224
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdas 2020-02-24 11:41:53.984057
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdass 2020-02-24 11:41:54.152143
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassa 2020-02-24 11:41:54.154431
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassad 2020-02-24 11:41:54.248136
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassada 2020-02-24 11:41:54.376127
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassada
+ 2020-02-24 11:41:58.304421
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassada
+
+ 2020-02-24 11:42:02.248435
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassada
+
+
+ 2020-02-24 11:42:04.728309
+qwerty> aaaaaaaaaaaaaadasdasdasaaasdasdadsadasdassada
+
+
+
+ 2020-02-24 11:42:05.232259
+elliot> c 2020-02-24 11:42:20.336463
+elliot> ci 2020-02-24 11:42:20.472347
+elliot> cia 2020-02-24 11:42:20.600233
+elliot> ciao 2020-02-24 11:42:20.728337
+elliot> ciao
+ 2020-02-24 11:42:21.200255
+elliot> ciao
+d 2020-02-24 11:42:22.896370
+elliot> ciao
+dd 2020-02-24 11:42:24.456400
+elliot> ciao
+ddd 2020-02-24 11:42:26.272437
+elliot> ciao
+ddd
+ 2020-02-24 11:42:29.088659
+elliot> ciao
+ddd
+ 2020-02-24 11:42:30.336457
+elliot> ciao
+ddd
+ 2020-02-24 11:42:30.800395
+elliot> ciao
+ddd
+
+ 2020-02-24 11:42:31.024946
+elliot> ciao
+ddd
+
+
+ 2020-02-24 11:42:31.456673
+elliot> ciao
+ddd
+
+
+ 2020-02-24 11:42:31.472407
+elliot> ciao
+ddd
+
+
+ 2020-02-24 11:42:31.728490
+elliot> ciao
+ddd
+
+
+
+ 2020-02-24 11:42:31.800594
+elliot> ciao
+ddd
+
+
+
+
+ 2020-02-24 11:42:32.192410
+elliot> ciao
+ddd
+
+
+
+
+
+ 2020-02-24 11:42:32.880760
+elliot> ciao
+ddd
+
+
+
+
+
+< 2020-02-24 11:42:33.120581
+elliot> ciao
+ddd
+
+
+
+
+
+<z 2020-02-24 11:42:33.136447
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+ 2020-02-24 11:42:33.160148
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+c 2020-02-24 11:42:33.232359
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+cx 2020-02-24 11:42:33.234360
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+cxd 2020-02-24 11:42:33.248296
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+cxda 2020-02-24 11:42:33.296490
+elliot> ciao
+ddd
+
+
+
+
+
+<z
+cxdas 2020-02-24 11:42:33.320594
+leonardo> ciao 2020-02-24 11:52:05.603170
+leonardo> 
+
+ciao
+ad
+ 2020-02-24 11:52:13.091255
+leonardo> ciao
+ 2020-02-24 11:54:03.115780
+elliot> hi friendafdssf 2020-02-24 11:54:09.755592
+elliot> ciao amico 2020-02-24 11:55:00.931909
+elliot> ciao 2020-02-24 11:55:05.755873
+leonardo> ciao 2020-02-24 11:55:59.803676
+elliot> c 2020-02-24 12:08:25.672453
+elliot> i 2020-02-24 12:08:25.800230
+elliot> a 2020-02-24 12:08:25.904333
+elliot> o 2020-02-24 12:08:26.024186
+elliot> 
+ 2020-02-24 12:08:57.064650
+elliot> 
+ 2020-02-24 12:08:58.960575
+elliot> c 2020-02-24 12:09:01.768516
+elliot>  2020-02-24 12:09:02.776574
+elliot> < 2020-02-24 12:09:04.472889
+elliot> z 2020-02-24 12:09:04.528616
+elliot> x 2020-02-24 12:09:04.552492
+elliot> < 2020-02-24 12:09:04.656839
+elliot> s 2020-02-24 12:09:04.672474
+elliot> x 2020-02-24 12:09:04.744572
+elliot> < 2020-02-24 12:09:04.888942
+elliot> x 2020-02-24 12:09:04.944711
