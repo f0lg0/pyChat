@@ -1,15 +1,43 @@
 # ChatRoom
 A simple chat room built using sockets with Python3
 
-## Requirements 
+![example](./banner/example.png)
 
-* Python 3
+# About
 
-## Run 
+ChatRoom is a simple chat application written using sockets. Clients connect to a server which lets them send text messages to each other.
 
-```bash
-python3 Server.py --> there must be a server running
+This was initially developed under a Linux system so it may have issues under Windows. Currently we are working 
+on porting it to Windows. 
 
-python3 Client.py --> as many as you want
+# Requirements 
+
+* Python3
+
+All the libraries inside this code should be already installed, in case just pip install the followings:
+
+* socket
+* pickle
+* threading
+* sys
+* datetime
+* time
+
+# Run 
+
 ```
+python3 server.py
+python3 client.py
+```
+## Features
+
+* [export_chat] > export current chat to a text file 
+* [help] > display all possible commands
+
+## Authors
+
+[f0lg0](https://github.com/f0lg0)
+
+[JacopoFB](https://github.com/JacopoFB)
+
 
