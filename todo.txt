@@ -6,7 +6,7 @@
 2. [] Remove "self." to "to_send_msg" in "sendMsg()"
 3. [] Implement a nicer way of handling the flags
 4. [] Use argparse to specify options
-5. [] Replace open() with "with open()"
+5. [x] Replace open() with "with open()"
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:

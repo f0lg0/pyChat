@@ -1,9 +1,6 @@
 CHANGELOG FILE
 
-- here we should place the changes that we made to the file with a timestamp to keep track of everything nicely -
+format: mm-dd-yyyy
 
-for example:
-[mm/dd/yyyy]:
-	. added support for ...
-	. removed ...
-	. bug fixes
+[04-04-2020]:
+	- replaced "open()" functions with "with open()"
