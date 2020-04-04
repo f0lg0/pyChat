@@ -1,7 +1,20 @@
 
-================== ToDo ================== 
+================== ToDo ==================
 	place a "x" inside [] if done
 
 1. [] Use fixed length headers
 2. [] Remove "self." to "to_send_msg" in "sendMsg()"
-3. [] Implement a nicer way of handling the flags 
+3. [] Implement a nicer way of handling the flags
+4. [] Use argparse to specify options
+
+# ======= NOTE ========
+argparse lets you specify input in the terminal windows like:
+
+$ python3 client.py <server_ip> <server_port>
+
+for example:
+
+$ python3 client.py 192.168.1.100 1234
+
+so we can remove user input inside the code, i think it's better but not essential.
+I mainly thought about it because it just looks cooler haha
