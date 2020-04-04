@@ -34,7 +34,7 @@ class Client:
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                self.client.sendall("[usr]".encode("utf-8") + self.USERNAME.encode("utf-8")) 
+                self.client.sendall("[usr]".encode("utf-8") + self.USERNAME.encode("utf-8"))
                 check = self.client.recv(self.BUFFER_SIZE)
                 print(check.decode("utf-8"))
 
@@ -43,7 +43,7 @@ class Client:
 
             else:
                 print("Username can't be empty!")
-                
+
 
     def sendMsg(self):
         self.to_send_msg = ""
@@ -62,7 +62,7 @@ class Client:
             else:
                 print("Cant send empty message!")
 
-        
+
     def receiveData(self):
         iThread = threading.Thread(target = self.sendMsg)
         iThread.daemon = True
@@ -81,19 +81,19 @@ class Client:
                 print(chat_file)
 
                 try:
-                    chat = open(chat_file, "w+")
-                    chat.write(data.decode("utf-8"))
-                    print("[*] Writing to file...")
-                    chat.close()
+                    with open(chat_file, "w+") as chat:
+                        chat.write(data.decode("utf-8"))
+                        print("[*] Writing to file...")
+
                     print(f"[*] Finished! You can find the file at {chat_file}")
                     self.export = False
                     print('\n' + "You> ", end = "")
                 except:
                     self.export = False
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
-            else: 
+            else:
                 if self.help == True:
-                    cdict = pickle.loads(data) 
+                    cdict = pickle.loads(data)
                     for command in cdict:
                         print('\r' + command + " : " + cdict[command])
 
@@ -101,7 +101,7 @@ class Client:
                 else:
                     print('\r' + data.decode("utf-8") + '\n' + "You> ", end = "")
 
-        
+
 
 def main():
     displayBanner()
@@ -111,11 +111,11 @@ def main():
     BUFFER_SIZE = 1024
 
     CLIENT_IP = socket.gethostname()
-    
+
     client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
     client.connectToServer()
     client.receiveData()
-    
+
 
 if __name__ == "__main__":
     main()

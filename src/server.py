@@ -27,7 +27,7 @@ class Server:
         self.cons_log = "./logs/cons.txt"
         self.current_chat = "./logs/currentchat.txt"
 
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def startServer(self):
         try:
@@ -41,19 +41,20 @@ class Server:
 
     def logConnections(self, address):
         contime = datetime.now()
-        cons = open(self.cons_log, "a")
-        cons.write(address + ">" + str(contime) + '\n')
+        with open(self.cons_log, "a") as cons:
+            cons.write(address + ">" + str(contime) + '\n')
 
     def logUsers(self, data):
-        users = open(self.users_log, "a", encoding = "utf-8")
-        users.write(data + '\n')
+        with open(self.users_log, "a", encoding = "utf-8") as users:
+            users.write(data + '\n')
 
     def logChat(self, data):
         timestamp = datetime.now()
-        chatlog = open(self.chat_log, "a", encoding = "utf-8")
-        chatlog.write(data + " " + str(timestamp) + '\n')
+        with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
+            chatlog.write(data + " " + str(timestamp) + '\n')
 
     def current(self, data):
+        """ wasn't sure about using with here """
         self.currentchat = open(self.current_chat, "a", encoding = "utf-8")
         self.currentchat.write(data + '\n')
 
@@ -74,16 +75,18 @@ class Server:
             self.logUsers(decoded_user)
             client_socket.send(bytes("[*] You have joined the chat!", "utf-8"))
 
-        print(self.database)         
+        print(self.database)
 
     def exportChat(self, client_socket):
-        chat = open(self.current_chat, "r", encoding = "utf-8")
-        data = chat.read()
-        
-        for connection in self.connections:
-            if connection == client_socket: 
-                connection.send(data.encode("utf-8"))
-                print("[*] Sent!")
+        with open(self.current_chat, "r", encoding = "utf-8") as chat:
+            data = chat.read()
+
+            for connection in self.connections:
+                if connection == client_socket:
+                    connection.send(data.encode("utf-8"))
+                    print("[*] Sent!")
+
+
 
     def commandList(self, client_socket):
         cdict = pickle.dumps(self.command_list)
@@ -101,7 +104,7 @@ class Server:
 
             if decoded_data[0:5] == "[usr]":
                 self.checkUsername(client_socket, address, data)
-                
+
                 if self.temp_f == True:
                     continue
 
@@ -121,14 +124,14 @@ class Server:
                     self.commandList(client_socket)
                 else:
                     for connection in self.connections:
-                        if connection != client_socket: 
+                        if connection != client_socket:
                             connection.send(data)
 
                 if not data:
                     print(f"[*] {address} disconnected")
 
                     left_msg = bytes(f"[*] {self.database.get(address)} has left the chat", "utf-8")
-                    for connection in self.connections: 
+                    for connection in self.connections:
                         connection.send(left_msg)
 
                     self.connections.remove(client_socket)
@@ -139,7 +142,7 @@ class Server:
                     del self.database[address]
                     client_socket.close()
                     break
-                
+
 
 
     def acceptConnections(self):
