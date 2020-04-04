@@ -1,0 +1,9 @@
+CHANGELOG FILE
+
+- here we should place the changes that we made to the file with a timestamp to keep track of everything nicely -
+
+for example:
+[mm/dd/yyyy]:
+	. added support for ...
+	. removed ...
+	. bug fixes
