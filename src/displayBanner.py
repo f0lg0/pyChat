@@ -1,9 +1,9 @@
 import time
 import sys
 def displayBanner():
-    banner = open('../banner/banner.txt', 'r')
+    banner = open('../banner/banner.txt', 'r', encoding = "utf-8")
     print(banner.read() + " ", end = '')
-    
+
     while True:
         choice = input()
         if choice == 'y':
