@@ -1,6 +1,7 @@
 import socket
 import pickle
 import threading
+import argparse
 import sys
 import time
 from datetime import datetime
@@ -102,13 +103,29 @@ class Client:
                     print('\r' + data.decode("utf-8") + '\n' + "You> ", end = "")
 
 
+def getArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--server", dest = "server_ip", help = "Enter server IP")
+    parser.add_argument("-p", "--port", dest = "server_port", help = "Enter server PORT")
+
+    options = parser.parse_args()
+
+    if not options.server_ip:
+        parser.error("*** Please specify a server IP ***")
+    elif not options.server_port:
+        parser.error("*** Please specify a port number ***")
+    else:
+        return options
 
 def main():
-    displayBanner()
+    options = getArgs()
 
-    SERVER_IP = input("[*] Enter server's IP> ")
-    PORT = int(input("[*] Enter port> "))
+    SERVER_IP = options.server_ip
+    PORT = int(options.server_port)
+
     BUFFER_SIZE = 1024
+
+    displayBanner()
 
     CLIENT_IP = socket.gethostname()
 

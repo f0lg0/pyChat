@@ -2,6 +2,7 @@ import socket
 import pickle
 import threading
 import sys
+import argparse
 from datetime import datetime
 
 class Server:
@@ -158,10 +159,22 @@ class Server:
             self.connections.append(client_socket)
 
 
+def getArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--port", dest = "port", help = "Start server on port X")
+
+    options = parser.parse_args()
+
+    if not options.port:
+        parser.error("*** Please specify a port to bind connections ***")
+    else:
+        return options
+
 def main():
+    options = getArgs()
     HOSTNAME = socket.gethostname()
     IP =  socket.gethostbyname(HOSTNAME)
-    PORT = int(input("[*] Start server on port> "))
+    PORT = int(options.port)
     BUFFER_SIZE = 1024
 
     server = Server(IP, PORT, BUFFER_SIZE)
