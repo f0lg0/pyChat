@@ -2,5 +2,8 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-05-2020]:
+	- replaced user input with argparse 
+
 [04-04-2020]:
 	- replaced "open()" functions with "with open()"

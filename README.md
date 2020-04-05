@@ -26,8 +26,8 @@ All the libraries inside this code should be already installed, in case just pip
 # Run 
 
 ```
-python3 server.py
-python3 client.py
+python3 server.py -p <port number>
+python3 client.py -s <server_ip> -p <server_port>
 ```
 ## Features
 
