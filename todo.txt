@@ -3,7 +3,7 @@
 	place a "x" inside [] if done
 
 1. [] Use fixed length headers
-2. [] Remove "self." to "to_send_msg" in "sendMsg()"
+2. [x] Remove "self." to "to_send_msg" in "sendMsg()"
 3. [] Implement a nicer way of handling the flags
 4. [x] Use argparse to specify options
 5. [x] Replace open() with "with open()"

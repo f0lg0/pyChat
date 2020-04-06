@@ -2,8 +2,15 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
-[04-05-2020]:
+[04-05-2020] f0lg0:
+	- IMPORTANT BUG_FIX: self.help was stuck to a True condition after it was set to True,
+	  this caused a crash (pickle.error) after receving a message from other people. So now it gets False after receiving the
+	  picke object (the possible commands dictionary).
+
+	- Removed "self." to "to_send_msg" in "sendMsg()"
+
+[04-05-2020] f0lg0:
 	- replaced user input with argparse 
 
-[04-04-2020]:
+[04-04-2020] f0lg0:
 	- replaced "open()" functions with "with open()"
