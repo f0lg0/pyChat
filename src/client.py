@@ -47,18 +47,18 @@ class Client:
 
 
     def sendMsg(self):
-        self.to_send_msg = ""
+        to_send_msg = ""
         while True:
-            self.to_send_msg = input("You> ")
+            to_send_msg = input("You> ")
 
-            if self.to_send_msg == "[export_chat]":
+            if to_send_msg == "[export_chat]":
                 self.export = True
-            elif self.to_send_msg == "[help]":
+            elif to_send_msg == "[help]":
                 self.help = True
 
-            if self.to_send_msg:
-                self.client.sendall(bytes("> ".join([self.USERNAME, self.to_send_msg]), "utf-8"))
-                self.to_send_msg = ""
+            if to_send_msg:
+                self.client.sendall(bytes("> ".join([self.USERNAME, to_send_msg]), "utf-8"))
+                to_send_msg = ""
                 self.sent = False
             else:
                 print("Cant send empty message!")
@@ -99,6 +99,7 @@ class Client:
                         print('\r' + command + " : " + cdict[command])
 
                     print('\r' + "You> ", end = "")
+                    self.help = False
                 else:
                     print('\r' + data.decode("utf-8") + '\n' + "You> ", end = "")
 
