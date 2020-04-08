@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-08-2020] f0lg0:
+	- Re-added user input inside the program as a second possible option instead of argparse
+
 [04-05-2020] f0lg0:
 	- IMPORTANT BUG_FIX: self.help was stuck to a True condition after it was set to True,
 	  this caused a crash (pickle.error) after receving a message from other people. So now it gets False after receiving the

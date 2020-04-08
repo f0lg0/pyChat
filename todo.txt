@@ -8,7 +8,7 @@
 4. [x] Use argparse to specify options
 5. [x] Replace open() with "with open()"
 6. [] Use objects in the messages to get rid of flags and bracketed commands
-7. [] Re-add user input as a second option
+7. [x] Re-add user input as a second option
 8. [] Prevent server from crashing if the users close the terminal
 9. [] Choose a way to handle streaming 
 
