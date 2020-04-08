@@ -7,6 +7,7 @@
 3. [] Implement a nicer way of handling the flags
 4. [x] Use argparse to specify options
 5. [x] Replace open() with "with open()"
+6. [] Use objects in the messages to get rid of flags and bracketed commands
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:
