@@ -166,15 +166,21 @@ def getArgs():
     options = parser.parse_args()
 
     if not options.port:
-        parser.error("*** Please specify a port to bind connections ***")
+        # parser.error("*** Please specify a port to bind connections ***")
+        # raise argparse.ArgumentError(options.port, "") -> we can also use this but I don't know if it is great
+        raise Exception # just raising a normal exception if we don't get values
     else:
         return options
 
 def main():
-    options = getArgs()
+    try:
+        options = getArgs()
+        PORT = int(options.port)
+    except Exception: # if the user doesn't parse values from the command line
+        PORT = int(input("*** Start server on port > "))
+
     HOSTNAME = socket.gethostname()
     IP =  socket.gethostbyname(HOSTNAME)
-    PORT = int(options.port)
     BUFFER_SIZE = 1024
 
     server = Server(IP, PORT, BUFFER_SIZE)

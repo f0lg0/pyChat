@@ -111,6 +111,9 @@ def getArgs():
 
     options = parser.parse_args()
 
+    if not options.server_ip and not options.server_port:
+        raise Exception # raising exception in case the user doesn't provide values from the terminal
+
     if not options.server_ip:
         parser.error("*** Please specify a server IP ***")
     elif not options.server_port:
@@ -119,10 +122,14 @@ def getArgs():
         return options
 
 def main():
-    options = getArgs()
+    try:
+        options = getArgs()
 
-    SERVER_IP = options.server_ip
-    PORT = int(options.server_port)
+        SERVER_IP = options.server_ip
+        PORT = int(options.server_port)
+    except Exception: # in case the user doesn't provide values we ask him to enter them
+        SERVER_IP = input("*** Enter server IP address > ")
+        PORT = int(input("*** Enter server PORT number > "))
 
     BUFFER_SIZE = 1024
 
