@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-09-2020] f0lg0:
+	- changed backend of the application: messages are now packets and not just strings of data
+
 [04-08-2020] f0lg0:
 	- Re-added user input inside the program as a second possible option instead of argparse
 
