@@ -6,6 +6,20 @@ import sys
 import time
 from datetime import datetime
 from displayBanner import displayBanner
+from dataclasses import dataclass
+
+@dataclass
+class Message:
+    shost: str
+    dhost: str
+    username: str
+    date: str
+    cont: bytes
+    size: int
+    typ: str
+
+    def pack(self):
+        return pickle.dumps(self)
 
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
@@ -35,11 +49,16 @@ class Client:
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                self.client.sendall("[usr]".encode("utf-8") + self.USERNAME.encode("utf-8"))
-                check = self.client.recv(self.BUFFER_SIZE)
-                print(check.decode("utf-8"))
+                enc_username  = self.USERNAME.encode("utf-8")
 
-                if check.decode("utf-8") != "Username already in use!":
+                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), enc_username, len(enc_username), 'setuser')
+
+                self.client.send(packet.pack())
+                check = self.client.recv(self.BUFFER_SIZE)
+                loaded = pickle.loads(check)
+                print(loaded.cont.decode("utf-8"))
+
+                if loaded.cont.decode("utf-8") != "[*] Username already in use!":
                     break
 
             else:
@@ -47,19 +66,22 @@ class Client:
 
 
     def sendMsg(self):
-        to_send_msg = ""
         while True:
             to_send_msg = input("You> ")
 
-            if to_send_msg == "[export_chat]":
-                self.export = True
-            elif to_send_msg == "[help]":
-                self.help = True
-
             if to_send_msg:
-                self.client.sendall(bytes("> ".join([self.USERNAME, to_send_msg]), "utf-8"))
+                enc_msg = to_send_msg.encode("utf-8")
+                if to_send_msg == "[export_chat]":
+                    self.export = True
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'export')
+                elif to_send_msg == "[help]":
+                    self.help = True
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'help')
+                else:
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'default')
+
+                self.client.send(packet.pack())
                 to_send_msg = ""
-                self.sent = False
             else:
                 print("Cant send empty message!")
 
@@ -71,6 +93,7 @@ class Client:
 
         while True:
             data = self.client.recv(self.BUFFER_SIZE)
+            loaded = pickle.loads(data)
 
             if not data:
                 print("[*] Connection closed by the server")
@@ -79,11 +102,10 @@ class Client:
             if self.export == True:
                 timestamp = datetime.now()
                 chat_file = f"./exported/chat{str(timestamp)}.txt"
-                print(chat_file)
 
                 try:
-                    with open(chat_file, "w+") as chat:
-                        chat.write(data.decode("utf-8"))
+                    with open(chat_file, "wb+") as chat:
+                        chat.write(loaded.cont)
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
@@ -94,14 +116,13 @@ class Client:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
                 if self.help == True:
-                    cdict = pickle.loads(data)
-                    for command in cdict:
-                        print('\r' + command + " : " + cdict[command])
+                    for command in loaded:
+                        print('\r' + command + " : " + loaded[command])
 
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
-                    print('\r' + data.decode("utf-8") + '\n' + "You> ", end = "")
+                    print('\r' + loaded.username + "> " + loaded.cont.decode("utf-8") + '\n' + "You> ", end = "")
 
 
 def getArgs():

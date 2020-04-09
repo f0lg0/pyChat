@@ -3,13 +3,30 @@ import pickle
 import threading
 import sys
 import argparse
+import os
 from datetime import datetime
+from dataclasses import dataclass
+
+@dataclass
+class Message:
+    shost: str
+    dhost: str
+    username: str
+    date: str
+    cont: bytes
+    size: int
+    typ: str
+
+    def pack(self):
+        return pickle.dumps(self)
 
 class Server:
     def __init__(self, ip, port, buffer_size):
         self.IP = ip
         self.PORT = port
         self.BUFFER_SIZE = buffer_size
+
+        self.USERNAME = "server"
 
         self.temp_f = False
 
@@ -47,44 +64,51 @@ class Server:
 
     def logUsers(self, data):
         with open(self.users_log, "a", encoding = "utf-8") as users:
-            users.write(data + '\n')
+            users.write(data.decode("utf-8") + '\n')
 
     def logChat(self, data):
         timestamp = datetime.now()
         with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
-            chatlog.write(data + " " + str(timestamp) + '\n')
+            chatlog.write(data.decode("utf-8") + " " + str(timestamp) + '\n')
 
     def current(self, data):
         """ wasn't sure about using with here """
-        self.currentchat = open(self.current_chat, "a", encoding = "utf-8")
-        self.currentchat.write(data + '\n')
+        self.currentchat = open(self.current_chat, "a+", encoding = "utf-8")
+        self.currentchat.write(data.decode("utf-8") + '\n')
 
     def checkUsername(self, client_socket, address, data):
         flag = False
-        decoded_user = data.decode("utf-8")
 
         for user in self.database:
-            if self.database[user] == decoded_user:
+            if self.database[user] == data.cont.decode("utf-8"):
                 flag = True
                 self.temp_f = True
-                warning = "[*] Username already in use!"
-                client_socket.send(warning.encode("utf-8"))
+
+                content = b"[*] Username already in use!"
+                warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'username_taken')
+
+                client_socket.send(warning.pack())
                 break
 
         if flag == False:
-            self.database.update( {address : decoded_user} )
-            self.logUsers(decoded_user)
-            client_socket.send(bytes("[*] You have joined the chat!", "utf-8"))
+            self.database.update( {address : data.cont.decode("utf-8")} )
+            self.logUsers(data.cont)
+
+            content = b"[*] You have joined the chat"
+            joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'approved_conn')
+            client_socket.send(joined.pack())
 
         print(self.database)
 
-    def exportChat(self, client_socket):
-        with open(self.current_chat, "r", encoding = "utf-8") as chat:
-            data = chat.read()
+    def exportChat(self, client_socket, address):
+        with open(self.current_chat, "rb") as chat:
+            content = chat.read()
+
+            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'export')
 
             for connection in self.connections:
                 if connection == client_socket:
-                    connection.send(data.encode("utf-8"))
+                    connection.send(packet.pack())
                     print("[*] Sent!")
 
 
@@ -99,51 +123,50 @@ class Server:
     def handler(self, client_socket, address):
         while True:
             data = client_socket.recv(self.BUFFER_SIZE)
-            decoded_data = data.decode("utf-8")
-            print("Received:", decoded_data)
+            if not data:
+                print(f"[*] {address} disconnected")
+                disconnected_msg = bytes(f"[*] {self.database.get(address)} has left the chat", "utf-8")
 
+                left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, len(disconnected_msg), 'default')
+                left_msg = left_msg_obj.pack()
 
-            if decoded_data[0:5] == "[usr]":
-                self.checkUsername(client_socket, address, data)
+                for connection in self.connections:
+                    connection.send(left_msg)
+
+                self.connections.remove(client_socket)
+
+                if not self.connections:
+                    os.remove(self.current_chat)
+
+                del self.database[address]
+                client_socket.close()
+                break
+
+            loaded = pickle.loads(data)
+
+            if loaded.typ == 'setuser':
+                self.checkUsername(client_socket, address, loaded)
 
                 if self.temp_f == True:
                     continue
-
             else:
-                if data != b'':
-                    if data.decode("utf-8") != "[exported_chat]":
-                        self.logChat(decoded_data)
-                        self.current(decoded_data)
+                if loaded.cont != b'':
+                    if loaded.typ == 'default':
+                        self.logChat(loaded.cont)
+                        self.current(loaded.cont)
                     else:
-                        self.logChat(decoded_data)
+                        self.logChat(loaded.cont)
 
-                if "[export_chat]" in decoded_data:
-                    print("[*] Sending chat...")
-                    self.exportChat(client_socket)
-                if "[help]" in decoded_data:
-                    print("[*] Sending command list...")
-                    self.commandList(client_socket)
-                else:
-                    for connection in self.connections:
-                        if connection != client_socket:
-                            connection.send(data)
-
-                if not data:
-                    print(f"[*] {address} disconnected")
-
-                    left_msg = bytes(f"[*] {self.database.get(address)} has left the chat", "utf-8")
-                    for connection in self.connections:
-                        connection.send(left_msg)
-
-                    self.connections.remove(client_socket)
-
-                    if not self.connections:
-                        self.currentchat.truncate(0)
-
-                    del self.database[address]
-                    client_socket.close()
-                    break
-
+                    if loaded.typ == 'export':
+                        print("*** Sending chat...")
+                        self.exportChat(client_socket, address)
+                    elif loaded.typ == 'help':
+                        print("*** Sending command list...")
+                        self.commandList(client_socket)
+                    else:
+                        for connection in self.connections:
+                            if connection != client_socket:
+                                connection.send(data)
 
 
     def acceptConnections(self):
