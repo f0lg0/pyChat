@@ -6,20 +6,8 @@ import sys
 import time
 from datetime import datetime
 from displayBanner import displayBanner
-from dataclasses import dataclass
+from message import Message
 
-@dataclass
-class Message:
-    shost: str
-    dhost: str
-    username: str
-    date: str
-    cont: bytes
-    size: int
-    typ: str
-
-    def pack(self):
-        return pickle.dumps(self)
 
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):

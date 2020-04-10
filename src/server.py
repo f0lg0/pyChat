@@ -5,20 +5,7 @@ import sys
 import argparse
 import os
 from datetime import datetime
-from dataclasses import dataclass
-
-@dataclass
-class Message:
-    shost: str
-    dhost: str
-    username: str
-    date: str
-    cont: bytes
-    size: int
-    typ: str
-
-    def pack(self):
-        return pickle.dumps(self)
+from message import Message
 
 class Server:
     def __init__(self, ip, port, buffer_size):
@@ -216,4 +203,4 @@ def main():
         print("General error", str(e))
 
 if __name__ == "__main__":
-	main()
+    main()
