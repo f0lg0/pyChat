@@ -11,6 +11,8 @@
 7. [x] Re-add user input as a second option
 8. [x] Prevent server from crashing if the users close the terminal
 9. [] Choose a way to handle streaming 
+10. [] Update readme
+11. [] Replace changelog.txt with CHANGELOG.md
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:
