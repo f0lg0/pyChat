@@ -2,6 +2,12 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-11-2020] f0lg0:
+	- handled server crash with user hard-closes connection
+
+[04-10-2020] f0lg0:
+	- moved message class into a dedicated file
+
 [04-09-2020] f0lg0:
 	- changed backend of the application: messages are now packets and not just strings of data
 

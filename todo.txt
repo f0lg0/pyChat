@@ -9,7 +9,7 @@
 5. [x] Replace open() with "with open()"
 6. [x] Use objects in the messages to get rid of flags and bracketed commands
 7. [x] Re-add user input as a second option
-8. [] Prevent server from crashing if the users close the terminal
+8. [x] Prevent server from crashing if the users close the terminal
 9. [] Choose a way to handle streaming 
 
 # ======= NOTE ========
@@ -23,3 +23,12 @@ $ python3 client.py 192.168.1.100 1234
 
 so we can remove user input inside the code, i think it's better but not essential.
 I mainly thought about it because it just looks cooler haha
+
+
+================= Server errors if stoopid windowz closes terminal with the x button =======================================
+
+data = client_socket.recv(self.BUFFER_SIZE) 
+	ConnectionResetError: [Errno 104] Connection reset by peer
+
+self._target(*self._args, **self._kwargs)  
+	BrokenPipeError: [Errno 32] Broken pipe   
