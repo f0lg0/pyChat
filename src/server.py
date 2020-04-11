@@ -99,7 +99,6 @@ class Server:
                     print("[*] Sent!")
 
 
-
     def commandList(self, client_socket):
         cdict = pickle.dumps(self.command_list)
         for connection in self.connections:
@@ -107,26 +106,35 @@ class Server:
                 connection.send(cdict)
                 print("[*] Sent!")
 
+    def closeConnection(self, client_socket, address):
+        disconnected_msg = bytes(f"[{address[0]}] has left the chat", "utf-8")
+        left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, len(disconnected_msg), 'default')
+        left_msg = left_msg_obj.pack()
+
+        self.connections.remove(client_socket)
+
+        for connection in self.connections:
+            connection.send(left_msg)
+
+        if not self.connections:
+            os.remove(self.current_chat)
+
+        del self.database[address]
+        client_socket.close()
+
     def handler(self, client_socket, address):
         while True:
-            data = client_socket.recv(self.BUFFER_SIZE)
+            try:
+                data = client_socket.recv(self.BUFFER_SIZE)
+            except ConnectionResetError:
+                print(f"*** [{address[0]}] unexpectedly closed the connetion, received only a RST packet.")
+
+                self.closeConnection(client_socket, address)
+                break
+
             if not data:
-                print(f"[*] {address} disconnected")
-                disconnected_msg = bytes(f"[*] {self.database.get(address)} has left the chat", "utf-8")
-
-                left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, len(disconnected_msg), 'default')
-                left_msg = left_msg_obj.pack()
-
-                for connection in self.connections:
-                    connection.send(left_msg)
-
-                self.connections.remove(client_socket)
-
-                if not self.connections:
-                    os.remove(self.current_chat)
-
-                del self.database[address]
-                client_socket.close()
+                print(f"*** [{address[0]}] disconnected")
+                self.closeConnection(client_socket, address)
                 break
 
             loaded = pickle.loads(data)
