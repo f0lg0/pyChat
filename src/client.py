@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from displayBanner import displayBanner
 from message import Message
+from messageStreaming import createMsg, streamData
 
 
 class Client:
@@ -37,16 +38,21 @@ class Client:
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                enc_username  = self.USERNAME.encode("utf-8")
+                #enc_username  = self.USERNAME.encode("utf-8")
+                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME.encode("utf-8"), 'setuser')
 
-                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), enc_username, len(enc_username), 'setuser')
-
+                #print(packet.pack())
                 self.client.send(packet.pack())
-                check = self.client.recv(self.BUFFER_SIZE)
-                loaded = pickle.loads(check)
-                print(loaded.cont.decode("utf-8"))
+                
+                #check = self.client.recv(self.BUFFER_SIZE)
+                loaded = streamData(self.client)
 
-                if loaded.cont.decode("utf-8") != "[*] Username already in use!":
+                #loaded = pickle.loads(check)
+
+                #no longer needs to be decoded because it is already decoded when we serizlize the object
+                print(loaded.cont)
+
+                if loaded.cont != "[*] Username already in use!":
                     break
 
             else:
@@ -61,12 +67,12 @@ class Client:
                 enc_msg = to_send_msg.encode("utf-8")
                 if to_send_msg == "[export_chat]":
                     self.export = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'export')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'export')
                 elif to_send_msg == "[help]":
                     self.help = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'help')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'help')
                 else:
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, len(enc_msg), 'default')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'default')
 
                 self.client.send(packet.pack())
                 to_send_msg = ""
@@ -80,12 +86,12 @@ class Client:
         iThread.start()
 
         while True:
-            data = self.client.recv(self.BUFFER_SIZE)
-            loaded = pickle.loads(data)
-
-            if not data:
-                print("[*] Connection closed by the server")
-                sys.exit()
+            data = streamData(self.client)
+            loaded = data
+            print(data)
+            #if not data:
+                #print("[*] Connection closed by the server")
+                #sys.exit()
 
             if self.export == True:
                 timestamp = datetime.now()
@@ -110,7 +116,7 @@ class Client:
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
-                    print('\r' + loaded.username + "> " + loaded.cont.decode("utf-8") + '\n' + "You> ", end = "")
+                    print('\r' + loaded.username + "> " + loaded.cont + '\n' + "You> ", end = "")
 
 
 def getArgs():
@@ -153,3 +159,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
