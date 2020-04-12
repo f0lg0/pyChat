@@ -6,6 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
+from messageStreaming import createMsg, streamData
 
 class Server:
     def __init__(self, ip, port, buffer_size):
@@ -42,6 +43,28 @@ class Server:
 
         self.server.listen(10)
 
+        '''
+        #Load in previously created usernames
+        try:
+            usersFile = open("./logs/users.txt", "r")
+        except IOError as e:
+            print(str(e))
+        
+        users = usersFile.readlines()
+        
+        #loop through file, and no including empty lines, strip the line break escape char and add username to database
+        for user in users[1:]:
+            if(user != "\n"):
+                self.database.update({"offline": user.replace("\n", "")})  
+        #just print out the usernames line by line
+
+        print(f"pre-existing users: ")
+        for account in self.database.values():
+            if(account != "username"):
+                print(account)
+
+        '''
+    
         print(f"[*] Starting server ({self.IP}) on port {self.PORT}")
 
     def logConnections(self, address):
@@ -51,41 +74,39 @@ class Server:
 
     def logUsers(self, data):
         with open(self.users_log, "a", encoding = "utf-8") as users:
-            users.write(data.decode("utf-8") + '\n')
+            users.write(data + '\n')
 
     def logChat(self, data):
         timestamp = datetime.now()
         with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
-            chatlog.write(data.decode("utf-8") + " " + str(timestamp) + '\n')
+            chatlog.write(data + " " + str(timestamp) + '\n')
 
     def current(self, data):
         """ wasn't sure about using with here """
         self.currentchat = open(self.current_chat, "a+", encoding = "utf-8")
-        self.currentchat.write(data.decode("utf-8") + '\n')
+        self.currentchat.write(data + '\n')
 
     def checkUsername(self, client_socket, address, data):
         flag = False
 
         for user in self.database:
-            if self.database[user] == data.cont.decode("utf-8"):
+            if self.database[user] == data.cont:
                 flag = True
                 self.temp_f = True
 
                 content = b"[*] Username already in use!"
-                warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'username_taken')
+                warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'username_taken')
 
                 client_socket.send(warning.pack())
                 break
 
         if flag == False:
-            self.database.update( {address : data.cont.decode("utf-8")} )
+            self.database.update( {address : data.cont} )
             self.logUsers(data.cont)
 
             content = b"[*] You have joined the chat"
-            joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'approved_conn')
+            joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'approved_conn')
             client_socket.send(joined.pack())
-
-        print(self.database)
 
     def exportChat(self, client_socket, address):
         with open(self.current_chat, "rb") as chat:
@@ -108,7 +129,7 @@ class Server:
 
     def closeConnection(self, client_socket, address):
         disconnected_msg = bytes(f"[{address[0]}] has left the chat", "utf-8")
-        left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, len(disconnected_msg), 'default')
+        left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
         left_msg = left_msg_obj.pack()
 
         self.connections.remove(client_socket)
@@ -125,19 +146,21 @@ class Server:
     def handler(self, client_socket, address):
         while True:
             try:
-                data = client_socket.recv(self.BUFFER_SIZE)
+                data = streamData(client_socket)
+                print(data)
             except ConnectionResetError:
-                print(f"*** [{address[0]}] unexpectedly closed the connetion, received only a RST packet.")
+                print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
 
-                self.closeConnection(client_socket, address)
-                break
+                #self.closeConnection(client_socket, address)
+                #break
 
             if not data:
                 print(f"*** [{address[0]}] disconnected")
                 self.closeConnection(client_socket, address)
                 break
-
-            loaded = pickle.loads(data)
+            
+            #this is so I dont have to change var names from here on out
+            loaded = data
 
             if loaded.typ == 'setuser':
                 self.checkUsername(client_socket, address, loaded)
@@ -161,7 +184,7 @@ class Server:
                     else:
                         for connection in self.connections:
                             if connection != client_socket:
-                                connection.send(data)
+                                connection.send(data.pack())
 
 
     def acceptConnections(self):
