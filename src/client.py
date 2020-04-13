@@ -39,11 +39,10 @@ class Client:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
                 #enc_username  = self.USERNAME.encode("utf-8")
-                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME.encode("utf-8"), 'setuser') # f0lg0: you removed the size from her but not from the message.py class
+                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME.encode("utf-8"), 'setuser')
 
                 #print(packet.pack())
-                final = createMsg(packet.pack()) # f0lg0: you were sending a truncated pickle object, it had no sense since it wasn't complete so you needed to first create a header
-                self.client.send(final) # f0lg0: and then send the header + some part of the pickle byte obj (note: those bytes doesn't make sense to the machine cuz they are not complete)
+                self.client.send(packet.pack())
                 
                 #check = self.client.recv(self.BUFFER_SIZE)
                 loaded = streamData(self.client)
@@ -75,8 +74,7 @@ class Client:
                 else:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'default')
 
-                final = createMsg(packet.pack())
-                self.client.send(final)
+                self.client.send(packet.pack())
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -161,4 +159,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
