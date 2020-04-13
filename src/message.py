@@ -1,6 +1,7 @@
 import pickle
 from dataclasses import dataclass
 
+# f0lg0: removed the size field
 @dataclass
 class Message:
     shost: str
@@ -8,7 +9,6 @@ class Message:
     username: str # of the sender
     date: str
     cont: bytes
-    size: int
     typ: str
 
     def pack(self):
