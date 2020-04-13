@@ -96,9 +96,8 @@ class Server:
 
                 content = b"[*] Username already in use!"
                 warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'username_taken')
-                final = createMsg(warning.pack()) # f0lg0: first create the header + msg
 
-                client_socket.send(final)
+                client_socket.send(warning.pack())
                 break
 
         if flag == False:
@@ -107,8 +106,7 @@ class Server:
 
             content = b"[*] You have joined the chat"
             joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'approved_conn')
-            final = createMsg(joined.pack()) # f0lg0: first create the header + msg
-            client_socket.send(final)
+            client_socket.send(joined.pack())
 
     def exportChat(self, client_socket, address):
         with open(self.current_chat, "rb") as chat:
@@ -134,12 +132,10 @@ class Server:
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
         left_msg = left_msg_obj.pack()
 
-        final = createMsg(left_msg) # f0lg0: again, needed to craft the header first
-
         self.connections.remove(client_socket)
 
         for connection in self.connections:
-            connection.send(final)
+            connection.send(left_msg)
 
         if not self.connections:
             os.remove(self.current_chat)
@@ -154,9 +150,8 @@ class Server:
                 print(data)
             except ConnectionResetError:
                 print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
-
-                #self.closeConnection(client_socket, address)
-                #break
+                self.closeConnection(client_socket, address)
+                break
 
             if not data:
                 print(f"*** [{address[0]}] disconnected")
@@ -188,8 +183,7 @@ class Server:
                     else:
                         for connection in self.connections:
                             if connection != client_socket:
-                                final = createMsg(data.pack())
-                                connection.send(final)
+                                connection.send(data.pack())
 
 
     def acceptConnections(self):
