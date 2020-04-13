@@ -1,7 +1,7 @@
 import pickle
 from dataclasses import dataclass
+from messageStreaming import createMsg, streamData
 
-# f0lg0: removed the size field
 @dataclass
 class Message:
     shost: str
@@ -12,4 +12,4 @@ class Message:
     typ: str
 
     def pack(self):
-        return pickle.dumps(self)
+        return createMsg(pickle.dumps(self))
