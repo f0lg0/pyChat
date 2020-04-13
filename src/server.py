@@ -146,7 +146,10 @@ class Server:
             except FileNotFoundError:
                 print("*** Nothing to clear in the logs")
 
-        del self.database[address]
+        try:
+            del self.database[address]
+        except KeyError:
+            pass
         client_socket.close()
 
     def handler(self, client_socket, address):
