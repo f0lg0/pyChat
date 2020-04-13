@@ -1,6 +1,10 @@
 CHANGELOG FILE
 
 format: mm-dd-yyyy
+[04-13-2020] f0lg0:
+	- important backend change: headers are being used to stream data
+	- cleaned the code from print statements
+	- renamed variables to increase understanding
 
 [04-11-2020] f0lg0:
 	- handled server crash with user hard-closes connection
