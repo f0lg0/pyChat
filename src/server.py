@@ -6,7 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
-from messageStreaming import createMsg, streamData
+from streaming import createMsg, streamData
 
 class Server:
     def __init__(self, ip, port, buffer_size):
@@ -77,20 +77,23 @@ class Server:
             users.write(data + '\n')
 
     def logChat(self, data):
+        decoded_data = data.decode("utf-8")
         timestamp = datetime.now()
         with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
-            chatlog.write(data + " " + str(timestamp) + '\n')
+            chatlog.write(decoded_data + " " + str(timestamp) + '\n')
 
     def current(self, data):
+        decoded_data = data.decode("utf-8")
         """ wasn't sure about using with here """
         self.currentchat = open(self.current_chat, "a+", encoding = "utf-8")
-        self.currentchat.write(data + '\n')
+        self.currentchat.write(decoded_data + '\n')
 
     def checkUsername(self, client_socket, address, data):
         flag = False
+        decoded_cont = data.cont.decode("utf-8")
 
         for user in self.database:
-            if self.database[user] == data.cont:
+            if self.database[user] == decoded_cont:
                 flag = True
                 self.temp_f = True
 
@@ -101,10 +104,10 @@ class Server:
                 break
 
         if flag == False:
-            self.database.update( {address : data.cont} )
-            self.logUsers(data.cont)
+            self.database.update( {address : decoded_cont} )
+            self.logUsers(decoded_cont)
 
-            content = b"[*] You have joined the chat"
+            content = b"[*] You have joined the chat!"
             joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'approved_conn')
             client_socket.send(joined.pack())
 
@@ -112,7 +115,7 @@ class Server:
         with open(self.current_chat, "rb") as chat:
             content = chat.read()
 
-            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, len(content), 'export')
+            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'export')
 
             for connection in self.connections:
                 if connection == client_socket:
@@ -121,7 +124,7 @@ class Server:
 
 
     def commandList(self, client_socket):
-        cdict = pickle.dumps(self.command_list)
+        cdict = createMsg(pickle.dumps(self.command_list)) # manually crafting since i can't call pack() -> not a message obj
         for connection in self.connections:
             if connection == client_socket:
                 connection.send(cdict)
@@ -138,7 +141,10 @@ class Server:
             connection.send(left_msg)
 
         if not self.connections:
-            os.remove(self.current_chat)
+            try:
+                os.remove(self.current_chat)
+            except FileNotFoundError:
+                print("*** Nothing to clear in the logs")
 
         del self.database[address]
         client_socket.close()
@@ -147,7 +153,6 @@ class Server:
         while True:
             try:
                 data = streamData(client_socket)
-                print(data)
             except ConnectionResetError:
                 print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
                 self.closeConnection(client_socket, address)
@@ -157,27 +162,24 @@ class Server:
                 print(f"*** [{address[0]}] disconnected")
                 self.closeConnection(client_socket, address)
                 break
-            
-            #this is so I dont have to change var names from here on out
-            loaded = data
 
-            if loaded.typ == 'setuser':
-                self.checkUsername(client_socket, address, loaded)
+            if data.typ == 'setuser':
+                self.checkUsername(client_socket, address, data)
 
                 if self.temp_f == True:
                     continue
             else:
-                if loaded.cont != b'':
-                    if loaded.typ == 'default':
-                        self.logChat(loaded.cont)
-                        self.current(loaded.cont)
+                if data.cont != b'':
+                    if data.typ == 'default':
+                        self.logChat(data.cont)
+                        self.current(data.cont)
                     else:
-                        self.logChat(loaded.cont)
+                        self.logChat(data.cont)
 
-                    if loaded.typ == 'export':
+                    if data.typ == 'export':
                         print("*** Sending chat...")
                         self.exportChat(client_socket, address)
-                    elif loaded.typ == 'help':
+                    elif data.typ == 'help':
                         print("*** Sending command list...")
                         self.commandList(client_socket)
                     else:
@@ -206,9 +208,7 @@ def getArgs():
     options = parser.parse_args()
 
     if not options.port:
-        # parser.error("*** Please specify a port to bind connections ***")
-        # raise argparse.ArgumentError(options.port, "") -> we can also use this but I don't know if it is great
-        raise Exception # just raising a normal exception if we don't get values
+        raise Exception
     else:
         return options
 
@@ -231,6 +231,7 @@ def main():
 
     except Exception as e:
         print("General error", str(e))
+    
 
 if __name__ == "__main__":
     main()

@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from displayBanner import displayBanner
 from message import Message
-from messageStreaming import createMsg, streamData
+from streaming import createMsg, streamData
 
 
 class Client:
@@ -45,14 +45,10 @@ class Client:
                 self.client.send(packet.pack())
                 
                 #check = self.client.recv(self.BUFFER_SIZE)
-                loaded = streamData(self.client)
+                check = streamData(self.client)
+                print(check.cont.decode("utf-8"))
 
-                #loaded = pickle.loads(check)
-
-                #no longer needs to be decoded because it is already decoded when we serizlize the object
-                print(loaded.cont)
-
-                if loaded.cont != "[*] Username already in use!":
+                if check.cont.decode("utf-8") != "[*] Username already in use!":
                     break
 
             else:
@@ -87,11 +83,10 @@ class Client:
 
         while True:
             data = streamData(self.client)
-            loaded = data
-            print(data)
-            #if not data:
-                #print("[*] Connection closed by the server")
-                #sys.exit()
+            
+            if not data:
+                print("[*] Connection closed by the server")
+                sys.exit()
 
             if self.export == True:
                 timestamp = datetime.now()
@@ -99,7 +94,7 @@ class Client:
 
                 try:
                     with open(chat_file, "wb+") as chat:
-                        chat.write(loaded.cont)
+                        chat.write(data.cont)
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
@@ -110,13 +105,13 @@ class Client:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
                 if self.help == True:
-                    for command in loaded:
-                        print('\r' + command + " : " + loaded[command])
+                    for command in data:
+                        print('\r' + command + " : " + data[command])
 
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
-                    print('\r' + loaded.username + "> " + loaded.cont + '\n' + "You> ", end = "")
+                    print('\r' + data.username + "> " + data.cont.decode("utf-8") + '\n' + "You> ", end = "")
 
 
 def getArgs():

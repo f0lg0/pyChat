@@ -1,6 +1,6 @@
 import pickle
 from dataclasses import dataclass
-from messageStreaming import createMsg, streamData
+from streaming import createMsg, streamData
 
 @dataclass
 class Message:
