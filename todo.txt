@@ -2,7 +2,7 @@
 ================== ToDo ==================
 	place a "x" inside [] if done
 
-1. [] Use fixed length headers
+1. [x] Use fixed length headers
 2. [x] Remove "self." to "to_send_msg" in "sendMsg()"
 3. [x] Implement a nicer way of handling the flags
 4. [x] Use argparse to specify options
@@ -10,9 +10,11 @@
 6. [x] Use objects in the messages to get rid of flags and bracketed commands
 7. [x] Re-add user input as a second option
 8. [x] Prevent server from crashing if the users close the terminal
-9. [] Choose a way to handle streaming 
+9. [x] Choose a way to handle streaming 
 10. [] Update readme
 11. [] Replace changelog.txt with CHANGELOG.md
+12. [] Implement a safe way to close the server
+13. [] BIG ASS CHANGE (need to call to explain)
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:
