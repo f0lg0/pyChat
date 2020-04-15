@@ -1,5 +1,5 @@
 import socket
-import json
+import pickle
 import threading
 import argparse
 import sys
@@ -8,7 +8,9 @@ from datetime import datetime
 from displayBanner import displayBanner
 from message import Message
 from streaming import createMsg, streamData
-from dataclasses_json import dataclass_json
+
+from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
+from Crypto.PublicKey import RSA
 
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
@@ -32,19 +34,29 @@ class Client:
             print(str(e))
             sys.exit()
 
+        # key = self.recvKey()
+        # print("*** Got Public Key ***")
+        # with open("./keys/clientkey.pem", "wb+") as f:
+        #     f.write(key)
+
+        # pub_key = RSA.importKey(open("./keys/clientkey.pem", 'r').read())
+
+        # self.cipher = PKCS1_OAEP.new(key=pub_key)
+
         self.setUsername()
+
+    def recvKey(self):
+        return streamData(self.client)
 
     def setUsername(self):
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                #enc_username  = self.USERNAME.encode("utf-8")
-                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME.encode("utf-8"), 'setuser')
+                # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
+                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
-                #print(packet.pack())
-                self.client.send(packet.pack())
+                self.client.send(packet.pack().encode("utf-8"))
                 
-                #check = self.client.recv(self.BUFFER_SIZE)
                 check = streamData(self.client)
                 print(check.cont.decode("utf-8"))
 
