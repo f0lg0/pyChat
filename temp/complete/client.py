@@ -5,7 +5,7 @@ import argparse
 import sys
 import time
 from datetime import datetime
-from displayBanner import displayBanner
+# from displayBanner import displayBanner
 from message import Message
 from streaming import createMsg, streamData
 
@@ -72,17 +72,16 @@ class Client:
             to_send_msg = input("You> ")
 
             if to_send_msg:
-                enc_msg = to_send_msg.encode("utf-8")
                 if to_send_msg == "[export_chat]":
                     self.export = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'export')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
                 elif to_send_msg == "[help]":
                     self.help = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'help')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
                 else:
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'default')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
-                self.client.send(packet.pack())
+                self.client.send(packet.pack().encode("utf-8"))
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -106,7 +105,7 @@ class Client:
 
                 try:
                     with open(chat_file, "wb+") as chat:
-                        chat.write(data.cont)
+                        chat.write(data["cont"])
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
@@ -123,7 +122,7 @@ class Client:
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
-                    print('\r' + data.username + "> " + data.cont.decode("utf-8") + '\n' + "You> ", end = "")
+                    print('\r' + data["username"] + "> " + data["cont"] + '\n' + "You> ", end = "")
 
 
 def getArgs():
@@ -155,7 +154,7 @@ def main():
 
     BUFFER_SIZE = 1024
 
-    displayBanner()
+    # displayBanner()
 
     CLIENT_IP = socket.gethostname()
 

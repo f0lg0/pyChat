@@ -15,12 +15,12 @@ class Message:
     typ: str
 
     def pack(self):
-        print(json.dumps(self, cls=EnhancedJSONEncoder))
+        print("[CRAFTED]", json.dumps(self, cls=EnhancedJSONEncoder))
         return createMsg(json.dumps(self, cls=EnhancedJSONEncoder))
 
 
 class EnhancedJSONEncoder(json.JSONEncoder):
-    def default(self, o):
+    def default(self, o):  # pylint: disable=E0202
         if dataclasses.is_dataclass(o):
             return dataclasses.asdict(o)
         return super().default(o)

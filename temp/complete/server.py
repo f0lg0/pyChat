@@ -5,8 +5,10 @@ import sys
 import argparse
 import os
 from datetime import datetime
-from message import Message
+from message import Message, EnhancedJSONEncoder
 from streaming import createMsg, streamData
+
+import json
 
 from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
 from Crypto.PublicKey import RSA #  to generate the keys
@@ -140,16 +142,14 @@ class Server:
             users.write(data + '\n')
 
     def logChat(self, data):
-        decoded_data = data.decode("utf-8")
         timestamp = datetime.now()
         with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
-            chatlog.write(decoded_data + " " + str(timestamp) + '\n')
+            chatlog.write(data + " " + str(timestamp) + '\n')
 
     def current(self, data):
-        decoded_data = data.decode("utf-8")
         """ wasn't sure about using with here """
         self.currentchat = open(self.current_chat, "a+", encoding = "utf-8")
-        self.currentchat.write(decoded_data + '\n')
+        self.currentchat.write(data + '\n')
 
     def checkUsername(self, client_socket, address, data):
         flag = False
@@ -199,14 +199,14 @@ class Server:
                 print("[*] Sent!")
 
     def closeConnection(self, client_socket, address):
-        disconnected_msg = bytes(f"[{address[0]}] has left the chat", "utf-8")
+        disconnected_msg = f"[{address[0]}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
         left_msg = left_msg_obj.pack()
 
         self.connections.remove(client_socket)
 
         for connection in self.connections:
-            connection.send(left_msg)
+            connection.send(left_msg.encode("utf-8"))
 
         if not self.connections:
             try:
@@ -240,23 +240,23 @@ class Server:
                 if self.temp_f == True:
                     continue
             else:
-                if data.cont != b'':
-                    if data.typ == 'default':
-                        self.logChat(data.cont)
-                        self.current(data.cont)
+                if data["cont"] != '':
+                    if data["typ"] == 'default':
+                        self.logChat(data["cont"])
+                        self.current(data["cont"])
                     else:
-                        self.logChat(data.cont)
+                        self.logChat(data["cont"])
 
-                    if data.typ == 'export':
+                    if data["typ"] == 'export':
                         print("*** Sending chat...")
                         self.exportChat(client_socket, address)
-                    elif data.typ == 'help':
+                    elif data["typ"] == 'help':
                         print("*** Sending command list...")
                         self.commandList(client_socket)
                     else:
                         for connection in self.connections:
                             if connection != client_socket:
-                                connection.send(data.pack())
+                                connection.send(createMsg(json.dumps(data)).encode("utf-8"))
 
 
 
