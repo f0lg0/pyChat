@@ -87,28 +87,6 @@ class Server:
 
         self.server.listen(10)
 
-        '''
-        #Load in previously created usernames
-        try:
-            usersFile = open("./logs/users.txt", "r")
-        except IOError as e:
-            print(str(e))
-
-        users = usersFile.readlines()
-
-        #loop through file, and no including empty lines, strip the line break escape char and add username to database
-        for user in users[1:]:
-            if(user != "\n"):
-                self.database.update({"offline": user.replace("\n", "")})
-        #just print out the usernames line by line
-
-        print(f"pre-existing users: ")
-        for account in self.database.values():
-            if(account != "username"):
-                print(account)
-
-        '''
-
         print(f"[*] Starting server ({self.IP}) on port {self.PORT}")
 
     def acceptConnections(self):
@@ -129,7 +107,7 @@ class Server:
             content = f.read().decode("utf-8")
             packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'key_exc')
 
-            client_socket.send(packet.pack().encode("utf-8"))
+            client_socket.send(packet.pack())
         print("*** Public Key sent ***")
 
     def logConnections(self, address):
@@ -165,7 +143,7 @@ class Server:
 
                 warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'username_taken')
 
-                client_socket.send(warning.pack().encode("utf-8"))
+                client_socket.send(warning.pack())
                 break
 
         if flag == False:
@@ -176,7 +154,7 @@ class Server:
             # encrypted_content = self.cipher.encrypt(content)
 
             joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'approved_conn')
-            client_socket.send(joined.pack().encode("utf-8"))
+            client_socket.send(joined.pack())
 
     def exportChat(self, client_socket, address):
         with open(self.current_chat, "rb") as chat:
@@ -186,7 +164,7 @@ class Server:
 
             for connection in self.connections:
                 if connection == client_socket:
-                    connection.send(packet.pack().encode("utf-8"))
+                    connection.send(packet.pack())
                     print("[*] Sent!")
 
 
@@ -194,13 +172,13 @@ class Server:
         cdict = createMsg(json.dumps(self.command_list)) # manually crafting since i can't call pack() -> not a message obj
         for connection in self.connections:
             if connection == client_socket:
-                connection.send(cdict.encode("utf-8"))
+                connection.send(cdict)
                 print("[*] Sent!")
 
     def closeConnection(self, client_socket, address):
         disconnected_msg = f"[{address[0]}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
-        left_msg = left_msg_obj.pack().encode("utf-8")
+        left_msg = left_msg_obj.pack()
 
         self.connections.remove(client_socket)
 
@@ -256,7 +234,7 @@ class Server:
                     else:
                         for connection in self.connections:
                             if connection != client_socket:
-                                connection.send(data.pack().encode("utf-8"))
+                                connection.send(data.pack())
 
 
 def getArgs():
