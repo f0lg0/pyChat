@@ -20,9 +20,6 @@ class Client:
         self.BUFFER_SIZE = buffer_size
         self.CLIENT_IP = client_ip
 
-        self.export = False
-        self.help = False
-
         print(f"[*] Host: {self.CLIENT_IP} | Port: {self.PORT}")
 
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,13 +74,10 @@ class Client:
     def sendMsg(self):
         while True:
             to_send_msg = input("You> ")
-
             if to_send_msg:
                 if to_send_msg == "[export_chat]":
-                    self.export = True
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
                 elif to_send_msg == "[help]":
-                    self.help = True
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
                 else:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
@@ -106,8 +100,9 @@ class Client:
                 print("[*] Connection closed by the server")
                 sys.exit()
 
-            if self.export == True:
-                data = Message.from_json(data) # it's a dataclass object
+            data = Message.from_json(data) # it's a dataclass object
+
+            if data.typ == "export":
                 timestamp = datetime.now()
                 chat_file = f"./exported/chat{str(timestamp)}.txt"
 
@@ -117,23 +112,19 @@ class Client:
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
-                    self.export = False
                     print('\n' + "You> ", end = "")
                 except:
-                    self.export = False
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
-                if self.help == True:
-                    data = json.loads(data)
-                    for command in data:
-                        print('\r' + command + " : " + data[command])
+                if data.typ == "help":
+                    helplist = json.loads(data.cont)
+                    for command in helplist:
+                        print('\r' + command + " : " + helplist[command])
 
                     print('\r' + "You> ", end = "")
-                    self.help = False
                 else:
                     data = Message.from_json(data) # it's a dataclass object
                     print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
-
 
 def getArgs():
     parser = argparse.ArgumentParser()
