@@ -1,6 +1,5 @@
 import socket
 import json
-import pickle # remove
 import threading
 import sys
 import argparse
@@ -49,7 +48,7 @@ class Server:
         self.PORT = port
         self.BUFFER_SIZE = buffer_size
 
-        self.USERNAME = "server"
+        self.USERNAME = "*server*"
 
         self.temp_f = False
 
@@ -116,7 +115,7 @@ class Server:
         while True:
             client_socket, address = self.server.accept()
             print(f"[*] Connection from {address} has been established!")
-            # self.logConnections(address[0])
+            self.logConnections(address[0])
 
             cThread = threading.Thread(target = self.handler, args = (client_socket, address))
             cThread.daemon = True
@@ -152,11 +151,10 @@ class Server:
 
     def checkUsername(self, client_socket, address, data):
         flag = False
-        decoded_content = data.cont
         # decrypted_data = self.cipher.decrypt(data).decode("utf-8")
 
         for user in self.database:
-            if self.database[user] == decoded_content:
+            if self.database[user] == data.cont:
                 flag = True
                 self.temp_f = True
 
@@ -169,7 +167,7 @@ class Server:
                 break
 
         if flag == False:
-            self.database.update( {address : decoded_content} )
+            self.database.update( {address : data.cont} )
             # self.logUsers(decoded_content)
 
             content = "[*] You have joined the chat!"
@@ -241,11 +239,11 @@ class Server:
                     continue
             else:
                 if data.cont != '':
-                    # if data.typ == 'default':
-                    #     self.logChat(data.cont)
-                    #     self.current(data.cont)
-                    # else:
-                    #     self.logChat(data.cont)
+                    if data.typ == 'default':
+                        self.logChat(data.cont)
+                        self.current(data.cont)
+                    else:
+                        self.logChat(data.cont)
 
                     if data.typ == 'export':
                         print("*** Sending chat...")

@@ -54,17 +54,21 @@ class Client:
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
-                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
+                if self.USERNAME != "*server*":
+                    # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
-                self.client.send(packet.pack().encode("utf-8"))
+                    self.client.send(packet.pack().encode("utf-8"))
 
-                check = streamData(self.client).decode("utf-8")
-                check = Message.from_json(check)
-                print(check.cont)
+                    check = streamData(self.client).decode("utf-8")
+                    check = Message.from_json(check)
+                    print(check.cont)
 
-                if check.cont != "[*] Username already in use!":
-                    break
+                    if check.cont != "[*] Username already in use!":
+                        break
+
+                else:
+                    print("Can't set username as *server*!")
 
             else:
                 print("Username can't be empty!")
@@ -162,7 +166,7 @@ def main():
 
     # displayBanner()
 
-    CLIENT_IP = socket.gethostname()
+    CLIENT_IP = socket.gethostbyname(socket.gethostname())
 
     client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
     client.connectToServer()
