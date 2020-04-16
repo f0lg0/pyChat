@@ -1,6 +1,9 @@
 CHANGELOG FILE
 
 format: mm-dd-yyyy
+[04-16-2020] f0lg0:
+	- full switch to JSON for security reasons
+
 [04-13-2020] f0lg0:
 	- important backend change: headers are being used to stream data
 	- cleaned the code from print statements

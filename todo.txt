@@ -4,17 +4,20 @@
 
 1. [x] Use fixed length headers
 2. [x] Remove "self." to "to_send_msg" in "sendMsg()"
-3. [x] Implement a nicer way of handling the flags
+3. [] Implement a nicer way of handling the flags
 4. [x] Use argparse to specify options
 5. [x] Replace open() with "with open()"
 6. [x] Use objects in the messages to get rid of flags and bracketed commands
 7. [x] Re-add user input as a second option
 8. [x] Prevent server from crashing if the users close the terminal
-9. [x] Choose a way to handle streaming 
+9. [x] Choose a way to handle streaming
 10. [] Update readme
 11. [] Replace changelog.txt with CHANGELOG.md
 12. [] Implement a safe way to close the server
 13. [] BIG ASS CHANGE (need to call to explain)
+14. [] RSA encryption
+15. [] Send message with username instead of IP in case of disconnection
+16. [] Clean the encoding/decoding things
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:
@@ -31,8 +34,8 @@ I mainly thought about it because it just looks cooler haha
 
 ================= Server errors if stoopid windowz closes terminal with the x button =======================================
 
-data = client_socket.recv(self.BUFFER_SIZE) 
+data = client_socket.recv(self.BUFFER_SIZE)
 	ConnectionResetError: [Errno 104] Connection reset by peer
 
-self._target(*self._args, **self._kwargs)  
-	BrokenPipeError: [Errno 32] Broken pipe   
+self._target(*self._args, **self._kwargs)
+	BrokenPipeError: [Errno 32] Broken pipe
