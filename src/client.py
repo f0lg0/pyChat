@@ -58,7 +58,7 @@ class Client:
                     # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
-                    self.client.send(packet.pack().encode("utf-8"))
+                    self.client.send(packet.pack())
 
                     check = streamData(self.client).decode("utf-8")
                     check = Message.from_json(check)
@@ -88,7 +88,7 @@ class Client:
                 else:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
-                self.client.send(packet.pack().encode("utf-8"))
+                self.client.send(packet.pack())
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
