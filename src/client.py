@@ -1,14 +1,17 @@
 import socket
-import pickle
+import json
 import threading
 import argparse
 import sys
 import time
 from datetime import datetime
-from displayBanner import displayBanner
 from message import Message
 from streaming import createMsg, streamData
 
+# from displayBanner import displayBanner
+
+from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
+from Crypto.PublicKey import RSA
 
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
@@ -32,24 +35,40 @@ class Client:
             print(str(e))
             sys.exit()
 
+        key = self.recvKey()
+        print("*** Got Public Key ***")
+        with open("./keys/clientkey.pem", "wb+") as f:
+            f.write(key.cont.encode("utf-8"))
+
+        pub_key = RSA.importKey(open("./keys/clientkey.pem", 'r').read())
+
+        self.cipher = PKCS1_OAEP.new(key=pub_key)
+
         self.setUsername()
+
+    def recvKey(self):
+        key = streamData(self.client).decode("utf-8")
+        return Message.from_json(key)
 
     def setUsername(self):
         while True:
             self.USERNAME = input("Enter username> ")
             if self.USERNAME:
-                #enc_username  = self.USERNAME.encode("utf-8")
-                packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME.encode("utf-8"), 'setuser')
+                if self.USERNAME != "*server*":
+                    # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
-                #print(packet.pack())
-                self.client.send(packet.pack())
-                
-                #check = self.client.recv(self.BUFFER_SIZE)
-                check = streamData(self.client)
-                print(check.cont.decode("utf-8"))
+                    self.client.send(packet.pack().encode("utf-8"))
 
-                if check.cont.decode("utf-8") != "[*] Username already in use!":
-                    break
+                    check = streamData(self.client).decode("utf-8")
+                    check = Message.from_json(check)
+                    print(check.cont)
+
+                    if check.cont != "[*] Username already in use!":
+                        break
+
+                else:
+                    print("Can't set username as *server*!")
 
             else:
                 print("Username can't be empty!")
@@ -60,17 +79,16 @@ class Client:
             to_send_msg = input("You> ")
 
             if to_send_msg:
-                enc_msg = to_send_msg.encode("utf-8")
                 if to_send_msg == "[export_chat]":
                     self.export = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'export')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
                 elif to_send_msg == "[help]":
                     self.help = True
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'help')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
                 else:
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), enc_msg, 'default')
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
-                self.client.send(packet.pack())
+                self.client.send(packet.pack().encode("utf-8"))
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -82,19 +100,20 @@ class Client:
         iThread.start()
 
         while True:
-            data = streamData(self.client)
-            
+            data = streamData(self.client).decode("utf-8")
+
             if not data:
                 print("[*] Connection closed by the server")
                 sys.exit()
 
             if self.export == True:
+                data = Message.from_json(data) # it's a dataclass object
                 timestamp = datetime.now()
                 chat_file = f"./exported/chat{str(timestamp)}.txt"
 
                 try:
                     with open(chat_file, "wb+") as chat:
-                        chat.write(data.cont)
+                        chat.write(data.cont.encode("utf-8"))
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
@@ -105,13 +124,15 @@ class Client:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
                 if self.help == True:
+                    data = json.loads(data)
                     for command in data:
                         print('\r' + command + " : " + data[command])
 
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
-                    print('\r' + data.username + "> " + data.cont.decode("utf-8") + '\n' + "You> ", end = "")
+                    data = Message.from_json(data) # it's a dataclass object
+                    print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
 
 
 def getArgs():
@@ -143,9 +164,9 @@ def main():
 
     BUFFER_SIZE = 1024
 
-    displayBanner()
+    # displayBanner()
 
-    CLIENT_IP = socket.gethostname()
+    CLIENT_IP = socket.gethostbyname(socket.gethostname())
 
     client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
     client.connectToServer()

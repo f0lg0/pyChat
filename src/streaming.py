@@ -1,11 +1,11 @@
-import pickle
+import json
 
 BUFFERSIZE = 10
 
-#generates a message with a fixed header which specifies the length of the message 
+# generates a message with a fixed header which specifies the length of the message
 def createMsg(data):
     finalMsg = data
-    finalMsg = f'{len(finalMsg):<10}'.encode("utf-8") + finalMsg
+    finalMsg = f'{len(finalMsg):<10}' + finalMsg
     return finalMsg
 
 
@@ -18,6 +18,7 @@ def streamData(target):
         # stream the data in with a set buffer size
         while len(full_data) < msglen:
             full_data += target.recv(BUFFERSIZE)
-        
-        obj = pickle.loads(full_data)
-        return obj
+
+        return full_data # returning just the bytes, json operations done later in the code to avoid importing errors
+    else:
+        pass
