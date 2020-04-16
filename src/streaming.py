@@ -2,11 +2,11 @@ import json
 
 BUFFERSIZE = 10
 
-# generates a message with a fixed header which specifies the length of the message
+# generates a message with a fixed header which specifies the length of the message (returns bytes)
 def createMsg(data):
     finalMsg = data
     finalMsg = f'{len(finalMsg):<10}' + finalMsg
-    return finalMsg
+    return finalMsg.encode("utf-8")
 
 
 def streamData(target):
