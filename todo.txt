@@ -18,6 +18,7 @@
 14. [] RSA encryption
 15. [] Send message with username instead of IP in case of disconnection
 16. [] Clean the encoding/decoding things
+17. [] Add another field to the dataclass to specify what the content is (utf-8 etc)
 
 # ======= NOTE ========
 argparse lets you specify input in the terminal windows like:
