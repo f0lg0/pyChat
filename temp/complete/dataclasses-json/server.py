@@ -1,5 +1,6 @@
 import socket
-import pickle
+import json
+import pickle # remove
 import threading
 import sys
 import argparse
@@ -7,8 +8,6 @@ import os
 from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData
-
-from dataclasses_json import dataclass_json
 
 from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
 from Crypto.PublicKey import RSA #  to generate the keys
@@ -29,7 +28,7 @@ class RSAEncryption:
 
         with open('./keys/private.pem', 'w+') as private:
             private.write(private_pem)
-        
+
         with open('./keys/public.pem', 'w+') as private:
             private.write(public_pem)
 
@@ -95,13 +94,13 @@ class Server:
             usersFile = open("./logs/users.txt", "r")
         except IOError as e:
             print(str(e))
-        
+
         users = usersFile.readlines()
-        
+
         #loop through file, and no including empty lines, strip the line break escape char and add username to database
         for user in users[1:]:
             if(user != "\n"):
-                self.database.update({"offline": user.replace("\n", "")})  
+                self.database.update({"offline": user.replace("\n", "")})
         #just print out the usernames line by line
 
         print(f"pre-existing users: ")
@@ -110,7 +109,7 @@ class Server:
                 print(account)
 
         '''
-    
+
         print(f"[*] Starting server ({self.IP}) on port {self.PORT}")
 
     def acceptConnections(self):
@@ -181,7 +180,7 @@ class Server:
 
     def exportChat(self, client_socket, address):
         with open(self.current_chat, "rb") as chat:
-            content = chat.read()
+            content = chat.read().decode("utf-8")
 
             packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'export')
 
@@ -192,14 +191,14 @@ class Server:
 
 
     def commandList(self, client_socket):
-        cdict = createMsg(pickle.dumps(self.command_list)) # manually crafting since i can't call pack() -> not a message obj
+        cdict = createMsg(json.dumps(self.command_list)) # manually crafting since i can't call pack() -> not a message obj
         for connection in self.connections:
             if connection == client_socket:
-                connection.send(cdict)
+                connection.send(cdict.encode("utf-8"))
                 print("[*] Sent!")
 
     def closeConnection(self, client_socket, address):
-        disconnected_msg = bytes(f"[{address[0]}] has left the chat", "utf-8")
+        disconnected_msg = f"[{address[0]}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
         left_msg = left_msg_obj.pack().encode("utf-8")
 
@@ -223,23 +222,14 @@ class Server:
     def handler(self, client_socket, address):
         while True:
             try:
-                temp = streamData(client_socket)
-                print("TEMP before decoding", type(temp))
-                print("TEMP", temp)
-
-                temp = temp.decode("utf-8")
-                print("TEMP after decoding", type(temp))
-                print("TEMP", temp)
-                
-                data = Message.from_json(temp)
-                print("DATAYPE", type(data))
+                data = streamData(client_socket).decode("utf-8")
+                data = Message.from_json(data)
 
             except ConnectionResetError:
                 print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
                 self.closeConnection(client_socket, address)
                 break
-
-            if not data:
+            except AttributeError:
                 print(f"*** [{address[0]}] disconnected")
                 self.closeConnection(client_socket, address)
                 break
@@ -267,7 +257,6 @@ class Server:
                         for connection in self.connections:
                             if connection != client_socket:
                                 connection.send(data.pack().encode("utf-8"))
-
 
 
 def getArgs():
@@ -300,7 +289,7 @@ def main():
 
     except Exception as e:
         print("General error", str(e))
-    
+
 
 if __name__ == "__main__":
     main()

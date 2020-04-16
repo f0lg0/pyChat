@@ -1,13 +1,15 @@
 import socket
-import pickle
+import json
+import pickle # remove
 import threading
 import argparse
 import sys
 import time
 from datetime import datetime
-# from displayBanner import displayBanner
 from message import Message
 from streaming import createMsg, streamData
+
+# from displayBanner import displayBanner
 
 from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
 from Crypto.PublicKey import RSA
@@ -54,14 +56,9 @@ class Client:
             if self.USERNAME:
                 # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
                 packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
-                print("CRAFTED", packet)
 
                 self.client.send(packet.pack().encode("utf-8"))
-                print("SENT", packet.pack().encode("utf-8"))
-                print("SENT", type(packet.pack()))
-                
 
-                
                 check = streamData(self.client).decode("utf-8")
                 check = Message.from_json(check)
                 print(check.cont)
@@ -100,19 +97,19 @@ class Client:
 
         while True:
             data = streamData(self.client).decode("utf-8")
-            data = Message.from_json(data)
-            
+
             if not data:
                 print("[*] Connection closed by the server")
                 sys.exit()
 
             if self.export == True:
+                data = Message.from_json(data) # it's a dataclass object
                 timestamp = datetime.now()
                 chat_file = f"./exported/chat{str(timestamp)}.txt"
 
                 try:
                     with open(chat_file, "wb+") as chat:
-                        chat.write(data.cont)
+                        chat.write(data.cont.encode("utf-8"))
                         print("[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
@@ -123,12 +120,14 @@ class Client:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
                 if self.help == True:
+                    data = json.loads(data)
                     for command in data:
                         print('\r' + command + " : " + data[command])
 
                     print('\r' + "You> ", end = "")
                     self.help = False
                 else:
+                    data = Message.from_json(data) # it's a dataclass object
                     print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
 
 
