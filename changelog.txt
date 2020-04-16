@@ -1,6 +1,10 @@
 CHANGELOG FILE
 
 format: mm-dd-yyyy
+
+[04-16-2020] Jacopo:
+	- cleaned up encoding to have in handled in the createMsg function
+
 [04-16-2020] f0lg0:
 	- full switch to JSON for security reasons
 
@@ -33,6 +37,3 @@ format: mm-dd-yyyy
 
 [04-04-2020] f0lg0:
 	- replaced "open()" functions with "with open()"
-
-[04-16-2020] Jacopo:
-	- cleaned up encoding to have in handled in the createMsg function
