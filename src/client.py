@@ -117,9 +117,8 @@ class Client:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
             else:
                 if data.typ == "help":
-                    helplist = json.loads(data.cont)
-                    for command in helplist:
-                        print('\r' + command + " : " + helplist[command])
+                    for command in data.cont:
+                        print('\r' + command + " : " + data.cont[command])
 
                     print('\r' + "You> ", end = "")
                 else:

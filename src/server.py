@@ -168,11 +168,12 @@ class Server:
                     print("[*] Sent!")
 
 
-    def commandList(self, client_socket):
-        cdict = createMsg(json.dumps(self.command_list)) # manually crafting since i can't call pack() -> not a message obj
+    def commandList(self, client_socket, address):
+        packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), self.command_list, 'help', True)
+
         for connection in self.connections:
             if connection == client_socket:
-                connection.send(cdict)
+                connection.send(packet.pack())
                 print("[*] Sent!")
 
     def closeConnection(self, client_socket, address):
@@ -230,7 +231,7 @@ class Server:
                         self.exportChat(client_socket, address)
                     elif data.typ == 'help':
                         print("*** Sending command list...")
-                        self.commandList(client_socket)
+                        self.commandList(client_socket, address)
                     else:
                         for connection in self.connections:
                             if connection != client_socket:
