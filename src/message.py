@@ -18,9 +18,9 @@ class Message:
 
     if shouldParseContents:
         if type(cont) == str:
-            shouldParseContents = json.loads(cont)
+            cont = json.loads(cont)
         else:
-            shouldParseContents = json.dumps(cont)
+            cont = json.dumps(cont)
 
     #Note that shouldParseContents variable only works with pythons built in objects, not dynamically created ones
     def pack(self):
