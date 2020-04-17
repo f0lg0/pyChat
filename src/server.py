@@ -68,6 +68,7 @@ class Server:
         self.current_chat = "./logs/currentchat.txt"
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # # encryption
         self.enc = RSAEncryption(1024)
@@ -101,6 +102,12 @@ class Server:
 
             self.connections.append(client_socket)
             self.sharePubKey(client_socket, address[0])
+
+    def stopServer(self):
+        for conn in self.connections:
+            conn.close()
+
+        self.server.close()
 
     def sharePubKey(self, client_socket, address):
         with open("./keys/public.pem", 'rb') as f:
@@ -265,6 +272,11 @@ def main():
     try:
         server.startServer()
         server.acceptConnections()
+
+    except KeyboardInterrupt:
+        print("*** Closing all the connections ***")
+        server.stopServer()
+        print("*** Server stopped ***")
 
     except Exception as e:
         print("General error", str(e))

@@ -94,22 +94,24 @@ class Client:
         iThread.start()
 
         while True:
-            data = streamData(self.client).decode("utf-8")
-
-            if not data:
-                print("[*] Connection closed by the server")
-                sys.exit()
+            try:
+                data = streamData(self.client).decode("utf-8")
+            except AttributeError:
+                print("\r[*] Connection closed by the server")
+                break
 
             data = Message.from_json(data) # it's a dataclass object
 
             if data.typ == "export":
-                timestamp = datetime.now()
-                chat_file = f"./exported/chat{str(timestamp)}.txt"
+                timestamp = str(datetime.now())
+                timestamp = timestamp.replace(":", ".") # windowz is stoopid
+
+                chat_file = f"./exported/chat{timestamp}.txt"
 
                 try:
                     with open(chat_file, "wb+") as chat:
                         chat.write(data.cont.encode("utf-8"))
-                        print("[*] Writing to file...")
+                        print("\r[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
                     print('\n' + "You> ", end = "")
@@ -122,8 +124,9 @@ class Client:
 
                     print('\r' + "You> ", end = "")
                 else:
-                    data = Message.from_json(data) # it's a dataclass object
                     print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
+
+        self.client.close()
 
 def getArgs():
     parser = argparse.ArgumentParser()
