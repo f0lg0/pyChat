@@ -2,6 +2,10 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-17-2020] f0lg0:
+	- bug fixes for message.py 
+	- implemented a safe way to close the server
+
 [04-16-2020] Jacopo:
 	- The Message class will auto convert the 'cont' var to a string and back (with json) if you set the shouldParseContents argument to true  
 
