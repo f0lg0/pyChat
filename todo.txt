@@ -15,28 +15,9 @@
 11. [] Replace changelog.txt with CHANGELOG.md
 12. [x] Implement a safe way to close the server
 13. [] BIG ASS CHANGE (need to call to explain)
-14. [] RSA encryption
+14. [] RSA encryption / AES-256
 15. [] Send message with username instead of IP in case of disconnection
 16. [x] Clean the encoding/decoding things
 17. [x] Add another field to the dataclass to specify what the content is (utf-8 etc)
+18. [] Remove any kind of logging functions (?)
 
-# ======= NOTE ========
-argparse lets you specify input in the terminal windows like:
-
-$ python3 client.py <server_ip> <server_port>
-
-for example:
-
-$ python3 client.py 192.168.1.100 1234
-
-so we can remove user input inside the code, i think it's better but not essential.
-I mainly thought about it because it just looks cooler haha
-
-
-================= Server errors if stoopid windowz closes terminal with the x button =======================================
-
-data = client_socket.recv(self.BUFFER_SIZE)
-	ConnectionResetError: [Errno 104] Connection reset by peer
-
-self._target(*self._args, **self._kwargs)
-	BrokenPipeError: [Errno 32] Broken pipe
