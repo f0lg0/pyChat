@@ -3,7 +3,7 @@ CHANGELOG FILE
 format: mm-dd-yyyy
 
 [04-16-2020] Jacopo:
-	- The Message class will auto convert the 'cont' var to s string and back (with json) if you set the shouldParseContents 	           argument to true  
+	- The Message class will auto convert the 'cont' var to a string and back (with json) if you set the shouldParseContents 	           argument to true  
 
 [04-16-2020] Jacopo:
 	- cleaned up the flagging, and made the help command export a full msg, not just a dictionary  
