@@ -17,7 +17,7 @@
 13. [] BIG ASS CHANGE (need to call to explain)
 14. [] RSA encryption
 15. [] Send message with username instead of IP in case of disconnection
-16. [] Clean the encoding/decoding things
+16. [x] Clean the encoding/decoding things
 17. [x] Add another field to the dataclass to specify what the content is (utf-8 etc)
 
 # ======= NOTE ========
