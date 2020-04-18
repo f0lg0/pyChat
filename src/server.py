@@ -8,39 +8,6 @@ from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData
 
-from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
-from Crypto.PublicKey import RSA #  to generate the keys
-
-class RSAEncryption:
-    def __init__(self, bits):
-        self.BITS = bits
-
-    def generatePrivateKey(self):
-        self.private_key = RSA.generate(self.BITS)
-
-    def generatePublicKey(self):
-        self.public_key = self.private_key.publickey()
-
-    def writeToFile(self):
-        private_pem = self.private_key.exportKey().decode("utf-8")
-        public_pem = self.public_key.exportKey().decode("utf-8")
-
-        with open('./keys/private.pem', 'w+') as private:
-            private.write(private_pem)
-
-        with open('./keys/public.pem', 'w+') as private:
-            private.write(public_pem)
-
-    def importKeys(self):
-        keys = []
-        pr_key = RSA.importKey(open('./keys/public.pem', 'r').read())
-        pu_key = RSA.importKey(open('./keys/public.pem', 'r').read())
-
-        keys.append(pr_key)
-        keys.append(pu_key)
-
-        return keys
-
 
 class Server:
     def __init__(self, ip, port, buffer_size):
@@ -70,16 +37,6 @@ class Server:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        # # encryption
-        self.enc = RSAEncryption(1024)
-
-        self.enc.generatePrivateKey()
-        self.enc.generatePublicKey()
-        self.enc.writeToFile()
-        self.keys = self.enc.importKeys()
-
-        self.cipher = PKCS1_OAEP.new(key = self.keys[0])
-
     def startServer(self):
         try:
             self.server.bind((self.IP, self.PORT))
@@ -101,21 +58,12 @@ class Server:
             cThread.start()
 
             self.connections.append(client_socket)
-            self.sharePubKey(client_socket, address[0])
 
     def stopServer(self):
         for conn in self.connections:
             conn.close()
 
         self.server.close()
-
-    def sharePubKey(self, client_socket, address):
-        with open("./keys/public.pem", 'rb') as f:
-            content = f.read().decode("utf-8")
-            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'key_exc')
-
-            client_socket.send(packet.pack())
-        print("*** Public Key sent ***")
 
     def logConnections(self, address):
         contime = datetime.now()
@@ -148,7 +96,7 @@ class Server:
                 content = "[*] Username already in use!"
                 # encrypted_content = self.cipher.encrypt(content)
 
-                warning = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'username_taken')
+                warning = Message(self.IP, address[0], self.USERNAME, str(datetime.now()), content, 'username_taken')
 
                 client_socket.send(warning.pack())
                 break
@@ -160,14 +108,14 @@ class Server:
             content = "[*] You have joined the chat!"
             # encrypted_content = self.cipher.encrypt(content)
 
-            joined = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'approved_conn')
+            joined = Message(self.IP, address[0], self.USERNAME, str(datetime.now()), content, 'approved_conn')
             client_socket.send(joined.pack())
 
     def exportChat(self, client_socket, address):
         with open(self.current_chat, "rb") as chat:
             content = chat.read().decode("utf-8")
 
-            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'export')
+            packet = Message(self.IP, address[0], self.USERNAME, str(datetime.now()), content, 'export')
 
             for connection in self.connections:
                 if connection == client_socket:
@@ -176,7 +124,7 @@ class Server:
 
 
     def commandList(self, client_socket, address):
-        packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), self.command_list, 'help', True)
+        packet = Message(self.IP, address[0], self.USERNAME, str(datetime.now()), self.command_list, 'help', True)
 
         for connection in self.connections:
             if connection == client_socket:
@@ -185,7 +133,7 @@ class Server:
 
     def closeConnection(self, client_socket, address):
         disconnected_msg = f"[{address[0]}] has left the chat"
-        left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now), disconnected_msg, 'default')
+        left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now()), disconnected_msg, 'default')
         left_msg = left_msg_obj.pack()
 
         self.connections.remove(client_socket)
@@ -209,7 +157,9 @@ class Server:
         while True:
             try:
                 data = streamData(client_socket).decode("utf-8")
+                print("\nRECV AFTER AES ", data)
                 data = Message.from_json(data)
+                print("\nRECV AFTER JSON ", data)
 
             except ConnectionResetError:
                 print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
@@ -240,9 +190,12 @@ class Server:
                         print("*** Sending command list...")
                         self.commandList(client_socket, address)
                     else:
+                        data = data.pack()
                         for connection in self.connections:
                             if connection != client_socket:
-                                connection.send(data.pack())
+                                print("\nBROADCASTING ", data)
+                                connection.send(data)
+
 
 
 def getArgs():

@@ -10,9 +10,6 @@ from streaming import createMsg, streamData
 
 # from displayBanner import displayBanner
 
-from Crypto.Cipher import PKCS1_OAEP # RSA based cipher using Optimal Asymmetric Encryption Padding
-from Crypto.PublicKey import RSA
-
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
         self.SERVER_IP = server_ip
@@ -32,20 +29,7 @@ class Client:
             print(str(e))
             sys.exit()
 
-        key = self.recvKey()
-        print("*** Got Public Key ***")
-        with open("./keys/clientkey.pem", "wb+") as f:
-            f.write(key.cont.encode("utf-8"))
-
-        pub_key = RSA.importKey(open("./keys/clientkey.pem", 'r').read())
-
-        self.cipher = PKCS1_OAEP.new(key=pub_key)
-
         self.setUsername()
-
-    def recvKey(self):
-        key = streamData(self.client).decode("utf-8")
-        return Message.from_json(key)
 
     def setUsername(self):
         while True:
@@ -56,9 +40,11 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
                     self.client.send(packet.pack())
+                    print("\nSENT ", packet.pack())
 
                     check = streamData(self.client).decode("utf-8")
                     check = Message.from_json(check)
+                    print("\nRECV AES DEC", check)
                     print(check.cont)
 
                     if check.cont != "[*] Username already in use!":
@@ -83,6 +69,7 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
                 self.client.send(packet.pack())
+                print("\rSENT ", packet.pack())
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -95,12 +82,13 @@ class Client:
 
         while True:
             try:
-                data = streamData(self.client).decode("utf-8")
+                data = streamData(self.client)
+                print("\rRECV AFTER AES DEC ", data)
+                data = data.decode("utf-8")
+                data = Message.from_json(data) # it's a dataclass object
             except AttributeError:
                 print("\r[*] Connection closed by the server")
                 break
-
-            data = Message.from_json(data) # it's a dataclass object
 
             if data.typ == "export":
                 timestamp = str(datetime.now())
