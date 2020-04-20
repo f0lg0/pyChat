@@ -1,0 +1,14 @@
+git init
+git remote set-url origin <private repo link>
+git remote add <repo link>
+git add <file>
+git commit -m "message"
+git push origin branchname (-f)
+
+### to pull changes ###
+
+git pull
+
+[!] pull changes before pushing yours
+
+then push!
