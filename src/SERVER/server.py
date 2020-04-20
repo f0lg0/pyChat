@@ -6,7 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
-from streaming import createMsg, streamData
+from streaming import createMsg, streamData, exportVector
 
 
 class Server:
@@ -58,12 +58,22 @@ class Server:
             cThread.start()
 
             self.connections.append(client_socket)
+            self.shareVector(client_socket, address[0])
 
     def stopServer(self):
         for conn in self.connections:
             conn.close()
 
         self.server.close()
+
+    def shareVector(self, client_socket, address):
+        exportVector()
+        with open('./vector', 'rb') as vector:
+            content = vector.read().decode("utf-8")
+            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'iv_exc')
+            client_socket.send(packet.pack())
+
+        print("*** Vector sent ***")
 
     def logConnections(self, address):
         contime = datetime.now()
@@ -231,8 +241,8 @@ def main():
         server.stopServer()
         print("*** Server stopped ***")
 
-    except Exception as e:
-        print("General error", str(e))
+    # except Exception as e:
+        # print("General error", str(e))
 
 
 if __name__ == "__main__":

@@ -9,18 +9,26 @@ PASSWORD = b'password'
 
 enc = AESEncryption(PASSWORD)
 
+def exportVector():
+    enc.writeVectorToFile()
+
 # generates a message with a fixed header which specifies the length of the message (returns bytes)
 def createMsg(data):
-    cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
-    encrypted_data = base64.b64encode(cipher.encrypt(data.encode("utf-8"))) # base64 rappresents bytes object in strings
-    print("\nENCRYPTED DATA ", base64.b64decode(encrypted_data))
+    if "iv_exc" not in data:
+        cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
+        encrypted_data = base64.b64encode(cipher.encrypt(data.encode("utf-8"))) # base64 rappresents bytes object in strings
+        print("\nENCRYPTED DATA ", base64.b64decode(encrypted_data))
 
 
-    finalMsg = encrypted_data.decode("utf-8")
-    finalMsg = f'{len(finalMsg):<10}' + finalMsg
+        finalMsg = encrypted_data.decode("utf-8")
+        finalMsg = f'{len(finalMsg):<10}' + finalMsg
 
-    print("\nCRAFTED ", finalMsg.encode("utf-8"))
-    return finalMsg.encode("utf-8")
+        print("\nCRAFTED ", finalMsg.encode("utf-8"))
+        return finalMsg.encode("utf-8")
+    else:
+        finalMsg = data
+        finalMsg = f'{len(finalMsg):<10}' + finalMsg
+        return finalMsg.encode("utf-8")
 
 
 def streamData(target):
