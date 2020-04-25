@@ -8,7 +8,7 @@ from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData, exportVector
 import pyDHE
-
+import time
 
 serverDH = pyDHE.new()
 
@@ -67,14 +67,8 @@ class Server:
             self.connections.append(client_socket)
             self.shareVector(client_socket, address[0])
             self.sharePublicInfo(client_socket, address[0])
-
-            #add to database
-            x = self.recvPublicKey(client_socket, address[0])
-            print(x)
-           # self.keyList.update( self.recvPublicKey(client_socket, address[0]) )
-            print(self.keyList)
+            time.sleep(0.1) # to avoid buffer congestion
            
-
     def stopServer(self):
         for conn in self.connections:
             conn.close()
@@ -96,10 +90,6 @@ class Server:
         client_socket.send(packet.pack())
         
         print("*** Server's Public Key Sent ***")
-
-    def recvPublicKey(self, client_socket, address):
-        clientKey = Message.from_json(streamData(client_socket).decode("utf-8"))
-        return { address : int(clientKey.cont) }
         
 
     def logConnections(self, address):
@@ -212,6 +202,10 @@ class Server:
 
                 if self.temp_f == True:
                     continue
+            elif data.typ == 'key_exc':
+                finalKey = serverDH.update(int(data.cont))
+                self.keyList.update( { address[0] : finalKey })
+                print("\nFINAL KEY", finalKey)
             else:
                 if data.cont != '':
                     if data.typ == 'default':

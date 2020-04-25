@@ -32,8 +32,6 @@ def createMsg(data):
 
 
 def streamData(target):
-    cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
-
     data = target.recv(BUFFERSIZE)
     if len(data) != 0:
         msglen = int(data[:BUFFERSIZE].strip())
@@ -43,13 +41,18 @@ def streamData(target):
         while len(full_data) < msglen:
             full_data += target.recv(BUFFERSIZE)
 
-        print("\nRECV BASE64 ALREADY STRIPPED FROM HEADER", full_data)
-        full_data = base64.b64decode(full_data)
-        print("\nRECV BASE64 DEC ", full_data)
+        if "iv_exc" not in full_data.decode("utf-8") and "key_exc" not in full_data.decode("utf-8"):
+            print("hit")
+            cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
+
+            print("\nRECV BASE64 ALREADY STRIPPED FROM HEADER", full_data)
+            full_data = base64.b64decode(full_data)
+            print("\nRECV BASE64 DEC ", full_data)
 
 
-        decrypted_data = cipher.decrypt(full_data)
+            decrypted_data = cipher.decrypt(full_data)
         
-        return decrypted_data # returning just the bytes, json operations done later in the code to avoid importing errors
+            return decrypted_data # returning just the bytes, json operations done later in the code to avoid importing errors
+        return full_data
     else:
         pass

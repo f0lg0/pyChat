@@ -41,6 +41,7 @@ class Client:
         with open('./vector', 'wb+') as f:
             f.write(iv.cont.encode("utf-8"))
 
+        self.sharePublicInfo()
         initializeAES()
         self.setUsername()
 
@@ -53,6 +54,7 @@ class Client:
         packet  = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), str(clientDH.getPublicKey()), 'key_exc')
         self.client.send(packet.pack())
         
+        print("sent", packet.pack())
         print("*** Client's Public Key Sent ***")
 
 
