@@ -7,6 +7,10 @@ import time
 from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData, initializeAES
+import pyDHE
+
+
+clientDH = pyDHE.new()
 
 # from displayBanner import displayBanner
 
@@ -16,6 +20,7 @@ class Client:
         self.PORT = port
         self.BUFFER_SIZE = buffer_size
         self.CLIENT_IP = client_ip
+        self.finalDecryptionKey = None
 
         print(f"[*] Host: {self.CLIENT_IP} | Port: {self.PORT}")
 
@@ -30,12 +35,26 @@ class Client:
             sys.exit()
 
         iv = self.recvVector()
+        self.finalDecryptionKey = self.recvServerKey()
+        print(self.finalDecryptionKey)
         print("*** Got vector ***")
         with open('./vector', 'wb+') as f:
             f.write(iv.cont.encode("utf-8"))
 
         initializeAES()
         self.setUsername()
+
+    def recvServerKey(self):
+        #receives the servers public key and uses it to generate the final decryption key
+        serverKey = Message.from_json(streamData(self.client).decode("utf-8"))
+        return clientDH.update(int(serverKey.cont))
+
+    def sharePublicInfo(self):
+        packet  = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), str(clientDH.getPublicKey()), 'key_exc')
+        self.client.send(packet.pack())
+        
+        print("*** Client's Public Key Sent ***")
+
 
     def recvVector(self):
         iv = streamData(self.client).decode("utf-8")

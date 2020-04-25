@@ -1,0 +1,16 @@
+elliot> hi friend
+elliot> [help]
+elliot> [export_chat]
+elliot> hi man
+elliot> wassup
+leonardo> fine thanks bro
+elliot> hi friend
+elliot> [help]
+elliot> [export_chat]
+elliot> hi man
+elliot> wassup
+leonardo> fine thanks bro
+leonardo> [help]
+leonardo> [export_chat]
+elliot> aye
+123> [help]

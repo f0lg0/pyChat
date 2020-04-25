@@ -17,3 +17,9 @@ class AESEncryption:
 
     def generateCipher(self):
         return AES.new(self.KEY, self.MODE, IV = self.IV)
+
+
+class DiffieHellman:
+    def __init__(self, sharedBase, sharedPrime):
+        self.sharedBase = sharedBase
+        self.sharedPrime = sharedPrime
