@@ -37,7 +37,7 @@ def streamData(target):
         while len(full_data) < msglen:
             full_data += target.recv(BUFFERSIZE)
 
-        if "iv_exc" not in full_data.decode("utf-8"):
+        if "iv_exc" not in full_data.decode("utf-8") and "key_exc" not in full_data.decode("utf-8"):
             cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
 
             print("\nRECV BASE64 ALREADY STRIPPED FROM HEADER", full_data)

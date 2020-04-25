@@ -1,3 +1,4 @@
+import socket
 import hashlib
 import base64
 from Crypto.Cipher import AES 
@@ -18,3 +19,6 @@ class AESEncryption:
     def writeVectorToFile(self):
     	with open('./vector', 'wb+') as f:
     		f.write(base64.b64encode(self.IV))
+
+
+

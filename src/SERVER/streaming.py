@@ -14,7 +14,7 @@ def exportVector():
 
 # generates a message with a fixed header which specifies the length of the message (returns bytes)
 def createMsg(data):
-    if "iv_exc" not in data:
+    if "iv_exc" not in data and "key_exc" not in data:
         cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
         encrypted_data = base64.b64encode(cipher.encrypt(data.encode("utf-8"))) # base64 rappresents bytes object in strings
         print("\nENCRYPTED DATA ", base64.b64decode(encrypted_data))

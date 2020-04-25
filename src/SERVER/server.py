@@ -7,6 +7,10 @@ import os
 from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData, exportVector
+import pyDHE
+
+
+serverDH = pyDHE.new()
 
 
 class Server:
@@ -27,6 +31,9 @@ class Server:
         self.command_list = {
             "[export_chat]" : "export current chat",
             "[help]" : "display possibile commands"
+        }
+        self.keyList = {
+            "client" : "key"
         }
 
         self.users_log = "./logs/users.txt"
@@ -59,6 +66,14 @@ class Server:
 
             self.connections.append(client_socket)
             self.shareVector(client_socket, address[0])
+            self.sharePublicInfo(client_socket, address[0])
+
+            #add to database
+            x = self.recvPublicKey(client_socket, address[0])
+            print(x)
+           # self.keyList.update( self.recvPublicKey(client_socket, address[0]) )
+            print(self.keyList)
+           
 
     def stopServer(self):
         for conn in self.connections:
@@ -74,6 +89,18 @@ class Server:
             client_socket.send(packet.pack())
 
         print("*** Vector sent ***")
+
+
+    def sharePublicInfo(self, client_socket, address):
+        packet  = Message(self.IP, address, self.USERNAME, str(datetime.now()), str(serverDH.getPublicKey()), 'key_exc')
+        client_socket.send(packet.pack())
+        
+        print("*** Server's Public Key Sent ***")
+
+    def recvPublicKey(self, client_socket, address):
+        clientKey = Message.from_json(streamData(client_socket).decode("utf-8"))
+        return { address : int(clientKey.cont) }
+        
 
     def logConnections(self, address):
         contime = datetime.now()
