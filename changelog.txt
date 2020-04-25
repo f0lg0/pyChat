@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-25-2020] f0lg0 && JacopoFB:
+	- implemented DH key exchange + bug_fixes
+
 [04-17-2020] f0lg0:
 	- bug fixes for message.py 
 	- implemented a safe way to close the server
