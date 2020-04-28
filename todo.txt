@@ -15,9 +15,10 @@
 11. [] Replace changelog.txt with CHANGELOG.md
 12. [x] Implement a safe way to close the server
 13. [] BIG ASS CHANGE (need to call to explain)
-14. [] RSA encryption / AES-256
+14. [x] AES-256 
 15. [] Send message with username instead of IP in case of disconnection
 16. [x] Clean the encoding/decoding things
 17. [x] Add another field to the dataclass to specify what the content is (utf-8 etc)
 18. [] Remove any kind of logging functions (?)
+19. [] Handle multiple keys with database
 

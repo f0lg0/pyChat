@@ -2,6 +2,10 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-28-2020] f0lg0:
+	- cleaned some dirs in the repo
+	- DH key is now being used for AES, need to implement the database correctly
+
 [04-25-2020] f0lg0 && JacopoFB:
 	- implemented DH key exchange + bug_fixes
 
