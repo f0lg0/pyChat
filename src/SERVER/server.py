@@ -6,7 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
-from streaming import createMsg, streamData, exportVector
+from streaming import createMsg, streamData,initializeAES
 import pyDHE
 import time
 
@@ -76,7 +76,6 @@ class Server:
         self.server.close()
 
     def shareVector(self, client_socket, address):
-        exportVector()
         with open('./vector', 'rb') as vector:
             content = vector.read().decode("utf-8")
             packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'iv_exc')
@@ -184,9 +183,9 @@ class Server:
         while True:
             try:
                 data = streamData(client_socket).decode("utf-8")
-                print("\nRECV AFTER AES ", data)
+                # print("\nRECV AFTER AES ", data)
                 data = Message.from_json(data)
-                print("\nRECV AFTER JSON ", data)
+                # print("\nRECV AFTER JSON ", data)
 
             except ConnectionResetError:
                 print(f"*** [{address[0]}] unexpectedly closed the connetion, received only an RST packet.")
@@ -206,6 +205,8 @@ class Server:
                 finalKey = serverDH.update(int(data.cont))
                 self.keyList.update( { address[0] : finalKey })
                 print("\nFINAL KEY", finalKey)
+                initializeAES(str(finalKey).encode("utf-8"))
+                print("** encryption key set")
             else:
                 if data.cont != '':
                     if data.typ == 'default':
@@ -224,7 +225,7 @@ class Server:
                         data = data.pack()
                         for connection in self.connections:
                             if connection != client_socket:
-                                print("\nBROADCASTING ", data)
+                                # print("\nBROADCASTING ", data)
                                 connection.send(data)
 
 
