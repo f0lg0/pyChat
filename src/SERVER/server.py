@@ -195,6 +195,10 @@ class Server:
                 print(f"*** [{address[0]}] disconnected")
                 self.closeConnection(client_socket, address)
                 break
+            except UnicodeDecodeError:
+                print(f"*** [{address[0]}] disconnected due to an encoding error")
+                self.closeConnection(client_socket, address)
+                break
 
             if data.typ == 'setuser':
                 self.checkUsername(client_socket, address, data)
