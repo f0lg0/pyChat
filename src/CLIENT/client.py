@@ -9,7 +9,6 @@ from message import Message
 from streaming import createMsg, streamData, initializeAES
 import pyDHE
 
-
 clientDH = pyDHE.new()
 
 # from displayBanner import displayBanner
@@ -114,8 +113,9 @@ class Client:
         while True:
             try:
                 data = streamData(self.client)
-                # print("\rRECV AFTER AES DEC ", data)
+                print("\rRECV AFTER AES DEC ", data)
                 data = data.decode("utf-8")
+                #data = base64.b64decode(data)
                 data = Message.from_json(data) # it's a dataclass object
             except AttributeError:
                 print("\r[*] Connection closed by the server")
