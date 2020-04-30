@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[04-30-2020] Jacopo:
+	- Started making the keys database functional (not done)
+
 [04-29-2020] Jacopo:
 	- Added error handling for a UnicodeDecode error just in case
 
