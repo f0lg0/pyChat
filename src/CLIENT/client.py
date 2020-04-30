@@ -35,14 +35,14 @@ class Client:
             sys.exit()
 
         iv = self.recvVector()
-        self.finalDecryptionKey = self.recvServerKey()
-        print(self.finalDecryptionKey)
+        finalDecryptionKey = self.recvServerKey()
+        print("* PASSWORD: ", finalDecryptionKey)
         print("*** Got vector ***")
         with open('./vector', 'wb+') as f:
             f.write(iv.cont.encode("utf-8"))
 
         self.sharePublicInfo()
-        initializeAES()
+        initializeAES(str(finalDecryptionKey).encode("utf-8"))
         self.setUsername()
 
     def recvServerKey(self):
@@ -54,7 +54,7 @@ class Client:
         packet  = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), str(clientDH.getPublicKey()), 'key_exc')
         self.client.send(packet.pack())
         
-        print("sent", packet.pack())
+        # print("sent", packet.pack())
         print("*** Client's Public Key Sent ***")
 
 
@@ -71,11 +71,11 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
                     self.client.send(packet.pack())
-                    print("\nSENT ", packet.pack())
+                    # print("\nSENT ", packet.pack())
 
                     check = streamData(self.client).decode("utf-8")
                     check = Message.from_json(check)
-                    print("\nRECV AES DEC", check)
+                    # print("\nRECV AES DEC", check)
                     print(check.cont)
 
                     if check.cont != "[*] Username already in use!":
@@ -100,7 +100,7 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
                 self.client.send(packet.pack())
-                print("\rSENT ", packet.pack())
+                # print("\rSENT ", packet.pack())
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -114,7 +114,7 @@ class Client:
         while True:
             try:
                 data = streamData(self.client)
-                print("\rRECV AFTER AES DEC ", data)
+                # print("\rRECV AFTER AES DEC ", data)
                 data = data.decode("utf-8")
                 data = Message.from_json(data) # it's a dataclass object
             except AttributeError:

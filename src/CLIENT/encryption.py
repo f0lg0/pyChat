@@ -6,6 +6,7 @@ import base64
 class AESEncryption:
     def __init__(self, password):
         self.PASSWORD = password
+        print("* PASSWORD: ", self.PASSWORD)
 
         self.KEY = hashlib.sha256(self.PASSWORD).digest() # generating a 32 bytes key 
         
