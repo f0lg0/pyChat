@@ -145,7 +145,7 @@ class Server:
 
             for connection in self.connections:
                 if connection == client_socket:
-                    connection.send(packet.pack())
+                    self.sendMessageToClient(connection, packet)
                     print("[*] Sent!")
 
 
@@ -154,18 +154,17 @@ class Server:
 
         for connection in self.connections:
             if connection == client_socket:
-                connection.send(packet.pack())
+                self.sendMessageToClient(connection, packet)
                 print("[*] Sent!")
 
     def closeConnection(self, client_socket, address):
         disconnected_msg = f"[{address[0]}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now()), disconnected_msg, 'default')
-        left_msg = left_msg_obj.pack()
 
         self.connections.remove(client_socket)
 
         for connection in self.connections:
-            connection.send(left_msg)
+            self.sendMessageToClient(connection, left_msg_obj)
 
         if not self.connections:
             try:
@@ -179,6 +178,17 @@ class Server:
             pass
         client_socket.close()
 
+    '''
+        @ will send a message (content) to a specified 'client' with their unique encryption key
+        Preconditions:
+            * the content parameter has to be a message object (unpacked)
+            * client has to be a socket connection object
+    '''
+    def sendMessageToClient(self, client, content):
+        key = self.findEncryptionKey(client) # I wrote this function below the handler
+        initializeAES(str(key).encode("utf-8")) #update the servers encryption class with the specific clients key
+        client.send(content.pack()) #send the message with the new AES object initialized
+  
     def handler(self, client_socket, address):
         while True:
             try:
@@ -208,6 +218,8 @@ class Server:
             elif data.typ == 'key_exc':
                 finalKey = serverDH.update(int(data.cont))
                 self.keyList.update( { address[0] : finalKey })
+                print("THIS IS THE KEYLIST")
+                print(self.keyList)
                 print("\nFINAL KEY", finalKey)
                 initializeAES(str(finalKey).encode("utf-8"))
                 print("** encryption key set")
@@ -226,13 +238,20 @@ class Server:
                         print("*** Sending command list...")
                         self.commandList(client_socket, address)
                     else:
-                        data = data.pack()
+                        #no need to pack the messages here becaue its done in the 'self.sendMessageToClients' function
                         for connection in self.connections:
                             if connection != client_socket:
-                                # print("\nBROADCASTING ", data)
-                                connection.send(data)
+                                self.sendMessageToClient(connection, data)
+
+    #utility functions
 
 
+    #returns the clients encryption key given a socket obj, if none exist, returns None
+    def findEncryptionKey(self, client):
+        for IP in self.keyList:
+            if(IP == client.getsockname()[0]):
+                return self.keyList[IP]
+        return None 
 
 def getArgs():
     parser = argparse.ArgumentParser()
