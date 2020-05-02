@@ -6,7 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
-from streaming import createMsg, streamData,initializeAES
+from streaming import createMsg, streamData, initializeAES, decryptMsg
 from clientConnectionObj import ClientConnection
 import pyDHE
 import time
@@ -217,13 +217,12 @@ class Server:
 
         while True:
             try:
-                data = streamData(client_socket, client_socketObj.encKey).decode("utf-8")
+                data = streamData(client_socket)
+
+                data = decryptMsg(data, client_socketObj.encKey)
+
                 data = Message.from_json(data)
                 
-                #print("\nRECV AFTER AES ", data)
-                
-                #print("\nRECV AFTER JSON ", data)
-            
             except ConnectionResetError:
                 print(f"*** [{address}] unexpectedly closed the connetion, received only an RST packet.")
                 self.closeConnection(client_socketObj)
@@ -248,11 +247,6 @@ class Server:
                 finalKey = serverDH.update(int(data.cont))
                 self.keyList.update( { address : finalKey })
                 client_socketObj.encKey = finalKey
-
-                print("THIS IS THE KEYLIST")
-                print(self.keyList)
-                print("\nFINAL KEY", finalKey)
-                print("** encryption key set")
             else:
                 if data.cont != '':
                     if data.typ == 'default':

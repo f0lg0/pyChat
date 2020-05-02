@@ -33,10 +33,7 @@ def createMsg(data):
         return finalMsg.encode("utf-8")
 
 
-def streamData(target, encKey):
-    print("SDFASKDFASDF?>>>>>>>>>>>>>>>>>>>>>>>>>" + str(encKey))
-    initializeAES(str(encKey).encode("utf-8"))
-
+def streamData(target):
     data = target.recv(BUFFERSIZE)
     if len(data) != 0:
         msglen = int(data[:BUFFERSIZE].strip())
@@ -47,17 +44,20 @@ def streamData(target, encKey):
             full_data += target.recv(BUFFERSIZE)
         
         if "iv_exc" not in full_data.decode("utf-8") and "key_exc" not in full_data.decode("utf-8"):
-            # print("hit")
-            cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
-
-            # print("\nRECV BASE64 ALREADY STRIPPED FROM HEADER", full_data)
             full_data = base64.b64decode(full_data)
-            # print("\nRECV BASE64 DEC ", full_data)
-
-
-            decrypted_data = cipher.decrypt(full_data)
         
-            return decrypted_data # returning just the bytes, json operations done later in the code to avoid importing errors
+            return full_data # returning just the bytes, json operations done later in the code to avoid importing errors
         return full_data
     else:
         pass
+
+
+def decryptMsg(msg, key):
+    if key != None:
+        initializeAES(str(key).encode("utf-8"))
+        cipher = enc.generateCipher() # everytime we generate a object, it can't be reused
+        decrypted_data = cipher.decrypt(msg)
+        print(decrypted_data)
+        return decrypted_data
+    else:
+        return msg
