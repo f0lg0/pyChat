@@ -33,7 +33,10 @@ def createMsg(data):
         return finalMsg.encode("utf-8")
 
 
-def streamData(target):
+def streamData(target, encKey):
+    print("SDFASKDFASDF?>>>>>>>>>>>>>>>>>>>>>>>>>" + str(encKey))
+    initializeAES(str(encKey).encode("utf-8"))
+
     data = target.recv(BUFFERSIZE)
     if len(data) != 0:
         msglen = int(data[:BUFFERSIZE].strip())
