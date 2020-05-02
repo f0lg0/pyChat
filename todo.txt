@@ -8,5 +8,7 @@
 3. [] BIG ASS CHANGE (need to call to explain)
 4. [] Send message with username instead of IP in case of disconnection
 5. [] Remove any kind of logging functions (?)
-6. [] Handle multiple keys with database
+6. [] Implement a real database (?)
+7. [] Add a GUI
+8. [] Clean the code by removing unnecessary lines
 
