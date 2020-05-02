@@ -4,6 +4,7 @@ format: mm-dd-yyyy
 
 [05-2-2020] f0lg0 & Jacopo:
 	- Finished a "database" with keys so the application is fully functional with AES encryption and DH key exchange
+	- Added TypeError exception handling for better stability
 
 [04-30-2020] Jacopo:
 	- Started making the keys database functional (not done)
