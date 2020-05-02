@@ -97,15 +97,10 @@ class Server:
             packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'iv_exc')
             client_socket.send(packet.pack())
 
-        print("*** Vector sent ***")
-
 
     def sharePublicInfo(self, client_socket, address):
         packet  = Message(self.IP, address, self.USERNAME, str(datetime.now()), str(serverDH.getPublicKey()), 'key_exc')
         client_socket.send(packet.pack())
-        
-        print("*** Server's Public Key Sent ***")
-        
 
     def logConnections(self, address):
         contime = datetime.now()
@@ -204,10 +199,6 @@ class Server:
     def sendMessageToClient(self, client, content):
         #print("IP: _>>>>>" + str(client.getsockname()[0]))
         key = client.encKey 
-        
-        for connection in self.clientConnections:
-            print("DATA>>>" + str(connection.username) + ", " + str(connection.encKey) + ", " + str(connection.getIP()))
-
         initializeAES(str(key).encode("utf-8")) #update the servers encryption class with the specific clients key
         client.socketObj.send(content.pack()) #send the message with the new AES object initialized
   

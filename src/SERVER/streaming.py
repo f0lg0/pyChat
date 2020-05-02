@@ -11,8 +11,6 @@ enc = None
 def initializeAES(key):
     global PASSWORD
     global enc
-    print("KEY: ")
-    print(key)
     PASSWORD = key
     enc = AESEncryption(PASSWORD)
 
@@ -57,7 +55,6 @@ def decryptMsg(msg, key):
         initializeAES(str(key).encode("utf-8"))
         cipher = enc.generateCipher() # everytime we generate a object, it can't be reused
         decrypted_data = cipher.decrypt(msg)
-        print(decrypted_data)
         return decrypted_data
     else:
         return msg
