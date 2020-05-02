@@ -111,15 +111,16 @@ class Client:
         iThread.start()
 
         while True:
-            try:
-                data = streamData(self.client)
-                print("\rRECV AFTER AES DEC ", data)
-                data = data.decode("utf-8")
-                #data = base64.b64decode(data)
-                data = Message.from_json(data) # it's a dataclass object
-            except AttributeError:
-                print("\r[*] Connection closed by the server")
-                break
+            #try:
+            data = streamData(self.client)
+            data = data.decode("utf-8")
+
+            print("DATA>>" + str(data))
+            #data = base64.b64decode(data)
+            data = Message.from_json(data) # it's a dataclass object
+            #except AttributeError:
+            #   print("\r[*] Connection closed by the server")
+            #  break
 
             if data.typ == "export":
                 timestamp = str(datetime.now())
