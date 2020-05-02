@@ -35,8 +35,7 @@ class Client:
 
         iv = self.recvVector()
         finalDecryptionKey = self.recvServerKey()
-        print("* PASSWORD: ", finalDecryptionKey)
-        print("*** Got vector ***")
+
         with open('./vector', 'wb+') as f:
             f.write(iv.cont.encode("utf-8"))
 
@@ -52,9 +51,6 @@ class Client:
     def sharePublicInfo(self):
         packet  = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), str(clientDH.getPublicKey()), 'key_exc')
         self.client.send(packet.pack())
-        
-        # print("sent", packet.pack())
-        print("*** Client's Public Key Sent ***")
 
 
     def recvVector(self):
@@ -70,11 +66,9 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
                     self.client.send(packet.pack())
-                    # print("\nSENT ", packet.pack())
 
                     check = streamData(self.client).decode("utf-8")
                     check = Message.from_json(check)
-                    # print("\nRECV AES DEC", check)
                     print(check.cont)
 
                     if check.cont != "[*] Username already in use!":
@@ -99,7 +93,6 @@ class Client:
                     packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
                 self.client.send(packet.pack())
-                # print("\rSENT ", packet.pack())
                 to_send_msg = ""
             else:
                 print("Cant send empty message!")
@@ -111,16 +104,13 @@ class Client:
         iThread.start()
 
         while True:
-            #try:
-            data = streamData(self.client)
-            data = data.decode("utf-8")
-
-            print("DATA>>" + str(data))
-            #data = base64.b64decode(data)
-            data = Message.from_json(data) # it's a dataclass object
-            #except AttributeError:
-            #   print("\r[*] Connection closed by the server")
-            #  break
+            try:
+                data = streamData(self.client)
+                data = data.decode("utf-8")
+                data = Message.from_json(data) # it's a dataclass object
+            except AttributeError:
+                print("\r[*] Connection closed by the server")
+                break
 
             if data.typ == "export":
                 timestamp = str(datetime.now())

@@ -19,13 +19,10 @@ def createMsg(data):
     if enc != None:
         cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
         encrypted_data = base64.b64encode(cipher.encrypt(data.encode("utf-8"))) # base64 rappresents bytes object in strings
-        # print("\nENCRYPTED DATA ", base64.b64decode(encrypted_data))
-
 
         finalMsg = encrypted_data.decode("utf-8")
         finalMsg = f'{len(finalMsg):<10}' + finalMsg
 
-        # print("\nCRAFTED ", finalMsg.encode("utf-8"))
         return finalMsg.encode("utf-8")
     else:
         finalMsg = data
@@ -48,10 +45,7 @@ def streamData(target):
         if "iv_exc" not in full_data.decode("utf-8") and "key_exc" not in full_data.decode("utf-8"):
             cipher = enc.generateCipher() # everytime we generate a object, it can't be reused 
 
-            # print("\nRECV BASE64 ALREADY STRIPPED FROM HEADER", full_data)
             full_data = base64.b64decode(full_data)
-            # print("\nRECV BASE64 DEC ", full_data)
-
 
             decrypted_data = cipher.decrypt(full_data)
         

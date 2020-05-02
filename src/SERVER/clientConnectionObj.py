@@ -10,6 +10,3 @@ class ClientConnection:
     def getIP(self):
         return self.socketObj.getsockname()[0]
     
-   
-    def getsockname(self):
-        return "WORKING FINE"
