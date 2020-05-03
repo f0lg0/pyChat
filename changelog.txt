@@ -2,7 +2,11 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
-[05-2-2020] f0lg0 & Jacopo:
+[05-03-2020] f0lg0:
+	- cleaned the code a bit
+	- disconnection msg now contains username instead of IP
+
+[05-02-2020] f0lg0 & Jacopo:
 	- Finished a "database" with keys so the application is fully functional with AES encryption and DH key exchange
 	- Added TypeError exception handling for better stability
 
