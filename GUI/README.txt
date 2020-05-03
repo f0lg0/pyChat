@@ -7,3 +7,6 @@ you run the python file in the terminal and it will do everything fo you.
 The web files are in the "web" folder, we can change that tho.
 I've noticed that closing Chrome doesn't actually stop the process in the terminal.
 Let me know if you want to proceed with this lib! Will start looking at JS and HTML... dang I suck at those languages lmao.
+
+INSTALL:
+pip install eel
