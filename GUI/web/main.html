@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html>
-<body style = "background-color: black;">
+<!-- The head tag is where we can put external js scripts, css sheets, or js libraries -->
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="styling.css">
+	
+	<!-- JS Scripts -->
+	<script src="buttons.js"></script>
+	
+	<!-- Libraries -->
+	
+</head>
 
-<!-- I have brutally copied and pasted this code because I am a super noob ath webdev -->
-<style>
-    .center{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: auto;
-        height: auto;
-        -webkit-transform: translate(-50%,-50%);
-        -moz-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        -o-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
-    }
-</style>
+<body>
 
 <!-- don't even know what is a div lmao-->
-<div class= "center">
-    <h1  style = "color: chartreuse;">Hey</h1>
-</div>
-
+	<header class = "main_page_header">
+		<h1 class = "main_page_header_text">Main Chat</h1>
+		
+		<div class = "chat_content">
+			<h3>Insert Chat messages here</h3>
+		</div>
+	</header>
+	
+	<div class = "right-wrapper">
+			<div class = "right-fixed">
+				<h1>FIXED CONTENT ON THE SIDE</h1>
+			</class>
+	</div>
+	
+	<footer class = "foot">
+		<div class = "main_input_wrapper">
+			<input id = "client_msg" class = "main_input" placeholder = "Type your message here..."></input>
+			<button id = "client_msg_btn" class = "main_btn">Send</button>
+		</div>
+	</footer>
+	
+	<script>
+		let clientMsgInput = new Input("client_msg", "client_msg_btn");
+		
+		
+	</script>
 </body>
 </html> 
