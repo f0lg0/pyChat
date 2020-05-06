@@ -10,6 +10,10 @@ from streaming import createMsg, streamData, initializeAES
 import pyDHE
 import eel
 
+# this is temporary, just for debuggining when you want to open two clients on one computer
+# Note that there is a small change the random port numbers will be the same and crash anyway. 
+import random
+
 client = None
 
 eel.init('./GUI/web')
@@ -137,14 +141,20 @@ class Client:
 
                     print('\r' + "You> ", end = "")
                 else:
-                    print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
+                    #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
+                    eel.writeMsg(data.cont, data.username)
 
         self.client.close()
 
 @eel.expose
 def sendMsg(cont):
-    packet = Message("self.CLIENT_IP", "self.SERVER_IP", "self.USERNAME", str(datetime.now()), cont, 'default')
+    packet = Message(client.CLIENT_IP, client.SERVER_IP, client.USERNAME, str(datetime.now()), cont, 'default')
     client.client.send(packet.pack())
+    
+@eel.expose
+def getUsername():
+    return client.USERNAME
+
     
 def getArgs():
     parser = argparse.ArgumentParser()
@@ -164,7 +174,7 @@ def getArgs():
         return options
 
 def startEel():
-    eel.start('main.html')
+    eel.start('main.html', port=random.choice(range(8000, 8080)))
 
 def main():
     try:
@@ -187,8 +197,6 @@ def main():
     iThread = threading.Thread(target = startEel)
     iThread.daemon = True
     iThread.start()
-
-    sendMsg("helo")
 
     client.receiveData()
 
