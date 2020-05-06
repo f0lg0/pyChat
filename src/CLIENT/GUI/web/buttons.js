@@ -14,8 +14,7 @@ class Input{
 			if(obj.input.value != "" && obj.input.value != null){
 				console.log(obj.input.value);
                 writeMsg(obj.input.value, "local");
-                eel.plz()
-                eel.sendMsg(obj.input.value)
+                #eel.sendMsg(obj.input.value)
                 
 				obj.clear();
 			}
