@@ -7,9 +7,9 @@
 2. [] Replace changelog.txt with CHANGELOG.md
 3. [] BIG ASS CHANGE (need to call to explain)
 4. [x] Send message with username instead of IP in case of disconnection
-5. [] Remove any kind of logging functions (?)
+5. [x] Remove any kind of logging functions (?)
 6. [] Implement a real database (?)
 7. [] Add a GUI
-8. [] Clean the code by removing unnecessary lines
+8. [x] Clean the code by removing unnecessary lines
 9. [] Give our app a name and get a nice logo :D
 

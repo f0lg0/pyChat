@@ -2,6 +2,13 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[05-06-2020] f0lg0:
+	- cleaned the code by removing useless stuff 
+	- removed logging functions
+
+[05-05-2020] JacopoFB:
+	- started to develop a GUI
+
 [05-03-2020] f0lg0:
 	- cleaned the code a bit
 	- disconnection msg now contains username instead of IP
