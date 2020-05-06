@@ -1,0 +1,103 @@
+/* This block will add stlye to the whole page */
+*{
+	padding: 0px;
+	margin: 0px;
+	font-family: courier new;
+}
+
+body { background-color: #212020; }
+
+.foot {
+	width: 50%;
+	text-align: center;
+	position: fixed;
+    left: 0;
+    bottom: 0;
+    color: white;
+	padding-bottom: 2%;
+	float: left;
+}
+.main_input_wrapper{	
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0px;
+}
+.main_input{
+	width: 75%;
+	height: 20px;
+	background-color: #878787;
+	border: none;
+	color: white;
+	padding: 1%;
+}
+.main_input:focus{
+	width: 75%;
+	height: 20px;
+	background-color: #7a7a7a;
+	border: none;
+	color: white;
+	padding: 1%;
+}
+.main_input::placeholder{
+	color: white;
+}
+.main_btn{
+	width: 10%;
+	background-color: white;
+	border:none;
+	box-sizing: border-box;
+	padding: 1%;
+}
+.main_btn:hover{
+	width: 10%;
+	background-color: #f2f2f2;
+	border:none;
+	box-sizing: border-box;
+	padding: 1%;
+}
+.main_btn:active{
+	width: 10%;
+	background-color: #d1d1d1;
+	border:none;
+	box-sizing: border-box;
+	padding: 1%;
+}
+.chat_content{
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+	background-color: #212020;
+    margin-bottom:12%;
+	color: white;
+	padding-top: 2%;
+}
+.chat_container{
+    text-align: left;
+    padding-left: 2%;
+}
+.chatMsg{
+    font-size: 0.9em;
+}
+.main_page_header{
+	text-align: center;
+	width: 50%;
+	float: left;
+}
+.main_page_header_text{
+	color: white;
+	padding: 2%;
+}
+.right-wrapper{
+	width: 50%;
+	box-sizing: border-box;
+	float: right;
+	height: 100%;
+}
+.right-fixed{
+	position: fixed;
+	width: 50%;
+	height: 100%;
+	color: white;
+	text-align: center;
+    background-color: #454343;
+}

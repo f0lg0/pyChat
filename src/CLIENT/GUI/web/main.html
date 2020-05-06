@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<!-- The head tag is where we can put external js scripts, css sheets, or js libraries -->
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="styling.css">
+	
+	<!-- JS Scripts -->
+	<script src="buttons.js"></script>
+	
+	<!-- Libraries -->
+    <script type="text/javascript" src="/eel.js"></script>
+	
+</head>
+
+<body>
+
+<!-- don't even know what is a div lmao-->
+	<header class = "main_page_header">
+		<h1 class = "main_page_header_text">Main Chat</h1>
+		
+		<div class = "chat_content">
+            <div id = "chatList" class = "chat_container">
+                <!-- Messages get appended here -->
+            </div>
+		</div>
+	</header>
+	
+	<div class = "right-wrapper">
+			<div class = "right-fixed">
+				<h1 class = "main_page_header_text">FIXED CONTENT ON THE SIDE</h1>
+			</div>
+	</div>
+	
+	<footer class = "foot">
+		<div class = "main_input_wrapper">
+			<input id = "client_msg" class = "main_input" placeholder = "Type your message here...">
+			<button id = "client_msg_btn" class = "main_btn">Send</button>
+		</div>
+	</footer>
+	
+	<script>
+		let clientMsgInput = new Input("client_msg", "client_msg_btn");
+		
+        //runs once when the page opens 
+        window.onload = function(){
+            writeMsg("Welcom to the chat!", "local", 10);
+        }
+        
+        //writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
+        //isLocal should determain if the message is being written from the local client, false if its foreign
+        eel.expose(writeMsg);
+		function writeMsg(message, source, padding){
+            let item = document.createElement("p");
+            let msg;
+            if(source != "local"){
+                msg = document.createTextNode(source + "> " + message);
+            }else{
+                msg = document.createTextNode("You> " + message);    
+            }
+
+            item.className = "chatMsg";
+            
+            if(padding!=null){
+                item.style = "padding-top: " + padding + "px; padding-bottom: " + padding + "px;";    
+            }
+            
+            item.appendChild(msg);
+            document.getElementById("chatList").appendChild(item);
+            window.scrollTo(0,document.body.scrollHeight);
+        }
+	</script>
+</body>
+</html> 
