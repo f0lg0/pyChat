@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[05-06-2020] Jacopo:
+	- Updated the GUI to look better and have the text not show under the box
+
 [05-06-2020] f0lg0:
 	- cleaned the code by removing useless stuff 
 	- removed logging functions
