@@ -1,8 +1,0 @@
-elliot> hi friend
-elliot> [help]
-elliot> [export_chat]
-elliot> hi man
-elliot> wassup
-leonardo> fine thanks bro
-elliot> hi friend
-elliot> [help]
