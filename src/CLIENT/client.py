@@ -11,8 +11,6 @@ import pyDHE
 
 clientDH = pyDHE.new()
 
-# from displayBanner import displayBanner
-
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
         self.SERVER_IP = server_ip
@@ -166,8 +164,6 @@ def main():
         PORT = int(input("*** Enter server PORT number > "))
 
     BUFFER_SIZE = 1024
-
-    # displayBanner()
 
     CLIENT_IP = socket.gethostbyname(socket.gethostname())
 
