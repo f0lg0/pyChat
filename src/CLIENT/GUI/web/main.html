@@ -7,6 +7,7 @@
 	
 	<!-- JS Scripts -->
 	<script src="buttons.js"></script>
+	<script src="pythonDataRetrieve.js"></script>
 	
 	<!-- Libraries -->
     <script type="text/javascript" src="/eel.js"></script>
@@ -41,10 +42,17 @@
 	
 	<script>
 		let clientMsgInput = new Input("client_msg", "client_msg_btn");
-		
+        let clientInfo = {
+            username: ""
+        }
+        
         //runs once when the page opens 
+        //SET client info vals here with async calls
         window.onload = function(){
-            writeMsg("Welcom to the chat!", "local", 10);
+            let name = getUsername().then(function(name) {
+                clientInfo.username = name;
+                writeMsg("Welcome to the chat " + name + "!", "Server", 10);
+            });
         }
         
         //writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
@@ -53,10 +61,11 @@
 		function writeMsg(message, source, padding){
             let item = document.createElement("p");
             let msg;
+            
             if(source != "local"){
                 msg = document.createTextNode(source + "> " + message);
             }else{
-                msg = document.createTextNode("You> " + message);    
+                msg = document.createTextNode("You > " + message);    
             }
 
             item.className = "chatMsg";

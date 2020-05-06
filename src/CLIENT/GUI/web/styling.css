@@ -15,7 +15,9 @@ body { background-color: #212020; }
     bottom: 0;
     color: white;
 	padding-bottom: 2%;
+    padding-top: 2%;
 	float: left;
+    background-color: #212020; 
 }
 .main_input_wrapper{	
 	width: 100%;
@@ -70,6 +72,7 @@ body { background-color: #212020; }
     margin-bottom:12%;
 	color: white;
 	padding-top: 2%;
+    word-break: break-word;
 }
 .chat_container{
     text-align: left;
@@ -88,16 +91,16 @@ body { background-color: #212020; }
 	padding: 2%;
 }
 .right-wrapper{
-	width: 50%;
+	width: 30%;
 	box-sizing: border-box;
 	float: right;
 	height: 100%;
 }
 .right-fixed{
 	position: fixed;
-	width: 50%;
+	width: 30%;
 	height: 100%;
 	color: white;
 	text-align: center;
-    background-color: #454343;
+    background-color: #292727;
 }
