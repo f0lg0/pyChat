@@ -8,6 +8,11 @@ from datetime import datetime
 from message import Message
 from streaming import createMsg, streamData, initializeAES
 import pyDHE
+import eel
+
+client = None
+
+eel.init('./GUI/web')
 
 clientDH = pyDHE.new()
 
@@ -97,9 +102,9 @@ class Client:
 
 
     def receiveData(self):
-        iThread = threading.Thread(target = self.sendMsg)
-        iThread.daemon = True
-        iThread.start()
+        # iThread = threading.Thread(target = self.sendMsg)
+        # iThread.daemon = True
+        # iThread.start()
 
         while True:
             try:
@@ -136,6 +141,11 @@ class Client:
 
         self.client.close()
 
+@eel.expose
+def sendMsg(cont):
+    packet = Message("self.CLIENT_IP", "self.SERVER_IP", "self.USERNAME", str(datetime.now()), cont, 'default')
+    client.client.send(packet.pack())
+    
 def getArgs():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--server", dest = "server_ip", help = "Enter server IP")
@@ -153,6 +163,9 @@ def getArgs():
     else:
         return options
 
+def startEel():
+    eel.start('main.html')
+
 def main():
     try:
         options = getArgs()
@@ -167,8 +180,16 @@ def main():
 
     CLIENT_IP = socket.gethostbyname(socket.gethostname())
 
+    global client
     client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
     client.connectToServer()
+
+    iThread = threading.Thread(target = startEel)
+    iThread.daemon = True
+    iThread.start()
+
+    sendMsg("helo")
+
     client.receiveData()
 
 

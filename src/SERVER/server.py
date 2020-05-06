@@ -169,6 +169,7 @@ class Server:
                 data = streamData(client_socket) # stream it
                 data = decryptMsg(data, client_socketObj.encKey) # decrypting it
                 data = Message.from_json(data) # converting to obj
+                print(str(data))
                 
             except ConnectionResetError:
                 print(f"*** [{address}] unexpectedly closed the connetion, received only an RST packet.")
