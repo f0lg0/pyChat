@@ -23,22 +23,6 @@ class Server:
 
         self.temp_f = False # flag for loop logic
 
-        # holds all the socket objects
-        #FLAGGED
-        self.connections = []
-
-        #contains the ip associated with username
-        #FLAGGED
-        self.database = {
-            "host" : "username"
-        }
-
-        # holds all the client enc keys associated with IPs
-        #FLAGGED
-        self.keyList = {
-            "client" : "key"
-        }
-
         # holds a list of client connection objects (eventully we should have just this)
         self.clientConnections = []
 
@@ -48,9 +32,6 @@ class Server:
         }
         
 
-        self.users_log = "./logs/users.txt"
-        self.chat_log = "./logs/chatlog.txt"
-        self.cons_log = "./logs/cons.txt"
         self.current_chat = "./logs/currentchat.txt"
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -70,7 +51,6 @@ class Server:
         while True:
             client_socket, address = self.server.accept()
             print(f"[*] Connection from {address} has been established!")
-            self.logConnections(address[0])
 
             # instantiate a client connection obj with the username and encrytion key initially set to null
             self.clientConnections.append(ClientConnection(client_socket, None, None))
@@ -79,15 +59,18 @@ class Server:
             cThread.daemon = True
             cThread.start()
 
-    
-            self.connections.append(client_socket)
             self.shareVector(client_socket, address[0])
             self.sharePublicKey(client_socket, address[0])
             time.sleep(0.1) # to avoid buffer congestion
            
     def stopServer(self):
-        for conn in self.connections:
-            conn.close()
+        for conn in self.clientConnections:
+            conn.socketObj.close()
+
+        try:
+            os.remove(self.current_chat)
+        except FileNotFoundError:
+            print("*** Nothing to clear in the logs")
 
         self.server.close()
 
@@ -102,20 +85,6 @@ class Server:
         packet  = Message(self.IP, address, self.USERNAME, str(datetime.now()), str(serverDH.getPublicKey()), 'key_exc')
         client_socket.send(packet.pack())
 
-    def logConnections(self, address):
-        contime = datetime.now()
-        with open(self.cons_log, "a") as cons:
-            cons.write(address + ">" + str(contime) + '\n')
-
-    def logUsers(self, data):
-        with open(self.users_log, "a", encoding = "utf-8") as users:
-            users.write(data + '\n')
-
-    def logChat(self, data):
-        timestamp = datetime.now()
-        with open(self.chat_log, "a", encoding = "utf-8") as chatlog:
-            chatlog.write(data + " " + str(timestamp) + '\n')
-
     def current(self, data):
         """ wasn't sure about using 'with' here """
 
@@ -125,8 +94,8 @@ class Server:
     def checkUsername(self, client_socketObj, data):
         flag = False
 
-        for user in self.database:
-            if self.database[user] == data.cont:
+        for user in self.clientConnections:
+            if user.username == data.cont:
                 flag = True
                 self.temp_f = True
 
@@ -138,10 +107,7 @@ class Server:
                 break
 
         if flag == False:
-            self.database.update( {client_socketObj.getIP() : data.cont} )
             client_socketObj.username = data.cont
-
-            # self.logUsers(decoded_content)
 
             content = "[*] You have joined the chat!"
 
@@ -169,7 +135,6 @@ class Server:
         disconnected_msg = f"[{client_socketObj.username}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now()), disconnected_msg, 'default')
 
-        self.connections.remove(client_socketObj.socketObj) # FLAGGED
         self.clientConnections.remove(client_socketObj)
 
         for connection in self.clientConnections:
@@ -180,11 +145,6 @@ class Server:
                 os.remove(self.current_chat)
             except FileNotFoundError:
                 print("*** Nothing to clear in the logs")
-
-        try:
-            del self.database[client_socketObj.getIP()]
-        except KeyError:
-            pass
 
         client_socketObj.socketObj.close()
 
@@ -235,15 +195,11 @@ class Server:
                     continue
             elif data.typ == 'key_exc':
                 finalKey = serverDH.update(int(data.cont)) # generating the shared private secret 
-                self.keyList.update( { address : finalKey }) # adding it to database FLAGGED
                 client_socketObj.encKey = finalKey
             else:
                 if data.cont != '':
                     if data.typ == 'default':
-                        self.logChat(data.cont)
                         self.current(data.cont)
-                    else:
-                        self.logChat(data.cont)
 
                     if data.typ == 'export':
                         print("*** Sending chat...")
