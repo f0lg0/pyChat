@@ -12,4 +12,7 @@
 7. [] Add a GUI
 8. [x] Clean the code by removing unnecessary lines
 9. [] Give our app a name and get a nice logo :D
+10. [] Update GUI look based on renders
+11. [] Set username in GUI
+12. [] share the vector without writing it to file
 
