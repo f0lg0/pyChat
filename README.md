@@ -87,7 +87,7 @@ Thank you for using our application! We would love to hear feedback and we are o
 
 Open an issue here or:
 
-[f0lg0 Twitter](https://twitter.com/f0lg0)
+[f0lg0 Twitter](https://twitter.com/f0lg0)  
 [f0lg0 Reddit](https://www.reddit.com/user/_folgo_/)
 
 
