@@ -11,14 +11,13 @@ import pyDHE
 import eel
 
 # this is temporary, just for debuggining when you want to open two clients on one computer
-# Note that there is a small change the random port numbers will be the same and crash anyway. 
+# Note that there is a small chance the random port numbers will be the same and crash anyway. 
 import random
 
-client = None
+client = None # so we can use it in exposed functions
+eel.init('./GUI/web') # initializing eel
 
-eel.init('./GUI/web')
-
-clientDH = pyDHE.new()
+clientDH = pyDHE.new() # diffiehellman object
 
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
@@ -88,28 +87,17 @@ class Client:
                 print("Username can't be empty!")
 
 
-    def sendMsg(self):
-        while True:
-            to_send_msg = input("You> ")
-            if to_send_msg:
-                if to_send_msg == "[export_chat]":
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
-                elif to_send_msg == "[help]":
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
-                else:
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
+    def sendMsg(self, to_send_msg):
+        if to_send_msg == "[export_chat]":
+            packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
+        elif to_send_msg == "[help]":
+            packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
+        else:
+            packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
-                self.client.send(packet.pack())
-                to_send_msg = ""
-            else:
-                print("Cant send empty message!")
-
+        self.client.send(packet.pack())
 
     def receiveData(self):
-        # iThread = threading.Thread(target = self.sendMsg)
-        # iThread.daemon = True
-        # iThread.start()
-
         while True:
             try:
                 data = streamData(self.client)
@@ -146,16 +134,15 @@ class Client:
 
         self.client.close()
 
+# [Eel functions]
 @eel.expose
-def sendMsg(cont):
-    packet = Message(client.CLIENT_IP, client.SERVER_IP, client.USERNAME, str(datetime.now()), cont, 'default')
-    client.client.send(packet.pack())
+def exposeSendMsg(to_send_msg):
+    client.sendMsg(to_send_msg)
     
 @eel.expose
 def getUsername():
     return client.USERNAME
-
-    
+ 
 def getArgs():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--server", dest = "server_ip", help = "Enter server IP")
@@ -194,9 +181,10 @@ def main():
     client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
     client.connectToServer()
 
-    iThread = threading.Thread(target = startEel)
-    iThread.daemon = True
-    iThread.start()
+    # threding eel in the background
+    eThread = threading.Thread(target = startEel)
+    eThread.daemon = True
+    eThread.start()
 
     client.receiveData()
 
