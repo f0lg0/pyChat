@@ -2,6 +2,9 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[05-10-2020] Jacopo:
+	- Completly changed the UI style, but the messages still work with python
+
 [05-06-2020] Jacopo:
 	- Updated the GUI to look better and have the text not show under the box
 
