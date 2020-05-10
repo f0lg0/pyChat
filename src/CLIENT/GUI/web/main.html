@@ -15,31 +15,45 @@
 </head>
 
 <body>
-
-<!-- don't even know what is a div lmao-->
-	<header class = "main_page_header">
-		<h1 class = "main_page_header_text">Main Chat</h1>
-		
-		<div class = "chat_content">
-            <div id = "chatList" class = "chat_container">
-                <!-- Messages get appended here -->
+    <!-- These divs are mashed together because of how inline blocks behave with whitespace -->
+    
+    <!-- Left Side Block (list of all clients) -->
+    <div class = "pageBlock" style = "width: 20%;">
+        <div class = "fixedCont" style = "width: 20%; background-color: #434C5E;">
+            
+        </div>
+        
+        <div class = "fixedContTab" style = "width: 20%; background-color: #2E3440;">
+            <h2 class = "buttonCont">Online (#)</h2>    
+        </div>
+    <!-- Middle Block (For the chat) -->
+    </div><div class = "pageBlock" style = "width: 50%;">
+    
+        <div class = "pageBlock" style = "width: 50%; height: 75px;">
+            <div class = "fixedContTab" style = "width: 50%; background-color: #3B4252;">
+                <h2 class = "buttonCont">Insert Chat Name Here</h2>     
             </div>
-		</div>
-	</header>
-	
-	<div class = "right-wrapper">
-			<div class = "right-fixed">
-				<h1 class = "main_page_header_text">FIXED CONTENT ON THE SIDE</h1>
-			</div>
-	</div>
-	
-	<footer class = "foot">
-		<div class = "main_input_wrapper">
-			<input id = "client_msg" class = "main_input" placeholder = "Type your message here...">
-			<button id = "client_msg_btn" class = "main_btn">Send</button>
-		</div>
-	</footer>
-	
+        </div>
+    
+        <div class = "fixedContFoot" style = "width: 50%;">
+            <input id = "client_msg" placeholder = "Send a Message...">
+            <button id = "client_msg_btn">Send</button>
+        </div>
+    
+        <div id = "chatList">
+            
+        </div>
+    <!-- Right block for the settings -->
+    </div><div class = "pageBlock" style = "width: 30%;">
+        <div class = "fixedCont" style = "width: 30%; background-color: #3B4252;">
+            
+        </div>  
+    
+        <div class = "fixedContTab" style = "width: 30%; background-color: #2E3440;">
+            <h2 class = "buttonCont">Settings</h2>      
+        </div>
+    </div>
+        
 	<script>
 		let clientMsgInput = new Input("client_msg", "client_msg_btn");
         let clientInfo = {
@@ -65,7 +79,7 @@
             if(source != "local"){
                 msg = document.createTextNode(source + "> " + message);
             }else{
-                msg = document.createTextNode("You > " + message);    
+                msg = document.createTextNode("You> " + message);    
             }
 
             item.className = "chatMsg";
@@ -78,6 +92,7 @@
             document.getElementById("chatList").appendChild(item);
             window.scrollTo(0,document.body.scrollHeight);
         }
+    
 	</script>
 </body>
 </html> 
