@@ -9,10 +9,11 @@
 4. [x] Send message with username instead of IP in case of disconnection
 5. [x] Remove any kind of logging functions (?)
 6. [] Implement a real database (?)
-7. [] Add a GUI
+7. [x] Add a GUI
 8. [x] Clean the code by removing unnecessary lines
 9. [] Give our app a name and get a nice logo :D
 10. [] Update GUI look based on renders
 11. [] Set username in GUI
-12. [] share the vector without writing it to file
+12. [x] share the vector without writing it to file
+13. [] Close Chrome and automatically close client.py 
 

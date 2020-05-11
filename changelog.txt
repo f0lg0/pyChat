@@ -2,10 +2,13 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
-[05-10-2020] Jacopo:
+[05-11-2020] f0lg0:
+	- vector is now being sent without writing it to a file
+
+[05-10-2020] JacopoFB:
 	- Completely changed the UI style, but the messages still work with python
 
-[05-06-2020] Jacopo:
+[05-06-2020] JacopoFB:
 	- Updated the GUI to look better and have the text not show under the box
 
 [05-06-2020] f0lg0:
@@ -33,7 +36,7 @@ format: mm-dd-yyyy
 	- cleaned some dirs in the repo
 	- DH key is now being used for AES, need to implement the database correctly
 
-[04-25-2020] f0lg0 && JacopoFB:
+[04-25-2020] f0lg0 & JacopoFB:
 	- implemented DH key exchange + bug_fixes
 
 [04-17-2020] f0lg0:
