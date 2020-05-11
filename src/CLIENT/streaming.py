@@ -8,11 +8,11 @@ BUFFERSIZE = 10
 PASSWORD = b''
 enc = None
 
-def initializeAES(key):
+def initializeAES(key, VECTOR): # vector parsed
     global PASSWORD
     global enc
     PASSWORD = key
-    enc = AESEncryption(PASSWORD)
+    enc = AESEncryption(PASSWORD, VECTOR)
 
 # generates a message with a fixed header which specifies the length of the message (returns bytes)
 def createMsg(data):
@@ -29,7 +29,6 @@ def createMsg(data):
         finalMsg = f'{len(finalMsg):<10}' + finalMsg
 
         return finalMsg.encode("utf-8")
-
 
 
 def streamData(target):

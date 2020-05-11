@@ -39,14 +39,11 @@ class Client:
             print(str(e))
             sys.exit()
 
-        iv = self.recvVector()
+        iv = self.recvVector() # we receive the vector
         finalDecryptionKey = self.recvServerKey()
 
-        with open('./vector', 'wb+') as f:
-            f.write(iv.cont.encode("utf-8"))
-
         self.sharePublicInfo()
-        initializeAES(str(finalDecryptionKey).encode("utf-8"))
+        initializeAES(str(finalDecryptionKey).encode("utf-8"), iv.cont) # we even parse the vector message content
         self.setUsername()
 
     def recvServerKey(self):
@@ -57,7 +54,6 @@ class Client:
     def sharePublicInfo(self):
         packet  = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), str(clientDH.getPublicKey()), 'key_exc')
         self.client.send(packet.pack())
-
 
     def recvVector(self):
         iv = streamData(self.client).decode("utf-8")

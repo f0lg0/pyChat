@@ -4,9 +4,15 @@ import base64
 from Crypto.Cipher import AES 
 from Crypto import Random
 
-IV = Random.new().read(AES.block_size) # initialization vector, we need to make this random. It can be shared in plain text, it's not secret
-with open('./vector', 'wb+') as f:
-    f.write(base64.b64encode(IV))
+IV = None # vector is global, we start with None
+def generateVector():
+	global IV
+
+	if IV == None: # if it's the first time that we generate it then go ahead
+		IV = Random.new().read(AES.block_size) # we save it as bytes
+
+	return base64.b64encode(IV) # initialization vector, we need to make this random. It can be shared in plain text, it's not secret. We return the base64
+
 
 class AESEncryption:
     def __init__(self, password):
@@ -16,7 +22,7 @@ class AESEncryption:
         self.MODE = AES.MODE_CFB # automatic padding mode (?)
 
     def generateCipher(self):
-        return AES.new(self.KEY, self.MODE, IV = IV)
+        return AES.new(self.KEY, self.MODE, IV = IV) # so here we can grab the unique vector
 
 
 

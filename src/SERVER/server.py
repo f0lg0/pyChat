@@ -6,7 +6,7 @@ import argparse
 import os
 from datetime import datetime
 from message import Message
-from streaming import createMsg, streamData, initializeAES, decryptMsg
+from streaming import createMsg, streamData, initializeAES, decryptMsg, returnVector
 from clientConnectionObj import ClientConnection
 import pyDHE
 import time
@@ -75,10 +75,9 @@ class Server:
         self.server.close()
 
     def shareVector(self, client_socket, address):
-        with open('./vector', 'rb') as vector:
-            content = vector.read().decode("utf-8")
-            packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'iv_exc')
-            client_socket.send(packet.pack())
+        content = returnVector().decode("utf-8") # returns vector from streaming.py where we get it from encryption, this is base64
+        packet = Message(self.IP, address, self.USERNAME, str(datetime.now()), content, 'iv_exc')
+        client_socket.send(packet.pack())
 
 
     def sharePublicKey(self, client_socket, address):

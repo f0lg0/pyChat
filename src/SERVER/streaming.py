@@ -2,11 +2,14 @@
 
 import json
 import base64
-from encryption import AESEncryption
+from encryption import AESEncryption, generateVector
 
 BUFFERSIZE = 10
 PASSWORD = b''
 enc = None
+
+def returnVector():
+    return generateVector() # it's a bit sketchy but it's needed because we import encryption.py only in this file
 
 def initializeAES(key):
     global PASSWORD

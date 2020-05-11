@@ -4,13 +4,10 @@ from Crypto import Random
 import base64
 
 class AESEncryption:
-    def __init__(self, password):
+    def __init__(self, password, vector): # vector here is base64
         self.PASSWORD = password
-
         self.KEY = hashlib.sha256(self.PASSWORD).digest() # generating a 32 bytes key 
-        
-        with open('./vector', 'rb+') as f:
-        	self.IV = base64.b64decode(f.read()) # initialization vector, we need to make this random. It can be shared in plain text, it's not secret
+        self.IV = base64.b64decode(vector) # initialization vector, we need to make this random. It can be shared in plain text, it's not secret
 
         self.MODE = AES.MODE_CFB # automatic padding mode (?)
 
