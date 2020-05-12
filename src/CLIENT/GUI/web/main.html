@@ -8,6 +8,7 @@
 	<!-- JS Scripts -->
 	<script src="buttons.js"></script>
 	<script src="pythonDataRetrieve.js"></script>
+	<script src="clientList.js"></script>
 	
 	<!-- Libraries -->
     <script type="text/javascript" src="/eel.js"></script>
@@ -20,11 +21,12 @@
     <!-- Left Side Block (list of all clients) -->
     <div class = "pageBlock" style = "width: 20%;">
         <div class = "fixedCont" style = "width: 20%; background-color: #434C5E;">
-            
-        </div>
-        
-        <div class = "fixedContTab" style = "width: 20%; background-color: #2E3440;">
-            <h2 class = "buttonCont">Online (#)</h2>    
+            <div class = "pageBlock" style = "width: 20%; height: 75px;">
+                <div class = "fixedContTab" style = "width: 20%; background-color: #2E3440;">
+                    <h2 class = "buttonCont">Online (#)</h2>     
+                </div>
+            </div>
+            <p id = "externalClientList"></p>      
         </div>
     <!-- Middle Block (For the chat) -->
     </div><div class = "pageBlock" style = "width: 50%;">
@@ -55,10 +57,14 @@
     </div>
         
 	<script>
+        //local machine client
 		let clientMsgInput = new Input("client_msg", "client_msg_btn");
         let clientInfo = {
             username: ""
         }
+        
+        //external clients (clientManager and class defined in clientList.js)
+        clientManager = new ExternalClientManager("externalClientList");
         
         //runs once when the page opens 
         //SET client info vals here with async calls
@@ -68,6 +74,8 @@
                 writeMsg("Welcome to the chat " + name + "!", "Server", 10);
             });
         }
+        
+        //ALL EXPOSED FUNCTIONS SHOULD GO BELOW
         
         //writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
         //isLocal should determain if the message is being written from the local client, false if its foreign
@@ -91,6 +99,12 @@
             item.appendChild(msg);
             document.getElementById("chatList").appendChild(item);
             window.scrollTo(0,document.body.scrollHeight);
+        }
+        
+        // updates the client list with 'list'
+        eel.expose(updateClientList);    
+        function updateClientList(list){
+            clientManager.updateClientList(list);
         }
     
 	</script>
