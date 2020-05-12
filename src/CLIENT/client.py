@@ -19,6 +19,9 @@ eel.init('./GUI/web') # initializing eel
 
 clientDH = pyDHE.new() # diffiehellman object
 
+# contains names only of all the clients connected
+client_list = [];
+
 class Client:
     def __init__(self, server_ip, port, buffer_size, client_ip):
         self.SERVER_IP = server_ip
@@ -118,17 +121,26 @@ class Client:
                     print('\n' + "You> ", end = "")
                 except:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
-            else:
-                if data.typ == "help":
-                    for command in data.cont:
-                        print('\r' + command + " : " + data.cont[command])
+            elif data.typ == "help":
+                for command in data.cont:
+                    print('\r' + command + " : " + data.cont[command])
 
-                    print('\r' + "You> ", end = "")
-                else:
-                    #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
-                    eel.writeMsg(data.cont, data.username)
+                print('\r' + "You> ", end = "")
+            elif data.typ == "client_list_update_add":
+                updateClientList(data.cont)    
+            else:
+                #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
+                eel.writeMsg(data.cont, data.username)
 
         self.client.close()
+
+# Will add to the list, or remove from the list the parameter 'name' depending on the actionType (a string of either "remove", or "add")        
+def updateClientList(c_list):
+    client_list = c_list;       
+    
+    #update the GUI
+    eel.updateClientList(client_list);
+        
 
 # [Eel functions]
 @eel.expose
