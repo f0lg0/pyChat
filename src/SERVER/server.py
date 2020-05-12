@@ -62,7 +62,17 @@ class Server:
             self.shareVector(client_socket, address[0])
             self.sharePublicKey(client_socket, address[0])
             time.sleep(0.1) # to avoid buffer congestion
-           
+    
+    # exception is the name it should not include (leave blank to get all)
+    def generateClientNames(self, exception=None):
+        names = []
+        for connection in self.clientConnections:
+            if exception != None:
+                if connection.username != exception:
+                    names.append(connection.username)
+        
+        return names
+    
     def stopServer(self):
         for conn in self.clientConnections:
             conn.socketObj.close()
@@ -109,9 +119,18 @@ class Server:
             client_socketObj.username = data.cont
 
             content = "[*] You have joined the chat!"
-
+            
             joined = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), content, 'approved_conn')
             self.sendMessageToClient(client_socketObj, joined)
+            
+            
+            # update all others client list
+            for connection in self.clientConnections:
+                listToSend = self.generateClientNames(connection.username) # return all client names other than the current client (set shouldParseContents to true)
+                client_list_update = Message(self.IP, connection.getIP(), self.USERNAME, str(datetime.now()), listToSend, 'client_list_update_add', True) 
+                self.sendMessageToClient(connection, client_list_update)
+            
+            
 
     def exportChat(self, client_socketObj):
         with open(self.current_chat, "rb") as chat:
