@@ -30,7 +30,7 @@ class Server:
             "[export_chat]" : "export current chat",
             "[help]" : "display possibile commands"
         }
-        
+
 
         self.current_chat = "./logs/currentchat.txt"
 
@@ -62,7 +62,7 @@ class Server:
             self.shareVector(client_socket, address[0])
             self.sharePublicKey(client_socket, address[0])
             time.sleep(0.1) # to avoid buffer congestion
-    
+
     # exception is the name it should not include (leave blank to get all)
     def generateClientNames(self, exception=None):
         names = []
@@ -70,9 +70,9 @@ class Server:
             if exception != None:
                 if connection.username != exception:
                     names.append(connection.username)
-        
+
         return names
-    
+
     def stopServer(self):
         for conn in self.clientConnections:
             conn.socketObj.close()
@@ -94,11 +94,9 @@ class Server:
         packet  = Message(self.IP, address, self.USERNAME, str(datetime.now()), str(serverDH.getPublicKey()), 'key_exc')
         client_socket.send(packet.pack())
 
-    def current(self, data):
-        """ wasn't sure about using 'with' here """
-
-        self.currentchat = open(self.current_chat, "a+", encoding = "utf-8")
-        self.currentchat.write(data + '\n')
+    def logCurrentChat(self, username, msg):
+        with open(self.current_chat, 'a+') as currentchat:
+            currentchat.write(username + "> " + msg + '\n')
 
     def checkUsername(self, client_socketObj, data):
         flag = False
@@ -119,20 +117,20 @@ class Server:
             client_socketObj.username = data.cont
 
             content = "[*] You have joined the chat!"
-            
+
             joined = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), content, 'approved_conn')
             self.sendMessageToClient(client_socketObj, joined)
-            
-            
+
+
             # update all others client list
             for connection in self.clientConnections:
                 listToSend = self.generateClientNames(connection.username) # return all client names other than the current client (set shouldParseContents to true)
-                client_list_update = Message(self.IP, connection.getIP(), self.USERNAME, str(datetime.now()), listToSend, 'client_list_update_add', True) 
+                client_list_update = Message(self.IP, connection.getIP(), self.USERNAME, str(datetime.now()), listToSend, 'client_list_update_add', True)
                 self.sendMessageToClient(connection, client_list_update)
-            
-            
 
-    def exportChat(self, client_socketObj):
+
+
+    def sendLoggedChat(self, client_socketObj):
         with open(self.current_chat, "rb") as chat:
             content = chat.read().decode("utf-8")
 
@@ -140,14 +138,14 @@ class Server:
 
             self.sendMessageToClient(client_socketObj, packet)
             print("[*] Sent!")
-                    
+
 
     def sendCommandList(self, client_socketObj):
         packet = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), self.command_list, 'help', True)
-        
+
         self.sendMessageToClient(client_socketObj, packet)
         print("[*] Sent!")
-                
+
 
     def closeConnection(self, client_socketObj):
         disconnected_msg = f"[{client_socketObj.username}] has left the chat"
@@ -173,12 +171,12 @@ class Server:
             * client has to be a socket connection object (special object containing sock obj, key and username)
     '''
     def sendMessageToClient(self, client, content):
-        key = client.encKey 
+        key = client.encKey
         initializeAES(str(key).encode("utf-8")) # update the servers encryption class with the specific clients key
         client.socketObj.send(content.pack()) # send the message with the new AES object initialized
-  
+
     def handler(self, client_socketObj):
-        client_socket = client_socketObj.socketObj # renaming 
+        client_socket = client_socketObj.socketObj # renaming
         address = client_socketObj.getIP() # renaming
 
         while True:
@@ -188,7 +186,7 @@ class Server:
                 data = decryptMsg(data, client_socketObj.encKey) # decrypting it
                 data = Message.from_json(data) # converting to obj
                 print(str(data))
-                
+
             except ConnectionResetError:
                 print(f"*** [{address}] unexpectedly closed the connetion, received only an RST packet.")
                 self.closeConnection(client_socketObj)
@@ -205,24 +203,24 @@ class Server:
                 print(f"*** [{address}] disconnected")
                 self.closeConnection(client_socketObj)
                 break
-            
+
             if data.typ == 'setuser':
                 # clientConnection obj updated in the self.checkUsername function
                 self.checkUsername(client_socketObj, data)
-                
+
                 if self.temp_f == True:
                     continue
             elif data.typ == 'key_exc':
-                finalKey = serverDH.update(int(data.cont)) # generating the shared private secret 
+                finalKey = serverDH.update(int(data.cont)) # generating the shared private secret
                 client_socketObj.encKey = finalKey
             else:
                 if data.cont != '':
                     if data.typ == 'default':
-                        self.current(data.cont)
+                        self.logCurrentChat(data.username, data.cont)
 
                     if data.typ == 'export':
                         print("*** Sending chat...")
-                        self.exportChat(client_socketObj)
+                        self.sendLoggedChat(client_socketObj)
                     elif data.typ == 'help':
                         print("*** Sending command list...")
                         self.sendCommandList(client_socketObj)

@@ -11,9 +11,10 @@ import pyDHE
 import eel
 
 # this is temporary, just for debuggining when you want to open two clients on one computer
-# Note that there is a small chance the random port numbers will be the same and crash anyway. 
+# Note that there is a small chance the random port numbers will be the same and crash anyway.
 import random
 
+# [GLOBAL VARIABLES]
 client = None # so we can use it in exposed functions
 eel.init('./GUI/web') # initializing eel
 
@@ -23,10 +24,9 @@ clientDH = pyDHE.new() # diffiehellman object
 client_list = [];
 
 class Client:
-    def __init__(self, server_ip, port, buffer_size, client_ip):
+    def __init__(self, server_ip, port, client_ip):
         self.SERVER_IP = server_ip
         self.PORT = port
-        self.BUFFER_SIZE = buffer_size
         self.CLIENT_IP = client_ip
         self.finalDecryptionKey = None
 
@@ -127,30 +127,30 @@ class Client:
 
                 print('\r' + "You> ", end = "")
             elif data.typ == "client_list_update_add":
-                updateClientList(data.cont)    
+                updateClientList(data.cont)
             else:
                 #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
                 eel.writeMsg(data.cont, data.username)
 
         self.client.close()
 
-# Will add to the list, or remove from the list the parameter 'name' depending on the actionType (a string of either "remove", or "add")        
+# Will add to the list, or remove from the list the parameter 'name' depending on the actionType (a string of either "remove", or "add")
 def updateClientList(c_list):
-    client_list = c_list;       
-    
+    client_list = c_list;
+
     #update the GUI
     eel.updateClientList(client_list);
-        
+
 
 # [Eel functions]
 @eel.expose
 def exposeSendMsg(to_send_msg):
     client.sendMsg(to_send_msg)
-    
+
 @eel.expose
 def getUsername():
     return client.USERNAME
- 
+
 def getArgs():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--server", dest = "server_ip", help = "Enter server IP")
@@ -169,7 +169,10 @@ def getArgs():
         return options
 
 def startEel():
-    eel.start('main.html', port=random.choice(range(8000, 8080)))
+    try:
+        eel.start('main.html', port=random.choice(range(8000, 8080)))
+    except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
+        print("window closed") # need to find a way to stop receiveData when it's waiting for data... sys.exit brutally doesn work :(
 
 def main():
     try:
@@ -181,12 +184,11 @@ def main():
         SERVER_IP = input("*** Enter server IP address > ")
         PORT = int(input("*** Enter server PORT number > "))
 
-    BUFFER_SIZE = 1024
 
     CLIENT_IP = socket.gethostbyname(socket.gethostname())
 
     global client
-    client = Client(SERVER_IP, PORT, BUFFER_SIZE, CLIENT_IP)
+    client = Client(SERVER_IP, PORT, CLIENT_IP)
     client.connectToServer()
 
     # threding eel in the background
@@ -194,7 +196,7 @@ def main():
     eThread.daemon = True
     eThread.start()
 
-    client.receiveData()
+    client.receiveData() # this is a loop and also streamData is blocking
 
 
 if __name__ == "__main__":
