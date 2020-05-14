@@ -2,6 +2,10 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[05-14-2020]
+	- renamed some functions (more readable now)
+	- started looking at detecting when the user closes the GUI window
+
 [05-11-2020] f0lg0:
 	- vector is now being sent without writing it to a file
 

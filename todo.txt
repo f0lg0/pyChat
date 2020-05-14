@@ -16,4 +16,8 @@
 11. [] Set username in GUI
 12. [x] share the vector without writing it to file
 13. [] Close Chrome and automatically close client.py 
+14. [] Add button for special commands such as export chat
+15. [] Write the documentation in one of these/make PDFs so we don't overload the README.md:
+		- GitHub pages
+		- Read the docs
 
