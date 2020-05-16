@@ -14,10 +14,9 @@ import time
 serverDH = pyDHE.new() # DiffieHellman object
 
 class Server:
-    def __init__(self, ip, port, buffer_size):
+    def __init__(self, ip, port):
         self.IP = ip
         self.PORT = port
-        self.BUFFER_SIZE = buffer_size
 
         self.USERNAME = "*server*"
 
@@ -230,7 +229,7 @@ class Server:
                             if connection.socketObj != client_socket:
                                 self.sendMessageToClient(connection, data) # broadcasting
 
-    # [utility functions]
+    # [utility functions] FLAGGED: we never use this
     def updateClientConnection(self, target, newName, newKey):
         for connection in self.clientConnections:
             if connection.socketObj == target:
@@ -267,9 +266,8 @@ def main():
 
     HOSTNAME = socket.gethostname()
     IP =  socket.gethostbyname(HOSTNAME)
-    BUFFER_SIZE = 1024
 
-    server = Server(IP, PORT, BUFFER_SIZE)
+    server = Server(IP, PORT)
 
     try:
         server.startServer()
