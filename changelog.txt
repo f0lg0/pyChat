@@ -2,7 +2,11 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
-[05-14-2020]
+[05-16-2020] f0lg0:
+	- started working on documentation
+	- removed old BUFFER_SIZE in server.py
+
+[05-14-2020] f0lg0:
 	- renamed some functions (more readable now)
 	- started looking at detecting when the user closes the GUI window
 
