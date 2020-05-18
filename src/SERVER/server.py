@@ -229,14 +229,7 @@ class Server:
                             if connection.socketObj != client_socket:
                                 self.sendMessageToClient(connection, data) # broadcasting
 
-    # [utility functions] FLAGGED: we never use this
-    def updateClientConnection(self, target, newName, newKey):
-        for connection in self.clientConnections:
-            if connection.socketObj == target:
-                if newName != None:
-                    connection.username = newName
-                if newKey != None:
-                    connection.encKey = newKey
+    # [utility functions] 
 
     # returns the client connection object from a socket object (returns None if none exist)
     def findConnectionFromSocket(self, sockObj):
