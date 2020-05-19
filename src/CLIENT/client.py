@@ -126,7 +126,7 @@ class Client:
                     print('\r' + command + " : " + data.cont[command])
 
                 print('\r' + "You> ", end = "")
-            elif data.typ == "client_list_update_add":
+            elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
             else:
                 #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
@@ -134,11 +134,12 @@ class Client:
 
         self.client.close()
 
-# Will add to the list, or remove from the list the parameter 'name' depending on the actionType (a string of either "remove", or "add")
+        
+# updates the gui with the list 'c_list'
 def updateClientList(c_list):
     client_list = c_list;
 
-    #update the GUI
+    # update the GUI
     eel.updateClientList(client_list);
 
 
