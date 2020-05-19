@@ -9,6 +9,7 @@
 	<script src="buttons.js"></script>
 	<script src="pythonDataRetrieve.js"></script>
 	<script src="clientList.js"></script>
+	<script src="utilities.js"></script>
 	
 	<!-- Libraries -->
     <script type="text/javascript" src="/eel.js"></script>
@@ -26,7 +27,7 @@
                     <h2 class = "buttonCont">Online (#)</h2>     
                 </div>
             </div>
-            <p id = "externalClientList"></p>      
+            <div id = "externalClientList" class = "blockList"></div>      
         </div>
     <!-- Middle Block (For the chat) -->
     </div><div class = "pageBlock" style = "width: 50%;">
@@ -38,7 +39,7 @@
         </div>
     
         <div class = "fixedContFoot" style = "width: 50%;">
-            <input id = "client_msg" placeholder = "Send a Message...">
+            <input id = "client_msg" placeholder = "Send a Message..." style = "cursor: auto;">
             <button id = "client_msg_btn">Send</button>
         </div>
     

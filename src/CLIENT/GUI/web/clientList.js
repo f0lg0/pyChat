@@ -7,8 +7,22 @@ class ExternalClientManager{
         this.element = elementToUpdate;
     }
     updateClientList(list){
-        this.clients = list;  
-        document.getElementById(this.element).innerHTML = "* " + list.join("".replace("", "<br />") + "* ");
+        //clear the list div first
+        removeAllChildren(this.element);
+        
+        //update the list
+        this.clients = list;
+        
+        //add through textnodes so that you can asign a class to the individual elements
+        for(let i = 0; i < this.clients.length; i++){
+            let client = document.createElement("p");
+            let textNode = document.createTextNode(this.clients[i]);
+            
+            client.className = "blockListItem";
+            console.log(this.clients[i]);
+            client.appendChild(textNode);
+            document.getElementById(this.element).appendChild(client);
+        }
     }
 }
     

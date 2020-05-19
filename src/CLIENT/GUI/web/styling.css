@@ -4,6 +4,7 @@
     font-family: courier new;
     box-sizing: border-box;
     color: #dde2ed;
+    cursor: default;
 }
 
 body {
@@ -53,6 +54,18 @@ body {
 .chatMsg{
     margin-top: 5px;
     margin-bottom: 5px;
+}
+.blockList{
+    width: 100%;
+    height: calc(100vh - 75px);
+    text-align: center;
+    overflow-x: auto;
+}
+.blockListItem{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-decoration: bold;
+    border-bottom: 1px solid grey;
 }
 
 /* ID STYLES */
