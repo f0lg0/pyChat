@@ -154,7 +154,7 @@ class Server:
 
         for connection in self.clientConnections:
             self.sendMessageToClient(connection, left_msg_obj) # sends an alert in chat that they left
-            
+
             # update everyones clientlist with the new list
             listToSend = self.generateClientNames(connection.username) # return all client names other than the current client (set shouldParseContents to true)
             client_list_update = Message(self.IP, connection.getIP(), self.USERNAME, str(datetime.now()), listToSend, 'disconnection', True)
@@ -234,7 +234,7 @@ class Server:
                             if connection.socketObj != client_socket:
                                 self.sendMessageToClient(connection, data) # broadcasting
 
-    # [utility functions] 
+    # [utility functions]
 
     # returns the client connection object from a socket object (returns None if none exist)
     def findConnectionFromSocket(self, sockObj):
@@ -256,6 +256,11 @@ def getArgs():
         return options
 
 def main():
+    try:
+        os.mkdir('./logs')
+    except FileExistsError:
+        pass
+    
     try:
         options = getArgs()
         PORT = int(options.port)
