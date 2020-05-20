@@ -134,7 +134,7 @@ class Client:
 
         self.client.close()
 
-        
+
 # updates the gui with the list 'c_list'
 def updateClientList(c_list):
     client_list = c_list;
@@ -176,6 +176,11 @@ def startEel():
         print("window closed") # need to find a way to stop receiveData when it's waiting for data... sys.exit brutally doesn work :(
 
 def main():
+    try:
+        os.mkdir('./exported')
+    except FileExistsError:
+        pass
+        
     try:
         options = getArgs()
 
