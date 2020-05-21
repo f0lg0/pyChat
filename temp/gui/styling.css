@@ -1,0 +1,136 @@
+:root {
+  --mainArtic: #2E3440;
+  --secondaryArtic: #3B4252;
+  --tertiaryArtic:#434C5E;
+
+  --mainDark: #212020;
+  --secondaryDark: #292727;
+  --tertiaryDark: #2e2e2e;
+
+  --pureBlack: #000000;
+}
+
+*{
+    padding: 0px;
+    margin: 0px;
+    font-family: courier new;
+    box-sizing: border-box;
+    color: #dde2ed;
+    cursor: default;
+}
+
+body {
+    background-color: var(--mainArtic);
+}
+
+/* wrapper for any inline elements that should fit normally on screen */
+.pageBlock{
+    display: inline-block;
+    -moz-box-orient: vertical;
+    height: auto;
+}
+
+/* This is for fixed content that should 100% of the height */
+.fixedCont{
+    position: fixed;
+    top: 0px;
+    height: 100%;
+}
+
+/* This is for fixed content that should occupy tab size of top of page */
+.fixedContTab{
+    position: fixed;
+    top: 0px;
+    height: 75px;
+    width: 20%;
+    text-align: center;
+    background-color: var(--mainArtic); /* new */
+}
+
+/* text for a button or tab */
+.buttonCont{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* This is for fixed content that should be a tab size on the bottom of the page */
+.fixedContFoot{
+    position: fixed;
+    bottom: 0px;
+    height: 80px;
+    padding: 1%;
+    background-color: var(--mainArtic);
+}
+
+.chatMsg{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.blockList{
+    width: 100%;
+    height: calc(100vh - 75px);
+    text-align: center;
+    overflow-x: auto;
+}
+.blockListItem{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-decoration: bold;
+    border-bottom: 1px solid grey;
+}
+
+/* ID STYLES */
+#client_msg{
+    width: 75%;
+    height: 30px;
+    border-radius: 10px;
+    padding: 8px;
+    color: black;
+}
+#client_msg:focus{
+    outline: none;
+}
+#client_msg_btn{
+    width: 20%;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    float: right;
+    color: black;
+}
+#client_msg_btn:hover{
+    background-color: lightgray;
+}
+#client_msg_btn:active{
+    background-color: grey;
+}
+#client_msg_btn:focus{
+    outline: none;
+}
+#chatList{
+    width: 100%;
+    height: auto;
+    padding-left: 2%;
+    margin-bottom: 100px;
+}
+
+/* NEW */
+#change_theme {
+  margin-top: 100px;
+}
+
+#topTab {
+  background-color: var(--secondaryArtic);
+}
+
+#leftPanel{
+  background-color: var(--tertiaryArtic);
+}
+
+#rightPanel {
+  background-color: var(--secondaryArtic);
+}

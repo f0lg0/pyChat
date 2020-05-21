@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<!-- The head tag is where we can put external js scripts, css sheets, or js libraries -->
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="styling.css">
+
+	<!-- JS Scripts -->
+	<script src="buttons.js"></script>
+	<script src="pythonDataRetrieve.js"></script>
+	<script src="clientList.js"></script>
+	<script src="utilities.js"></script>
+
+	<!-- Libraries -->
+    <script type="text/javascript" src="/eel.js"></script>
+
+</head>
+
+<body>
+    <!-- These divs are mashed together because of how inline blocks behave with whitespace -->
+
+    <!-- Left Side Block (list of all clients) -->
+    <div class = "pageBlock" style = "width: 20%;">
+        <div id="leftPanel" class = "fixedCont" style = "width: 20%;">
+            <div class = "pageBlock" style = "width: 20%; height: 75px;">
+                <div id="topLeft" class = "fixedContTab">
+                    <h2 class = "buttonCont">Online (#)</h2>
+                </div>
+            </div>
+            <div id = "externalClientList" class = "blockList"></div>
+        </div>
+    <!-- Middle Block (For the chat) -->
+    </div><div class = "pageBlock" style = "width: 50%;">
+
+        <div class = "pageBlock" style = "width: 50%; height: 75px;">
+            <div id="topTab" class = "fixedContTab" style = "width: 50%;">
+                <h2 class = "buttonCont">Insert Chat Name Here</h2>
+            </div>
+        </div>
+
+        <div class = "fixedContFoot" style = "width: 50%;">
+            <input id = "client_msg" placeholder = "Send a Message..." style = "cursor: auto;">
+            <button id = "client_msg_btn">Send</button>
+        </div>
+
+        <div id = "chatList">
+
+        </div>
+    <!-- Right block for the settings -->
+    </div><div class = "pageBlock" style = "width: 30%;">
+        <div id="rightPanel" class = "fixedCont" style = "width: 30%;">
+
+        </div>
+
+				<!-- the id is not necessary but I've used it to more organized -->
+        <div id="topRight" class = "fixedContTab" style = "width: 30%;">
+            <h2 class = "buttonCont">Settings</h2>
+						<button id="change_theme" type="submit" placeholder="switch theme" onclick="switchToDark()"></button>
+        </div>
+    </div>
+
+	<script>
+        //local machine client
+		let clientMsgInput = new Input("client_msg", "client_msg_btn");
+        let clientInfo = {
+            username: ""
+        }
+
+        //external clients (clientManager and class defined in clientList.js)
+        clientManager = new ExternalClientManager("externalClientList");
+
+        //runs once when the page opens
+        //SET client info vals here with async calls
+        window.onload = function(){
+            let name = getUsername().then(function(name) {
+                clientInfo.username = name;
+                writeMsg("Welcome to the chat " + name + "!", "Server", 10);
+            });
+        }
+
+        //ALL EXPOSED FUNCTIONS SHOULD GO BELOW
+
+        //writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
+        //isLocal should determain if the message is being written from the local client, false if its foreign
+        eel.expose(writeMsg);
+		function writeMsg(message, source, padding){
+            let item = document.createElement("p");
+            let msg;
+
+            if(source != "local"){
+                msg = document.createTextNode(source + "> " + message);
+            }else{
+                msg = document.createTextNode("You> " + message);
+            }
+
+            item.className = "chatMsg";
+
+            if(padding!=null){
+                item.style = "padding-top: " + padding + "px; padding-bottom: " + padding + "px;";
+            }
+
+            item.appendChild(msg);
+            document.getElementById("chatList").appendChild(item);
+            window.scrollTo(0,document.body.scrollHeight);
+        }
+
+        // updates the client list with 'list'
+        eel.expose(updateClientList);
+        function updateClientList(list){
+            clientManager.updateClientList(list);
+        }
+
+				// Note: this is temporary, we could do this or we could use different stylesheets
+				// I don't know if this is the best way to do it tho
+				function switchToDark () {
+					let mainDark = "#212020";
+					let secondaryDark = "#292727";
+					let tertiaryDark = "#2e2e2e";
+
+					document.body.style.setProperty("--mainArtic", mainDark);
+					document.getElementById('topLeft').style.setProperty("--secondaryArtic", secondaryDark);
+					document.getElementById('topLeft').style.setProperty("--mainArtic", mainDark);
+					document.getElementById('topTab').style.setProperty("--secondaryArtic", secondaryDark);
+					document.getElementById('leftPanel').style.setProperty("--tertiaryArtic", tertiaryDark);
+					document.getElementById('rightPanel').style.setProperty("--secondaryArtic", secondaryDark);
+				}
+
+	</script>
+
+</body>
+</html>
