@@ -19,10 +19,13 @@ class ExternalClientManager{
             let textNode = document.createTextNode(this.clients[i]);
             
             client.className = "blockListItem";
-            console.log(this.clients[i]);
             client.appendChild(textNode);
             document.getElementById(this.element).appendChild(client);
         }
+        this.updateClientNumberLabel();
+    }
+    updateClientNumberLabel(){
+        document.getElementById("clientNumber").innerHTML = "Online (" + (this.clients.length+1) + ")";    
     }
 }
     
