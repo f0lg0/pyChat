@@ -3,6 +3,7 @@ import json
 import threading
 import argparse
 import sys
+import os
 import time
 from datetime import datetime
 from message import Message
@@ -180,7 +181,7 @@ def main():
         os.mkdir('./exported')
     except FileExistsError:
         pass
-        
+
     try:
         options = getArgs()
 
