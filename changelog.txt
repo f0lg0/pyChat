@@ -2,6 +2,10 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[05-27-2020] f0lg0:
+	- redesigned gui
+	- updated documentation
+
 [05-16-2020] f0lg0:
 	- started working on documentation
 	- removed old BUFFER_SIZE in server.py
