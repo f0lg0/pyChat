@@ -10,6 +10,7 @@
 	<script src="pythonDataRetrieve.js"></script>
 	<script src="clientList.js"></script>
 	<script src="utilities.js"></script>
+	<script src="themes.js"></script>
 	
 	<!-- Libraries -->
     <script type="text/javascript" src="/eel.js"></script>
@@ -21,9 +22,9 @@
     
     <!-- Left Side Block (list of all clients) -->
     <div class = "pageBlock" style = "width: 20%;">
-        <div class = "fixedCont" style = "width: 20%; background-color: #434C5E;">
+        <div class = "fixedCont colorTheme2" style = "width: 20%; background-color: #434C5E;">
             <div class = "pageBlock" style = "width: 20%; height: 75px;">
-                <div class = "fixedContTab" style = "width: 20%; background-color: #2E3440;">
+                <div class = "fixedContTab colorTheme0" style = "width: 20%; background-color: #2E3440;">
                     <h2 class = "buttonCont" id = "clientNumber">Online (1)</h2>     
                 </div>
             </div>
@@ -33,28 +34,36 @@
     </div><div class = "pageBlock" style = "width: 50%;">
     
         <div class = "pageBlock" style = "width: 50%; height: 75px;">
-            <div class = "fixedContTab" style = "width: 50%; background-color: #3B4252;">
+            <div class = "fixedContTab colorTheme1" style = "width: 50%; background-color: #3B4252;">
                 <h2 class = "buttonCont">Insert Chat Name Here</h2>     
             </div>
         </div>
     
-        <div class = "fixedContFoot" style = "width: 50%;">
+        <div class = "fixedContFoot colorTheme0" style = "width: 50%;">
             <input id = "client_msg" placeholder = "Send a Message..." style = "cursor: auto;">
             <button id = "client_msg_btn">Send</button>
         </div>
     
         <div id = "chatList">
-            
+                
         </div>
     <!-- Right block for the settings -->
     </div><div class = "pageBlock" style = "width: 30%;">
-        <div class = "fixedCont" style = "width: 30%; background-color: #3B4252;">
+        <div class = "fixedCont colorTheme1" style = "width: 30%; background-color: #3B4252;">
+            <div class = "pageBlock" style = "width: 20%; height: 75px;">
+                <div class = "fixedContTab colorTheme0" style = "width: 30%; background-color: #2E3440;">
+                    <h2 class = "buttonCont">Settings</h2>      
+                </div>
+            </div>
             
+            <div class="dropdown">
+                <button class="dropbtn">Themes</button>
+                <div class="dropdown-content">
+                    <button onclick = "themeChanger.changeTheme('Dark')">Dark</button>
+                    <button onclick = "themeChanger.changeTheme('Light')">Light</button>
+                </div>
+            </div>       
         </div>  
-    
-        <div class = "fixedContTab" style = "width: 30%; background-color: #2E3440;">
-            <h2 class = "buttonCont">Settings</h2>      
-        </div>
     </div>
         
 	<script>
@@ -74,6 +83,11 @@
                 clientInfo.username = name;
                 writeMsg("Welcome to the chat " + name + "!", "Server", 10);
             });
+            
+            //load in themes and saved options
+            themeChanger = new ThemeChanger();
+            themeChanger.add(new Theme("Dark", ['#2E3440', '#3B4252', '#434C5E', '#4C566A'], '#dde2ed'));
+            themeChanger.add(new Theme("Light", ['#D8DEE9', '#E5E9F0', '#ECEFF4', '#88C0D0'], 'black'));
         }
         
         //ALL EXPOSED FUNCTIONS SHOULD GO BELOW
