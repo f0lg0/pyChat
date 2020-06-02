@@ -260,7 +260,9 @@ def main():
         os.mkdir('./logs')
     except FileExistsError:
         pass
-    
+
+    with open('./logs/currentchat.txt', 'w+') as f:
+        f.write("{Start of conversation}\n")
     try:
         options = getArgs()
         PORT = int(options.port)

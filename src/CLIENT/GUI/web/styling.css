@@ -104,6 +104,13 @@ body {
     margin-bottom: 100px;
 }
 
+#exportbtn {
+  margin-top: 100px;
+}
+#helpbtn {
+  margin-bottom: 100px;
+}
+
 /*DROP DOWN*/
 .dropbtn {
   background-color: #4CAF50;

@@ -53,8 +53,17 @@
             <div class = "pageBlock" style = "width: 20%; height: 75px;">
                 <div class = "fixedContTab colorTheme0" style = "width: 30%; background-color: #2E3440;">
                     <h2 class = "buttonCont">Settings</h2>
+
                 </div>
             </div>
+
+						<div>
+							<!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
+							<button class="dropbtn" id = "exportbtn" onclick="exportChat()">Export chat</button>
+							<button class="dropbtn" id = "helpbtn" onclick="help()">Help</button>
+
+						</div>
+
 
             <div class="dropdown">
                 <button class="dropbtn">Themes</button>
@@ -65,8 +74,10 @@
 										<button onclick = "themeChanger.changeTheme('Pure Black')">Pure Black</button>
                 </div>
             </div>
+
         </div>
     </div>
+
 
 	<script>
         //local machine client
@@ -126,6 +137,20 @@
         function updateClientList(list){
             clientManager.updateClientList(list);
         }
+
+
+				/* EXPORT BUTTON STUFF */
+				function exportChat() {
+					eel.exposeSendMsg("[export_chat]");
+					console.log("Export request sent.");
+					alert("Chat exported succesfully, check your 'exported' folder");
+				}
+
+				/* HELP BUTTON STUFF */
+				function help() {
+					eel.exposeSendMsg("[help]");
+					console.log("Help request sent.");
+				}
 
 	</script>
 </body>
