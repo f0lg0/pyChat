@@ -170,11 +170,13 @@ def getArgs():
     else:
         return options
 
+
+
 def startEel():
     try:
         eel.start('main.html', port=random.choice(range(8000, 8080)))
     except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
-        print("window closed") # need to find a way to stop receiveData when it's waiting for data... sys.exit brutally doesn work :(
+        os._exit(0)  # this is actually super overkill but it works
 
 def main():
     try:
@@ -202,6 +204,7 @@ def main():
     eThread = threading.Thread(target = startEel)
     eThread.daemon = True
     eThread.start()
+
 
     client.receiveData() # this is a loop and also streamData is blocking
 
