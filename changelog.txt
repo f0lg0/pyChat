@@ -2,6 +2,11 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[06-07-2020] f0lg0:
+	- started looking at localStorage
+	- python process now stops when GUI gets closed
+	- updated documentation
+
 [05-27-2020] f0lg0:
 	- redesigned gui
 	- updated documentation
