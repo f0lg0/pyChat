@@ -80,7 +80,8 @@
 
 
 	<script>
-        //local machine client
+
+    //local machine client
 		let clientMsgInput = new Input("client_msg", "client_msg_btn");
         let clientInfo = {
             username: ""
@@ -103,6 +104,15 @@
             themeChanger.add(new Theme("Light", ['#D8DEE9', '#E5E9F0', '#ECEFF4', '#88C0D0'], 'black'));
 						themeChanger.add(new Theme("Dark", ['#212020', '#292727', '#2e2e2e', '#216d78'], '#dde2ed'));
 						themeChanger.add(new Theme("Pure Black", ['#000000', '#000000', '#000000', '#000000'], '#dde2ed'));
+
+						console.log(localStorage.getItem('theme'));
+
+						// not sure if this us the right place
+						if (localStorage.getItem('theme')) {
+							console.log("yep there is something");
+							themeChanger.changeTheme(localStorage.getItem('theme'));
+
+						}
 
         }
 
