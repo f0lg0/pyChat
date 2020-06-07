@@ -25,32 +25,32 @@ Key exchange is performed using DiffieHellman and the GUI is built  using the pi
 
 ## Conversations
 
-![convo](./pics/convo.png)
+![convo](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/convo.png)
 
 Every client has its own private key generated only with the server. The server will care about encrypting and decrypting with the respective key of the other clients.
 
 Here's a more detailed example.
 
-![detail](./pics/detail.png)
+![detail](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/detail.png)
 
 ## Technical details
 
 As mentioned in the "About" section, messages are custom dataclasses objects streamed in the universal standard JSON format. They are carefully streamed with a small buffer size thanks to the fact that every packet is preceded by a fixed length header containing information about the actual packet size.  
 
-![msg](./pics/msg.png)
+![msg](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/msg.png)
 
 But why JSON?
 
 We have chosen to use JSON to serialize our data because Pickle is vulnerable to code injection. We don't have this problem with JSON because, as you may know, JSON data is in a string format. No bytes, no pain.
 
-![sample](./pics/sample.png)
+![sample](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/sample.png)
 
 We use AES-256 to ensure privacy to our users and we also automate the key exchange process so clients don't have to know any password.
 As stated before, key exchange is performed with a classic DiffieHellman exchange based on very large integers.
 
 This is an example of a valid key:
 
-![key](./pics/ex.png)
+![key](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/ex.png)
 
 The key exchange is performed immediately after the established connection between server and client
 
@@ -62,11 +62,11 @@ To start using <app_name> you don't need any kind of account. Your precious pers
 
 Once the server is up and running it constantly listens for incoming messages, these are the steps involved in the handler function (the core of the sever):
 
-![](./pics/steps.png)
+![](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/steps.png)
 
 The Handler function then processes the finally decrypted messages and decides what to do with it based on the 'typ' field:
 
-![](./pics/handler.png)
+![](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/handler.png)
 
 
 
@@ -74,7 +74,7 @@ The Handler function then processes the finally decrypted messages and decides w
 
 Once the client scripts gets fired up it tries to connect to the server set before:
 
-![](./pics/connect.png)
+![](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/connect.png)
 
 Once a connection is established it listens for the AES vector and for the public information about the key sent by the server. Once those are received it generates the shared secret and it shares his public information so the server can do the same. Once AES is initialized it proceeds with the user name setting.
 
@@ -88,13 +88,13 @@ We strongly recommend you to check Eel [GitHub](https://github.com/samuelhwillia
 
 Basically we "expose" Python functions in order to make them accessible from JavaScript.
 
-![](./pics/exposed.png)
+![](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/exposed.png)
 
 This is an example of an exposed function inside client.py. In order to use "sendMsg", a class method, we need to expose it from another function: "exposeSendMsg", located outside the Client class. This way we can use the function in a JavaScript file. Note that we can't expose functions inside a class.
 
 Here's the JS code:
 
-![](./pics/exposed_js.png)
+![](/media/leonardo/Leonardo/code/Python/socket/chatroom/documentation/pics/exposed_js.png)
 
 ## Requirements
 
@@ -147,8 +147,9 @@ These are the current built in feature to out Application, if you have an idea a
 AppName as different built in themes with the default one being the *Nordic* theme. Here' s a list:
 
 * Pure Black
-* Matte Black
-* Snow
+* Dark
+* Light
+* Nord
 
 ## Authors
 
