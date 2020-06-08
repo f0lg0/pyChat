@@ -175,6 +175,7 @@ def getArgs():
 def startEel():
     try:
         eel.start('main.html', port=random.choice(range(8000, 8080)))
+        #eel.start('main.html', port=8000)
     except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
         os._exit(0)  # this is actually super overkill but it works
 
