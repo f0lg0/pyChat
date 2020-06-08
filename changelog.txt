@@ -2,8 +2,15 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[06-08-2020] f0lg0 & Jacopo:
+	- Styled the dropdown to look good
+
 [06-08-2020] f0lg0:
 	- can't start app if default GUI port isn't free
+
+[06-07-2020] Jacopo:
+	- Polished off localstorage saving the chosen theme
+	- Auto generates buttons for the dropdown depending on how many themes are the the ThemeManager class
 
 [06-07-2020] f0lg0:
 	- started looking at localStorage
