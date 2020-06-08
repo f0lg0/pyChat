@@ -4,9 +4,9 @@ class ThemeChanger{
     constructor(){
         this.themes = [];
     }
-    saveTheme(name) {
-        localStorage.setItem("theme", name);
-        console.log("saved to memory", localStorage.getItem("theme"));
+    saveTheme(name){
+        savedOptions.savedTheme = name;
+        savedOptions.save();
     }
     //changes GUI theme to the one with 'name' (note: background color is always set to the first in the list)
     changeTheme(name){
@@ -38,6 +38,17 @@ class ThemeChanger{
     //add new theme to array
     add(theme){
         this.themes.push(theme);
+    }
+    
+    //adds the html buttons for each theme, so we dont have to keep manually adding them (also fetches any local data)
+    initButtons(){     
+        for(let i = 0; i < this.themes.length; i++){
+            let element = document.createElement("button");
+            let themeName = document.createTextNode(this.themes[i].name);
+            element.appendChild(themeName);
+            element.onclick = function(){ themeChanger.changeTheme( themeChanger.themes[i].name ) };
+            document.getElementById("themeButtons").appendChild(element);
+        }
     }
 }
 

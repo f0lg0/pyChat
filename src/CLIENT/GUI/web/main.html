@@ -11,6 +11,7 @@
 	<script src="clientList.js"></script>
 	<script src="utilities.js"></script>
 	<script src="themes.js"></script>
+	<script src="savedOptions.js"></script>
 
 	<!-- Libraries -->
     <script type="text/javascript" src="/eel.js"></script>
@@ -57,21 +58,17 @@
                 </div>
             </div>
 
-						<div>
-							<!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
-							<button class="dropbtn" id = "exportbtn" onclick="exportChat()">Export chat</button>
-							<button class="dropbtn" id = "helpbtn" onclick="help()">Help</button>
-
-						</div>
+            <div>
+                <!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
+                <button class="dropbtn" id = "exportbtn" onclick="exportChat()">Export chat</button>
+				<button class="dropbtn" id = "helpbtn" onclick="help()">Help</button>
+            </div>
 
 
             <div class="dropdown">
                 <button class="dropbtn">Themes</button>
-                <div class="dropdown-content">
-                    <button onclick = "themeChanger.changeTheme('Nord')">Nord</button>
-                    <button onclick = "themeChanger.changeTheme('Light')">Light</button>
-										<button onclick = "themeChanger.changeTheme('Dark')">Dark</button>
-										<button onclick = "themeChanger.changeTheme('Pure Black')">Pure Black</button>
+                <div class="dropdown-content" id = "themeButtons">
+        
                 </div>
             </div>
 
@@ -86,6 +83,7 @@
         let clientInfo = {
             username: ""
         }
+        let savedOptions = new SavedOptions();
 
         //external clients (clientManager and class defined in clientList.js)
         clientManager = new ExternalClientManager("externalClientList");
@@ -97,23 +95,20 @@
                 clientInfo.username = name;
                 writeMsg("Welcome to the chat " + name + "!", "Server", 10);
             });
+            
 
             //load in themes and saved options
             themeChanger = new ThemeChanger();
             themeChanger.add(new Theme("Nord", ['#2E3440', '#3B4252', '#434C5E', '#4C566A'], '#dde2ed'));
             themeChanger.add(new Theme("Light", ['#D8DEE9', '#E5E9F0', '#ECEFF4', '#88C0D0'], 'black'));
-						themeChanger.add(new Theme("Dark", ['#212020', '#292727', '#2e2e2e', '#216d78'], '#dde2ed'));
-						themeChanger.add(new Theme("Pure Black", ['#000000', '#000000', '#000000', '#000000'], '#dde2ed'));
-
-						console.log(localStorage.getItem('theme'));
-
-						// not sure if this us the right place
-						if (localStorage.getItem('theme')) {
-							console.log("yep there is something");
-							themeChanger.changeTheme(localStorage.getItem('theme'));
-
-						}
-
+            themeChanger.add(new Theme("Dark", ['#212020', '#292727', '#2e2e2e', '#216d78'], '#dde2ed'));
+            themeChanger.add(new Theme("Pure Black", ['#000000', '#000000', '#000000', '#000000'], '#dde2ed'));
+            
+            
+            //load saved options
+            savedOptions.load();
+            
+            themeChanger.initButtons();
         }
 
         //ALL EXPOSED FUNCTIONS SHOULD GO BELOW
@@ -149,18 +144,18 @@
         }
 
 
-				/* EXPORT BUTTON STUFF */
-				function exportChat() {
-					eel.exposeSendMsg("[export_chat]");
-					console.log("Export request sent.");
-					alert("Chat exported succesfully, check your 'exported' folder");
-				}
+        /* EXPORT BUTTON STUFF */
+        function exportChat() {
+            eel.exposeSendMsg("[export_chat]");
+            console.log("Export request sent.");
+            alert("Chat exported succesfully, check your 'exported' folder");
+        }
 
-				/* HELP BUTTON STUFF */
-				function help() {
-					eel.exposeSendMsg("[help]");
-					console.log("Help request sent.");
-				}
+        /* HELP BUTTON STUFF */
+        function help() {
+            eel.exposeSendMsg("[help]");
+            console.log("Help request sent.");
+        }
 
 	</script>
 </body>
