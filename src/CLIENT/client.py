@@ -18,6 +18,7 @@ import random
 # [GLOBAL VARIABLES]
 client = None # so we can use it in exposed functions
 eel.init('./GUI/web') # initializing eel
+eelPort = 42069 # default GUI port
 
 clientDH = pyDHE.new() # diffiehellman object
 
@@ -174,8 +175,8 @@ def getArgs():
 
 def startEel():
     try:
-        eel.start('main.html', port=random.choice(range(8000, 8080)))
-        #eel.start('main.html', port=8000)
+        # eel.start('main.html', port=random.choice(range(8000, 8080)))
+        eel.start('main.html', port=eelPort)
     except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
         os._exit(0)  # this is actually super overkill but it works
 
@@ -194,8 +195,8 @@ def main():
         SERVER_IP = input("*** Enter server IP address > ")
         PORT = int(input("*** Enter server PORT number > "))
 
-
     CLIENT_IP = socket.gethostbyname(socket.gethostname())
+
 
     global client
     client = Client(SERVER_IP, PORT, CLIENT_IP)
@@ -211,4 +212,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        # checking if port 42069 (default port for the GUI) is free to start the GUI
+        tempSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        check = tempSock.bind(('127.0.0.1', eelPort))
+        tempSock.close()
+
+        main()
+    except socket.error as e:
+        print(f"[!] PORT NUMBER {eelPort} ISN'T FREE, YOU CAN'T START THE APP [!]")
