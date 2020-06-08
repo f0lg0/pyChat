@@ -14,6 +14,17 @@ class ThemeChanger{
 
         document.body.style.backgroundColor = theme.colors[0];
         document.body.style.color = theme.textColor;
+        
+        //change any buttons (for some reason they dont change with the rest of the page)
+        let buttons = document.getElementsByClassName("dropdownButton");
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].style.color = theme.textColor;    
+        }
+        document.getElementById("dropDownTab").style.color = theme.textColor;
+        //document.getElementById("dropDownTab").style.borderColor = theme.textColor;
+        
+        //change the button name for dropdown
+        document.getElementById("dropDownTab").innerHTML = theme.name + " ▼";
 
         for(let i = 0; i < theme.colors.length; i++){
             let themeElements = document.getElementsByClassName("colorTheme" + i);
@@ -46,6 +57,7 @@ class ThemeChanger{
             let element = document.createElement("button");
             let themeName = document.createTextNode(this.themes[i].name);
             element.appendChild(themeName);
+            element.className = "dropdownButton colorTheme2";
             element.onclick = function(){ themeChanger.changeTheme( themeChanger.themes[i].name ) };
             document.getElementById("themeButtons").appendChild(element);
         }
