@@ -2,6 +2,12 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[06-09-2020] Jacopo:
+	- General Styling
+		* No more green color on hover for theme dropdown if the user had no localstorage files
+		* Organized right sidebar into 'actions' and 'settings'
+		* Styled the export and help buttons
+
 [06-08-2020] f0lg0 & Jacopo:
 	- Styled the dropdown to look good
 
