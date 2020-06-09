@@ -104,13 +104,6 @@ body {
     margin-bottom: 100px;
 }
 
-#exportbtn {
-  margin-top: 100px;
-}
-#helpbtn {
-  margin-bottom: 100px;
-}
-
 /*DROP DOWN*/
 .dropbtn {
   background-color: #2E3440;
@@ -123,7 +116,6 @@ body {
   border: 1px solid rgba(0,0,0, 0.25);
 }
 .dropbtn:hover{
-    background-color: #2E3440;
     filter: brightness(75%);
 }
 .dropbtn:focus{
@@ -159,7 +151,7 @@ body {
 }
 
 .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  filter: brightness(75%);
 }
 
 .dropdownButton{
@@ -169,6 +161,7 @@ body {
     text-align: left;
     padding-top: 10px;
     padding-bottom: 10px;
+    background-color: #f1f1f1;
 }
 .dropdownButton:hover{
     filter: brightness(75%);
@@ -178,3 +171,25 @@ body {
     border: none;
 }
 
+/* NOT DROPDOWN ANYMORE */
+
+/* genbtns will change theme with the page */
+.genbtn{
+    background-color: #2E3440;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 160px;
+    border: 1px solid rgba(0,0,0, 0.25);
+    width: 50%;
+    margin: none;
+}
+.genbtn:hover{
+    filter: brightness(75%);
+}
+.genbtn:focus{
+    outline: none;
+    border: none;
+}

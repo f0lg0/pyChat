@@ -13,6 +13,8 @@ class SavedOptions{
             
             // actully apply the data
             themeChanger.changeTheme(loadedData.savedTheme);
+        }else{
+            themeChanger.changeTheme("Nord");
         }        
     }
 }
