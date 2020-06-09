@@ -6,7 +6,8 @@ format: mm-dd-yyyy
 	- General Styling
 		* No more green color on hover for theme dropdown if the user had no localstorage files
 		* Organized right sidebar into 'actions' and 'settings'
-		* Styled the export and help buttons
+		* Styled the export and help buttons (still need to make them change color with the theme though)
+		* Theme dropdown now has a constant white color because of technical issues
 
 [06-08-2020] f0lg0 & Jacopo:
 	- Styled the dropdown to look good
