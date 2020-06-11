@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <!-- The head tag is where we can put external js scripts, css sheets, or js libraries -->
+
 <head>
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="styling.css">
@@ -14,150 +15,158 @@
 	<script src="savedOptions.js"></script>
 
 	<!-- Libraries -->
-    <script type="text/javascript" src="/eel.js"></script>
+	<script type="text/javascript" src="/eel.js"></script>
 
 </head>
 
 <body>
-    <!-- These divs are mashed together because of how inline blocks behave with whitespace -->
+	<!-- These divs are mashed together because of how inline blocks behave with whitespace -->
 
-    <!-- Left Side Block (list of all clients) -->
-    <div class = "pageBlock" style = "width: 20%;">
-        <div class = "fixedCont colorTheme2" style = "width: 20%; background-color: #434C5E;">
-            <div class = "pageBlock" style = "width: 20%; height: 75px;">
-                <div class = "fixedContTab colorTheme0" style = "width: 20%; background-color: #2E3440;">
-                    <h2 class = "buttonCont" id = "clientNumber">Online (1)</h2>
-                </div>
-            </div>
-            <div id = "externalClientList" class = "blockList"></div>
-        </div>
-    <!-- Middle Block (For the chat) -->
-    </div><div class = "pageBlock" style = "width: 50%;">
+	<!-- Left Side Block (list of all clients) -->
+	<div class="pageBlock" style="width: 20%;">
+		<div class="fixedCont colorTheme2" style="width: 20%; background-color: #434C5E;">
+			<div class="pageBlock" style="width: 20%; height: 75px;">
+				<div class="fixedContTab colorTheme0" style="width: 20%; background-color: #2E3440;">
+					<h2 class="buttonCont" id="clientNumber">Online (1)</h2>
+				</div>
+			</div>
+			<div id="externalClientList" class="blockList"></div>
+		</div>
+		<!-- Middle Block (For the chat) -->
+	</div>
+	<div class="pageBlock" style="width: 50%;">
 
-        <div class = "pageBlock" style = "width: 50%; height: 75px;">
-            <div class = "fixedContTab colorTheme1" style = "width: 50%; background-color: #3B4252;">
-                <h2 class = "buttonCont">Insert Chat Name Here</h2>
-            </div>
-        </div>
+		<div class="pageBlock" style="width: 50%; height: 75px;">
+			<div class="fixedContTab colorTheme1" style="width: 50%; background-color: #3B4252;">
+				<h2 class="buttonCont">Insert Chat Name Here</h2>
+			</div>
+		</div>
 
-        <div class = "fixedContFoot colorTheme0" style = "width: 50%;">
-            <input id = "client_msg" placeholder = "Send a Message..." style = "cursor: auto;">
-            <button id = "client_msg_btn">Send</button>
-        </div>
+		<div class="fixedContFoot colorTheme0" style="width: 50%;">
+			<input id="client_msg" placeholder="Send a Message..." style="cursor: auto;">
+			<button id="client_msg_btn">Send</button>
+		</div>
 
-        <div id = "chatList">
+		<div id="chatList">
 
-        </div>
-    <!-- Right block for the settings -->
-    </div><div class = "pageBlock" style = "width: 30%;">
-        <div class = "fixedCont colorTheme1" style = "width: 30%; background-color: #3B4252;">
-            <div class = "pageBlock" style = "width: 20%; height: 75px;">
-                <div class = "fixedContTab colorTheme0" style = "width: 30%; background-color: #2E3440;">
-                    <h2 class = "buttonCont">Options</h2>
-                </div>
-            </div>
-            
-            <center>
-                <p style = "font-size: 1.1rem; margin-top: 5%; margin-bottom: 20px;">Actions</p>
-                <!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
-                <button class="genbtn" id = "exportbtn" onclick="exportChat()">Export chat</button>
-                <button class="genbtn" id = "helpbtn" onclick="help()">Help</button>
-            </center>
-            
-            <center>
-                <p style = "font-size: 1.1rem; margin-top: 12%; margin-bottom: 20px;">Settings</p>
-                <div class="dropdown">
-                    <button class="dropbtn colorTheme0" id = "dropDownTab">Nord ▼</button>
-                    <div class="dropdown-content" id = "themeButtons">
+		</div>
+		<!-- Right block for the settings -->
+	</div>
+	<div class="pageBlock" style="width: 30%;">
+		<div class="fixedCont colorTheme1" style="width: 30%; background-color: #3B4252;">
+			<div class="pageBlock" style="width: 20%; height: 75px;">
+				<div class="fixedContTab colorTheme0" style="width: 30%; background-color: #2E3440;">
+					<h2 class="buttonCont">Options</h2>
+				</div>
+			</div>
 
-                    </div>
-                </div>
-            </center>
-        </div>
-    </div>
+			<center>
+				<p style="font-size: 1.1rem; margin-top: 5%; margin-bottom: 20px;">Actions</p>
+				<!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
+				<button class="genbtn" id="exportbtn" onclick="exportChat()">Export chat</button>
+				<button class="genbtn" id="helpbtn" onclick="help()">Help</button>
+			</center>
+
+			<center>
+				<p style="font-size: 1.1rem; margin-top: 12%; margin-bottom: 20px;">Settings</p>
+				<div class="dropdown">
+					<button class="dropbtn colorTheme0" id="dropDownTab">Nord ▼</button>
+					<div class="dropdown-content" id="themeButtons">
+
+					</div>
+				</div>
+			</center>
+		</div>
+	</div>
 
 
 	<script>
+		// shit temp code for the username thing
+		let username = prompt("Enter a username", "");
+		eel.exposedSetUsername(username);
 
-    //local machine client
+
+		//local machine client
 		let clientMsgInput = new Input("client_msg", "client_msg_btn");
-        let clientInfo = {
-            username: ""
-        }
-        let savedOptions = new SavedOptions();
+		let clientInfo = {
+			username: ""
+		}
+		let savedOptions = new SavedOptions();
 
-        //external clients (clientManager and class defined in clientList.js)
-        clientManager = new ExternalClientManager("externalClientList");
+		//external clients (clientManager and class defined in clientList.js)
+		clientManager = new ExternalClientManager("externalClientList");
 
-        //runs once when the page opens
-        //SET client info vals here with async calls
-        window.onload = function(){
-            let name = getUsername().then(function(name) {
-                clientInfo.username = name;
-                writeMsg("Welcome to the chat " + name + "!", "Server", 10);
-            });
-            
-
-            //load in themes and saved options
-            themeChanger = new ThemeChanger();
-            themeChanger.add(new Theme("Nord", ['#2E3440', '#3B4252', '#434C5E', '#4C566A'], '#dde2ed'));
-            themeChanger.add(new Theme("Light", ['#D8DEE9', '#E5E9F0', '#ECEFF4', '#88C0D0'], 'black'));
-            themeChanger.add(new Theme("Dark", ['#212020', '#292727', '#2e2e2e', '#216d78'], '#dde2ed'));
-            //themeChanger.add(new Theme("Pure Black", ['#000000', '#000000', '#000000', '#000000'], '#dde2ed'));
-            
-            
-            //load saved options
-            savedOptions.load();
-            
-            themeChanger.initButtons();
-        }
-
-        //ALL EXPOSED FUNCTIONS SHOULD GO BELOW
-
-        //writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
-        //isLocal should determain if the message is being written from the local client, false if its foreign
-        eel.expose(writeMsg);
-		function writeMsg(message, source, padding){
-            let item = document.createElement("p");
-            let msg;
-
-            if(source != "local"){
-                msg = document.createTextNode(source + "> " + message);
-            }else{
-                msg = document.createTextNode("You> " + message);
-            }
-
-            item.className = "chatMsg";
-
-            if(padding!=null){
-                item.style = "padding-top: " + padding + "px; padding-bottom: " + padding + "px;";
-            }
-
-            item.appendChild(msg);
-            document.getElementById("chatList").appendChild(item);
-            window.scrollTo(0,document.body.scrollHeight);
-        }
-
-        // updates the client list with 'list'
-        eel.expose(updateClientList);
-        function updateClientList(list){
-            clientManager.updateClientList(list);
-        }
+		//runs once when the page opens
+		//SET client info vals here with async calls
+		window.onload = function() {
+			let name = getUsername().then(function(name) {
+				clientInfo.username = name;
+				writeMsg("Welcome to the chat " + name + "!", "Server", 10);
+			});
 
 
-        /* EXPORT BUTTON STUFF */
-        function exportChat() {
-            eel.exposeSendMsg("[export_chat]");
-            console.log("Export request sent.");
-            alert("Chat exported succesfully, check your 'exported' folder");
-        }
+			//load in themes and saved options
+			themeChanger = new ThemeChanger();
+			themeChanger.add(new Theme("Nord", ['#2E3440', '#3B4252', '#434C5E', '#4C566A'], '#dde2ed'));
+			themeChanger.add(new Theme("Light", ['#D8DEE9', '#E5E9F0', '#ECEFF4', '#88C0D0'], 'black'));
+			themeChanger.add(new Theme("Dark", ['#212020', '#292727', '#2e2e2e', '#216d78'], '#dde2ed'));
+			//themeChanger.add(new Theme("Pure Black", ['#000000', '#000000', '#000000', '#000000'], '#dde2ed'));
 
-        /* HELP BUTTON STUFF */
-        function help() {
-            eel.exposeSendMsg("[help]");
-            console.log("Help request sent.");
-        }
 
+			//load saved options
+			savedOptions.load();
+
+			themeChanger.initButtons();
+		}
+
+		//ALL EXPOSED FUNCTIONS SHOULD GO BELOW
+
+		//writes a message to the screen (padding is optional parm that puts spacing on the top and bottom of a message)
+		//isLocal should determain if the message is being written from the local client, false if its foreign
+		eel.expose(writeMsg);
+
+		function writeMsg(message, source, padding) {
+			let item = document.createElement("p");
+			let msg;
+
+			if (source != "local") {
+				msg = document.createTextNode(source + "> " + message);
+			} else {
+				msg = document.createTextNode("You> " + message);
+			}
+
+			item.className = "chatMsg";
+
+			if (padding != null) {
+				item.style = "padding-top: " + padding + "px; padding-bottom: " + padding + "px;";
+			}
+
+			item.appendChild(msg);
+			document.getElementById("chatList").appendChild(item);
+			window.scrollTo(0, document.body.scrollHeight);
+		}
+
+		// updates the client list with 'list'
+		eel.expose(updateClientList);
+
+		function updateClientList(list) {
+			clientManager.updateClientList(list);
+		}
+
+
+		/* EXPORT BUTTON STUFF */
+		function exportChat() {
+			eel.exposeSendMsg("[export_chat]");
+			console.log("Export request sent.");
+			alert("Chat exported succesfully, check your 'exported' folder");
+		}
+
+		/* HELP BUTTON STUFF */
+		function help() {
+			eel.exposeSendMsg("[help]");
+			console.log("Help request sent.");
+		}
 	</script>
 </body>
+
 </html>

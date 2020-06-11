@@ -49,7 +49,7 @@ class Client:
 
         self.sharePublicInfo()
         initializeAES(str(finalDecryptionKey).encode("utf-8"), iv.cont) # we even parse the vector message content
-        self.setUsername()
+        # self.setUsername()
 
     def recvServerKey(self):
         #receives the servers public key and uses it to generate the final decryption key
@@ -64,28 +64,35 @@ class Client:
         iv = streamData(self.client).decode("utf-8")
         return Message.from_json(iv)
 
-    def setUsername(self):
-        while True:
-            self.USERNAME = input("Enter username> ")
-            if self.USERNAME:
-                if self.USERNAME != "*server*":
-                    # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
-                    packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
+    # def setUsername(self):
+    #     while True:
+    #         self.USERNAME = input("Enter username> ")
+    #         if self.USERNAME:
+    #             if self.USERNAME != "*server*":
+    #                 # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
+    #                 packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
+    #
+    #                 self.client.send(packet.pack())
+    #
+    #                 check = streamData(self.client).decode("utf-8")
+    #                 check = Message.from_json(check)
+    #                 print(check.cont)
+    #
+    #                 if check.cont != "[*] Username already in use!":
+    #                     break
+    #
+    #             else:
+    #                 print("Can't set username as *server*!")
+    #
+    #         else:
+    #             print("Username can't be empty!")
 
-                    self.client.send(packet.pack())
-
-                    check = streamData(self.client).decode("utf-8")
-                    check = Message.from_json(check)
-                    print(check.cont)
-
-                    if check.cont != "[*] Username already in use!":
-                        break
-
-                else:
-                    print("Can't set username as *server*!")
-
-            else:
-                print("Username can't be empty!")
+    # just sending
+    def setUsername(self, usr_name):
+        self.USERNAME = usr_name
+        print(self.USERNAME) # debugging
+        packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), usr_name, 'setuser')
+        self.client.send(packet.pack())
 
 
     def sendMsg(self, to_send_msg):
@@ -99,6 +106,7 @@ class Client:
         self.client.send(packet.pack())
 
     def receiveData(self):
+        time.sleep(5)
         while True:
             try:
                 data = streamData(self.client)
@@ -130,6 +138,8 @@ class Client:
                 print('\r' + "You> ", end = "")
             elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
+            elif data.typ == "approved_conn":
+                pass
             else:
                 #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
                 eel.writeMsg(data.cont, data.username)
@@ -146,6 +156,7 @@ def updateClientList(c_list):
 
 
 # [Eel functions]
+# we need to set a name scheme for these functions cuz rn they are confusing
 @eel.expose
 def exposeSendMsg(to_send_msg):
     client.sendMsg(to_send_msg)
@@ -153,6 +164,12 @@ def exposeSendMsg(to_send_msg):
 @eel.expose
 def getUsername():
     return client.USERNAME
+
+
+# NOTE: since this just sends a message containing the username we could call sendMsg and modify it slightly
+@eel.expose
+def exposedSetUsername(username):
+    client.setUsername(username) # parsing the username got from the alert to the CLient class
 
 def getArgs():
     parser = argparse.ArgumentParser()

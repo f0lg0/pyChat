@@ -118,8 +118,10 @@ class Server:
             content = "[*] You have joined the chat!"
 
             joined = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), content, 'approved_conn')
-            self.sendMessageToClient(client_socketObj, joined)
+            print("DEBUG", joined)
 
+            self.sendMessageToClient(client_socketObj, joined)
+            time.sleep(1) # THIS IS DA FIX FOR EVERYTHING (packet congestion between username and client list)
 
             # update all others client list
             for connection in self.clientConnections:
