@@ -132,12 +132,9 @@ class Client:
             elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
             elif data.typ == "approved_conn":
-                print("approved_conn")
-                eel.checkValidUsername(True)
+                pass
             elif data.typ == "username_taken":
-                # we need to handle this: we could parse a flag to a js function from here but im not sure on how to do it
-                print("taken")
-                eel.checkValidUsername(False)
+                pass
 
             else:
                 #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
