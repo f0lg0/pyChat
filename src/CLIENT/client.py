@@ -98,8 +98,6 @@ class Client:
     def sendMsg(self, to_send_msg):
         if to_send_msg == "[export_chat]":
             packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'export')
-        elif to_send_msg == "[help]":
-            packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'help')
         else:
             packet = Message(self.CLIENT_IP, self.SERVER_IP, self.USERNAME, str(datetime.now()), to_send_msg, 'default')
 
@@ -131,15 +129,16 @@ class Client:
                     print('\n' + "You> ", end = "")
                 except:
                     print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
-            elif data.typ == "help":
-                for command in data.cont:
-                    print('\r' + command + " : " + data.cont[command])
-
-                print('\r' + "You> ", end = "")
             elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
             elif data.typ == "approved_conn":
-                pass
+                print("approved_conn")
+                eel.checkValidUsername(True)
+            elif data.typ == "username_taken":
+                # we need to handle this: we could parse a flag to a js function from here but im not sure on how to do it
+                print("taken")
+                eel.checkValidUsername(False)
+
             else:
                 #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
                 eel.writeMsg(data.cont, data.username)

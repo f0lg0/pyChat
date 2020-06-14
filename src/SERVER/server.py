@@ -25,12 +25,6 @@ class Server:
         # holds a list of client connection objects (eventully we should have just this)
         self.clientConnections = []
 
-        self.command_list = {
-            "[export_chat]" : "export current chat",
-            "[help]" : "display possibile commands"
-        }
-
-
         self.current_chat = "./logs/currentchat.txt"
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -141,13 +135,6 @@ class Server:
             print("[*] Sent!")
 
 
-    def sendCommandList(self, client_socketObj):
-        packet = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), self.command_list, 'help', True)
-
-        self.sendMessageToClient(client_socketObj, packet)
-        print("[*] Sent!")
-
-
     def closeConnection(self, client_socketObj):
         disconnected_msg = f"[{client_socketObj.username}] has left the chat"
         left_msg_obj = Message(self.IP, "allhosts", self.USERNAME, str(datetime.now()), disconnected_msg, 'default')
@@ -227,9 +214,6 @@ class Server:
                     if data.typ == 'export':
                         print("*** Sending chat...")
                         self.sendLoggedChat(client_socketObj)
-                    elif data.typ == 'help':
-                        print("*** Sending command list...")
-                        self.sendCommandList(client_socketObj)
                     else:
                         # no need to pack the messages here becaue its done in the 'self.sendMessageToClients' function
                         for connection in self.clientConnections:
