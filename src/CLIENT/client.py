@@ -104,7 +104,7 @@ class Client:
         self.client.send(packet.pack())
 
     def receiveData(self):
-        time.sleep(5)
+        # time.sleep(5)
         while True:
             try:
                 data = streamData(self.client)
