@@ -33,8 +33,7 @@
 			<div id="externalClientList" class="blockList"></div>
 		</div>
 		<!-- Middle Block (For the chat) -->
-	</div>
-	<div class="pageBlock" style="width: 50%;">
+	</div><div class="pageBlock" style="width: 50%;">
 
 		<div class="pageBlock" style="width: 50%; height: 75px;">
 			<div class="fixedContTab colorTheme1" style="width: 50%; background-color: #3B4252;">
@@ -51,8 +50,7 @@
 
 		</div>
 		<!-- Right block for the settings -->
-	</div>
-	<div class="pageBlock" style="width: 30%;">
+	</div><div class="pageBlock" style="width: 30%;">
 		<div class="fixedCont colorTheme1" style="width: 30%; background-color: #3B4252;">
 			<div class="pageBlock" style="width: 20%; height: 75px;">
 				<div class="fixedContTab colorTheme0" style="width: 30%; background-color: #2E3440;">
@@ -64,7 +62,6 @@
 				<p style="font-size: 1.1rem; margin-top: 5%; margin-bottom: 20px;">Actions</p>
 				<!-- note: I've used the same class as the dropdown just to make it similar to that btn-->
 				<button class="genbtn" id="exportbtn" onclick="exportChat()">Export chat</button>
-				<button class="genbtn" id="helpbtn" onclick="help()">Help</button>
 			</center>
 
 			<center>
@@ -159,12 +156,6 @@
 			eel.exposeSendMsg("[export_chat]");
 			console.log("Export request sent.");
 			alert("Chat exported succesfully, check your 'exported' folder");
-		}
-
-		/* HELP BUTTON STUFF */
-		function help() {
-			eel.exposeSendMsg("[help]");
-			console.log("Help request sent.");
 		}
 	</script>
 </body>
