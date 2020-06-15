@@ -1,5 +1,7 @@
 # AppName - Documentation
 
+![logo](/media/leonardo/Leonardo/code/git/chatroom/wireframes/PNG/logo.png)
+
 ## Index
 
 * About
@@ -140,15 +142,12 @@ Note: you may have python3 aliased to just "python"; so consider that.
 These are the current built in feature to out Application, if you have an idea about a new feature don't be afraid and contact us!
 
 - [export_chat] > export current chat to a text file
-- [help] > display all possible commands
 
 ## Themes
 
 AppName as different built in themes with the default one being the *Nordic* theme. Here' s a list:
 
-* Pure Black
 * Dark
-* Light
 * Nord
 
 ## Authors
