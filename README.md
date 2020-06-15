@@ -1,7 +1,7 @@
 # <app_name>
 A simple, anonymous and fully encrypted chat application built using sockets in Python3
 
-![example](./wireframes/PNG/[1]main.png)
+![example](./wireframes/PNG/logo.png)
 
 # About
 
@@ -13,23 +13,23 @@ Key exchange is performed using DiffieHellman and the GUI is built using the pip
 
 # Conversations
 
-![convo](./documentation/convo.png)
+![convo](./documentation/pics/convo.png)
 
 Every client has its own private key shared only with the server. The server will care about encrypting and decrypting with the respective key for the other clients. 
 
 Here's a more detailed example.
-![detail](./documentation/detail.png)
+![detail](./documentation/pics/detail.png)
 
 # Technical details
 
-As metioned in the "About" section, messages are custom dataclasses objects streamed in the universal standard JSON format. They are carefully streamed with a small buffer size thanks to the fact that every packet is preceded by a fixed length header containing information about the actual packet size.
+As mentioned in the "About" section, messages are custom dataclasses objects streamed in the universal standard JSON format. They are carefully streamed with a small buffer size thanks to the fact that every packet is preceded by a fixed length header containing information about the actual packet size.
 
 We use AES-256 to ensure privacy to our users, we also automate the key exchange process so clients don't have to know any password.  
 As stated before, key exchange is performed with a classic DiffieHellman exchange based on very large integers.
 
 # Anonymousity
 
-To start using <app_name> you don't need any kind of account. Your precious personal data remains in your head, everything here is anonymous. You just need to care about your IP address, using a VPN is a good idea (everywhere in the internet!). 
+To start using <app_name> you don't need any kind of account. Your precious personal data remains in your head, everything here is anonymous. You just need to care about your IP address, using a VPN is a good idea (everywhere in the Internet!). 
 
 # Requirements 
 
@@ -71,7 +71,6 @@ Everybody has the ability to start their own server, this is the key aspect of t
 ## Features
 
 * [export_chat] > export current chat to a text file 
-* [help] > display all possible commands
 
 ## Thank you!
 
