@@ -2,6 +2,13 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[06-15-2020] f0lg0:
+	- updated documentation
+	- made a simple logo
+
+[06-13-2020] f0lg0 and JacopoFB:
+	- removed help functions 
+
 [06-09-2020] Jacopo:
 	- General Styling
 		* No more green color on hover for theme dropdown if the user had no localstorage files
