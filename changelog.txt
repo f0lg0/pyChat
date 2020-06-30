@@ -2,12 +2,15 @@ CHANGELOG FILE
 
 format: mm-dd-yyyy
 
+[06-30-2020] f0lg0:
+	-preparing for first release
+
 [06-15-2020] f0lg0:
 	- updated documentation
 	- made a simple logo
 
 [06-13-2020] f0lg0 and JacopoFB:
-	- removed help functions 
+	- removed help functions
 
 [06-09-2020] Jacopo:
 	- General Styling
@@ -53,7 +56,7 @@ format: mm-dd-yyyy
 	- Updated the GUI to look better and have the text not show under the box
 
 [05-06-2020] f0lg0:
-	- cleaned the code by removing useless stuff 
+	- cleaned the code by removing useless stuff
 	- removed logging functions
 
 [05-05-2020] JacopoFB:
@@ -81,14 +84,14 @@ format: mm-dd-yyyy
 	- implemented DH key exchange + bug_fixes
 
 [04-17-2020] f0lg0:
-	- bug fixes for message.py 
+	- bug fixes for message.py
 	- implemented a safe way to close the server
 
 [04-16-2020] Jacopo:
-	- The Message class will auto convert the 'cont' var to a string and back (with json) if you set the shouldParseContents argument to true  
+	- The Message class will auto convert the 'cont' var to a string and back (with json) if you set the shouldParseContents argument to true
 
 [04-16-2020] Jacopo:
-	- cleaned up the flagging, and made the help command export a full msg, not just a dictionary  
+	- cleaned up the flagging, and made the help command export a full msg, not just a dictionary
 
 [04-16-2020] Jacopo:
 	- cleaned up encoding to have in handled in the createMsg function
@@ -121,7 +124,7 @@ format: mm-dd-yyyy
 	- Removed "self." to "to_send_msg" in "sendMsg()"
 
 [04-05-2020] f0lg0:
-	- replaced user input with argparse 
+	- replaced user input with argparse
 
 [04-04-2020] f0lg0:
 	- replaced "open()" functions with "with open()"

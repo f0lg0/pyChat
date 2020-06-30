@@ -2,16 +2,4 @@
 ================== ToDo ==================
 	place a "x" inside [] if done
 
-
-1. [] Update readme
-2. [] Implement a real database (?)
-3. [] Give our app a name and get a nice logo :D
-4. [x] Update GUI look based on renders
-5. [] Set username in GUI
-6. [x] Close Chrome and automatically close client.py 
-7. [x] Add button for special commands such as export chat
-8. [x] Write the documentation in one of these/make PDFs so we don't overload the README.md:
-		- GitHub pages
-		- Read the docs
-9. [x] switch themes
-10. [x] save themes in local storage
+1. [] Set username in GUI
