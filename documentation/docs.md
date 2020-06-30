@@ -1,6 +1,6 @@
 # pyChat - Documentation
 
-![logo](/media/leonardo/Leonardo/code/git/chatroom/wireframes/PNG/logo.png)
+![logo](pics/logo.png)
 
 ## Index
 
