@@ -42,6 +42,16 @@ Pip install the following packages.
 
 # Run
 
+First boot up a server with the following command, make sure you run it on a valid IP address. If something goes wrong try to bind at 0.0.0.0 in server.py and client.py.
+
+And then fire up the client. Connect to your newly started server and enjoy the app.
+
+Note: you can only start one client per host. If you want to fire up multiple clients (for debugging) head over to the client.py file and de-comment the random function at line 171 and comment line 172.
+
+```
+eel.start('main.html', port=random.choice(range(8000, 8080)))
+```
+
 ### 1st option:
 
 ```
