@@ -122,11 +122,6 @@ class Client:
                     print('\r' + "[*] Something went wrong")
             elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
-            elif data.typ == "approved_conn":
-                pass
-            elif data.typ == "username_taken":
-                pass
-
             else:
                 eel.writeMsg(data.cont, data.username)
 
