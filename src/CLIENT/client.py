@@ -49,10 +49,10 @@ class Client:
 
         self.sharePublicInfo()
         initializeAES(str(finalDecryptionKey).encode("utf-8"), iv.cont) # we even parse the vector message content
-        # self.setUsername()
+        self.setUsername()
 
     def recvServerKey(self):
-        #receives the servers public key and uses it to generate the final decryption key
+        # receives the servers public key and uses it to generate the final decryption key
         serverKey = Message.from_json(streamData(self.client).decode("utf-8"))
         return clientDH.update(int(serverKey.cont))
 
@@ -64,35 +64,28 @@ class Client:
         iv = streamData(self.client).decode("utf-8")
         return Message.from_json(iv)
 
-    # def setUsername(self):
-    #     while True:
-    #         self.USERNAME = input("Enter username> ")
-    #         if self.USERNAME:
-    #             if self.USERNAME != "*server*":
-    #                 # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
-    #                 packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
-    #
-    #                 self.client.send(packet.pack())
-    #
-    #                 check = streamData(self.client).decode("utf-8")
-    #                 check = Message.from_json(check)
-    #                 print(check.cont)
-    #
-    #                 if check.cont != "[*] Username already in use!":
-    #                     break
-    #
-    #             else:
-    #                 print("Can't set username as *server*!")
-    #
-    #         else:
-    #             print("Username can't be empty!")
+    def setUsername(self):
+        while True:
+            self.USERNAME = input("Enter username> ")
+            if self.USERNAME:
+                if self.USERNAME != "*server*":
+                    # encrypted_username = self.cipher.encrypt(self.USERNAME.encode("utf-8"))
+                    packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), self.USERNAME, 'setuser')
 
-    # just sending
-    def setUsername(self, usr_name):
-        self.USERNAME = usr_name
-        print(self.USERNAME) # debugging
-        packet = Message(self.CLIENT_IP, self.SERVER_IP, "temp", str(datetime.now()), usr_name, 'setuser')
-        self.client.send(packet.pack())
+                    self.client.send(packet.pack())
+
+                    check = streamData(self.client).decode("utf-8")
+                    check = Message.from_json(check)
+                    print(check.cont)
+
+                    if check.cont != "[*] Username already in use!":
+                        break
+
+                else:
+                    print("Can't set username as *server*!")
+
+            else:
+                print("Username can't be empty!")
 
 
     def sendMsg(self, to_send_msg):
@@ -104,7 +97,6 @@ class Client:
         self.client.send(packet.pack())
 
     def receiveData(self):
-        # time.sleep(5)
         while True:
             try:
                 data = streamData(self.client)
@@ -126,9 +118,8 @@ class Client:
                         print("\r[*] Writing to file...")
 
                     print(f"[*] Finished! You can find the file at {chat_file}")
-                    print('\n' + "You> ", end = "")
                 except:
-                    print('\r' + "[*] Something went wrong" + '\n' + "You> ", end = "")
+                    print('\r' + "[*] Something went wrong")
             elif data.typ == "client_list_update_add" or data.typ == "disconnection":
                 updateClientList(data.cont)
             elif data.typ == "approved_conn":
@@ -137,7 +128,6 @@ class Client:
                 pass
 
             else:
-                #print('\r' + data.username + "> " + data.cont + '\n' + "You> ", end = "")
                 eel.writeMsg(data.cont, data.username)
 
         self.client.close()
@@ -162,11 +152,6 @@ def getUsername():
     return client.USERNAME
 
 
-# NOTE: since this just sends a message containing the username we could call sendMsg and modify it slightly
-@eel.expose
-def exposedSetUsername(username):
-    client.setUsername(username) # parsing the username got from the alert to the CLient class
-
 def getArgs():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--server", dest = "server_ip", help = "Enter server IP")
@@ -188,9 +173,10 @@ def getArgs():
 
 def startEel():
     try:
-        # eel.start('main.html', port=random.choice(range(8000, 8080)))
+        # eel.start('main.html', port=random.choice(range(8000, 8080))) --> use this if you want to open multiple clients on one computer
         eel.start('main.html', port=eelPort)
     except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
+        print("*** Closing the app... ***")
         os._exit(0)  # this is actually super overkill but it works
 
 def main():

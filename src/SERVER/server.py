@@ -112,7 +112,6 @@ class Server:
             content = "[*] You have joined the chat!"
 
             joined = Message(self.IP, client_socketObj.getIP(), self.USERNAME, str(datetime.now()), content, 'approved_conn')
-            print("DEBUG", joined)
 
             self.sendMessageToClient(client_socketObj, joined)
             time.sleep(1) # THIS IS DA FIX FOR EVERYTHING (packet congestion between username and client list)
@@ -178,7 +177,6 @@ class Server:
                 data = streamData(client_socket) # stream it
                 data = decryptMsg(data, client_socketObj.encKey) # decrypting it
                 data = Message.from_json(data) # converting to obj
-                print(str(data))
 
             except ConnectionResetError:
                 print(f"*** [{address}] unexpectedly closed the connetion, received only an RST packet.")
