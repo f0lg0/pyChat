@@ -33,6 +33,8 @@ To start using pyChat you don't need any kind of account. Your precious personal
 
 # Requirements
 
+Chrome web browser
+
 Pip install the following packages.
 
 * dataclasses_json
