@@ -53,6 +53,7 @@ class Server:
             cThread.start()
 
             self.shareVector(client_socket, address[0])
+            time.sleep(0.1) # to avoid buffer congestion
             self.sharePublicKey(client_socket, address[0])
             time.sleep(0.1) # to avoid buffer congestion
 
