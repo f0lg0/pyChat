@@ -170,6 +170,8 @@ def startEel():
     try:
         # eel.start('main.html', port=random.choice(range(8000, 8080))) --> use this if you want to open multiple clients on one computer
         eel.start('main.html', port=eelPort)
+    except EnvironmentError:
+        eel.start('main.html', port=eelPort, mode='default')
     except (SystemExit, MemoryError, KeyboardInterrupt): # this catches the exception thrown if the user closes the window
         print("*** Closing the app... ***")
         os._exit(0)  # this is actually super overkill but it works
